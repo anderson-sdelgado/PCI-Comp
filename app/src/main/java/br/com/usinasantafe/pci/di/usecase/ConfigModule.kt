@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.di.usecase
 
-import br.com.usinasantafe.pci.domain.usecases.config.CheckPassword
-import br.com.usinasantafe.pci.domain.usecases.config.ICheckPassword
+import br.com.usinasantafe.pci.domain.usecases.config.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,5 +14,21 @@ interface ConfigModule {
     @Binds
     @Singleton
     fun bindCheckPassword(usecase: ICheckPassword): CheckPassword
+
+    @Binds
+    @Singleton
+    fun bindGetConfigInternal(usecase: IGetConfigInternal): GetConfigInternal
+
+    @Binds
+    @Singleton
+    fun bindSendDataConfig(usecase: ISendDataConfig): SendDataConfig
+
+    @Binds
+    @Singleton
+    fun bindSaveDataConfig(usecase: ISaveDataConfig): SaveDataConfig
+
+    @Binds
+    @Singleton
+    fun bindSetCheckUpdateAllTable(usecase: ISetFinishUpdateAllTable): SetFinishUpdateAllTable
 
 }

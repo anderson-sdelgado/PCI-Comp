@@ -1,4 +1,4 @@
-package br.com.usinasantafe.pci.di.external.retrofit
+package br.com.usinasantafe.pci.di.external.room
 
 import br.com.usinasantafe.pci.external.room.DatabaseRoom
 import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao

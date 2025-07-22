@@ -2,12 +2,18 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4cfa5be646834e94aacd004cdfa56564",
+    "identityHash": "8124a653a99e44ead8d99e2b1f16c39c",
     "entities": [
       {
         "tableName": "tb_colab",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`regColab` INTEGER NOT NULL, `nameColab` TEXT NOT NULL, PRIMARY KEY(`regColab`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idColab` INTEGER NOT NULL, `regColab` INTEGER NOT NULL, `nameColab` TEXT NOT NULL, `idFactorySectionColab` INTEGER NOT NULL, PRIMARY KEY(`idColab`))",
         "fields": [
+          {
+            "fieldPath": "idColab",
+            "columnName": "idColab",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "regColab",
             "columnName": "regColab",
@@ -19,12 +25,18 @@
             "columnName": "nameColab",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "idFactorySectionColab",
+            "columnName": "idFactorySectionColab",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "regColab"
+            "idColab"
           ]
         },
         "indices": [],
@@ -34,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4cfa5be646834e94aacd004cdfa56564')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8124a653a99e44ead8d99e2b1f16c39c')"
     ]
   }
 }
