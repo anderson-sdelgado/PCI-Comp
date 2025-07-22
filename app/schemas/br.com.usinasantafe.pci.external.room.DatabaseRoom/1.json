@@ -1,0 +1,40 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4cfa5be646834e94aacd004cdfa56564",
+    "entities": [
+      {
+        "tableName": "tb_colab",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`regColab` INTEGER NOT NULL, `nameColab` TEXT NOT NULL, PRIMARY KEY(`regColab`))",
+        "fields": [
+          {
+            "fieldPath": "regColab",
+            "columnName": "regColab",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameColab",
+            "columnName": "nameColab",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "regColab"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4cfa5be646834e94aacd004cdfa56564')"
+    ]
+  }
+}
