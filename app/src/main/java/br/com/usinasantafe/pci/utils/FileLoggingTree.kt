@@ -29,7 +29,6 @@ class FileLoggingTree(context: Context) : Timber.Tree() {
                     close()
                 }
 
-                // Limpa linhas antigas, mantendo apenas as mais novas
                 trimOldLogs()
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -42,8 +41,8 @@ class FileLoggingTree(context: Context) : Timber.Tree() {
 
         val lines = logFile.readLines()
         if (lines.size > maxLines) {
-            val newContent = lines.takeLast(maxLines) // Mantém apenas as últimas 'maxLines'
-            logFile.writeText(newContent.joinToString("\n")) // Sobrescreve o arquivo
+            val newContent = lines.takeLast(maxLines)
+            logFile.writeText(newContent.joinToString("\n"))
         }
     }
 }

@@ -38,4 +38,8 @@
     <string name="text_recover_token">FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
     <string name="text_update_failure">FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
     <string name="text_config_success">CONFIGURAÇÃO REALIZADA COM SUCESSO!</string>
+    <string name="text_title_colab">MATRICULA COLABORADOR</string>
+    <string name="text_field_empty">CAMPO VAZIO! POR FAVOR, PREENCHA O CAMPO \"%1$s\" PARA DAR CONTINUIDADE AO APONTAMENTO.</string>
+    <string name="text_input_data_non_existent">\"%1$s\" INEXISTENTE! POR FAVOR, VERIFIQUE SE O CAMPO FOI DIGITADO CORRETAMENTE.</string>
+    <string name="text_check_data">CHECANDO \"%1$s\" NO WEB SERVICE</string>
 </resources>

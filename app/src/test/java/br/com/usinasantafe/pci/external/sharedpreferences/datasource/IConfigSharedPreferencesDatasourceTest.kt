@@ -146,4 +146,36 @@ class IConfigSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `getFlagUpdate - Check return FlagUpdate OUTDATED if field is null`() =
+        runTest {
+            val result = datasource.getFlagUpdate()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlagUpdate.OUTDATED
+            )
+        }
+
+    @Test
+    fun `getFlagUpdate - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                flagUpdate = FlagUpdate.UPDATED
+            )
+            datasource.save(data)
+            val result = datasource.getFlagUpdate()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlagUpdate.UPDATED
+            )
+        }
+
 }

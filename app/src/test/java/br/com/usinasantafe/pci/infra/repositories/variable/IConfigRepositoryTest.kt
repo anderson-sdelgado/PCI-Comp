@@ -361,4 +361,52 @@ class IConfigRepositoryTest {
         )
     }
 
+    @Test
+    fun `getFlagUpdate - Check return failure if have error in ConfigSharedPreferences getFlagUpdate`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getFlagUpdate()
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.getFlagUpdate",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getFlagUpdate()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.getFlagUpdate -> IConfigSharedPreferencesDatasource.getFlagUpdate",
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getFlagUpdate - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getFlagUpdate()
+            ).thenReturn(
+                Result.success(
+                    FlagUpdate.OUTDATED
+                )
+            )
+            val result = repository.getFlagUpdate()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlagUpdate.OUTDATED
+            )
+        }
+
 }

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.usinasantafe.pci.presenter.Routes.COLAB_HEADER_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.CONFIG_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.INITIAL_MENU_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.PASSWORD_ROUTE
@@ -13,6 +14,7 @@ import br.com.usinasantafe.pci.presenter.Routes.SPLASH_ROUTE
 import br.com.usinasantafe.pci.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.pci.presenter.view.configuration.initial.InitialMenuScreen
 import br.com.usinasantafe.pci.presenter.view.configuration.password.PasswordScreen
+import br.com.usinasantafe.pci.presenter.view.header.colab.ColabHeaderScreen
 import br.com.usinasantafe.pci.presenter.view.splash.SplashScreen
 
 
@@ -67,6 +69,18 @@ fun NavigationGraph(
 
         composable(CONFIG_ROUTE)  {
             ConfigScreen(
+                onNavInitialMenu = {
+                    navActions.navigateToInitialMenu()
+                }
+            )
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        ////////////////////////// Header //////////////////////////////////
+
+        composable(COLAB_HEADER_ROUTE) {
+            ColabHeaderScreen(
                 onNavInitialMenu = {
                     navActions.navigateToInitialMenu()
                 }

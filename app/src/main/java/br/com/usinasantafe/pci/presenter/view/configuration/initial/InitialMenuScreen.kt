@@ -2,6 +2,7 @@ package br.com.usinasantafe.pci.presenter.view.configuration.initial
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.pci.BuildConfig
 import br.com.usinasantafe.pci.R
+import br.com.usinasantafe.pci.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.pci.presenter.theme.ItemListDesign
 import br.com.usinasantafe.pci.presenter.theme.TitleDesign
 import br.com.usinasantafe.pci.presenter.theme.PCITheme
@@ -33,10 +36,12 @@ fun InitialMenuScreen(
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             InitialMenuContent(
+                onCheckAccess = viewModel::onCheckAccess,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
+                flagFailure = uiState.flagFailure,
                 onNavPassword = onNavPassword,
                 onNavColab = onNavColab,
                 modifier = Modifier.padding(innerPadding)
@@ -48,10 +53,12 @@ fun InitialMenuScreen(
 @SuppressLint("ContextCastToActivity")
 @Composable
 fun InitialMenuContent(
+    onCheckAccess: () -> Unit,
     setCloseDialog: () -> Unit,
     flagAccess: Boolean,
     flagDialog: Boolean,
     failure: String,
+    flagFailure: Boolean,
     onNavPassword: () -> Unit,
     onNavColab: () -> Unit,
     modifier: Modifier = Modifier
@@ -77,7 +84,7 @@ fun InitialMenuContent(
                     text = stringResource(
                         id = R.string.text_item_note
                     ),
-                    setActionItem = {},
+                    setActionItem = onCheckAccess,
                     font = 26
                 )
             }
@@ -102,6 +109,29 @@ fun InitialMenuContent(
                 )
             }
         }
+        BackHandler {}
+
+        if (flagDialog) {
+            val text =
+                if (!flagFailure) {
+                    stringResource(id = R.string.text_blocked_access_app)
+                } else {
+                    stringResource(
+                        id = R.string.text_failure,
+                        failure
+                    )
+                }
+            AlertDialogSimpleDesign(
+                text = text,
+                setCloseDialog = setCloseDialog,
+            )
+        }
+    }
+
+    LaunchedEffect(flagAccess) {
+        if(flagAccess) {
+            onNavColab()
+        }
     }
 }
 
@@ -111,10 +141,12 @@ fun InitialMenuPagePreview() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             InitialMenuContent(
+                onCheckAccess = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = false,
                 failure = "",
+                flagFailure = false,
                 onNavPassword = {},
                 onNavColab = {},
                 modifier = Modifier.padding(innerPadding)

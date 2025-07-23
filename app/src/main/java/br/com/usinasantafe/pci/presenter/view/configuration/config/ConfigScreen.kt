@@ -65,7 +65,7 @@ fun ConfigScreen(
                 onNumberChanged = viewModel::onNumberChanged,
                 password = uiState.password,
                 onPasswordChanged = viewModel::onPasswordChanged,
-                onSaveAndUpdate = {},
+                onSaveAndUpdate = viewModel::onSaveAndUpdate,
                 flagProgress = uiState.flagProgress,
                 currentProgress = uiState.currentProgress,
                 levelUpdate = uiState.levelUpdate,
@@ -202,29 +202,29 @@ fun ConfigContent(
                     .fillMaxWidth()
             )
         }
-        BackHandler {}
-    }
-    if(flagDialog) {
-        if(flagFailure){
-            val text = when(errors){
-                Errors.FIELD_EMPTY -> stringResource(id = R.string.text_field_empty_config)
-                Errors.TOKEN -> stringResource(id = R.string.text_recover_token, failure)
-                Errors.UPDATE -> stringResource(id = R.string.text_update_failure, failure)
-                Errors.EXCEPTION,
-                Errors.INVALID -> stringResource(id = R.string.text_failure, failure)
-                else -> ""
+        if(flagDialog) {
+            if(flagFailure){
+                val text = when(errors){
+                    Errors.FIELD_EMPTY -> stringResource(id = R.string.text_field_empty_config)
+                    Errors.TOKEN -> stringResource(id = R.string.text_recover_token, failure)
+                    Errors.UPDATE -> stringResource(id = R.string.text_update_failure, failure)
+                    Errors.EXCEPTION,
+                    Errors.INVALID -> stringResource(id = R.string.text_failure, failure)
+                    else -> ""
+                }
+                AlertDialogSimpleDesign(
+                    text = text,
+                    setCloseDialog = setCloseDialog,
+                )
+            } else {
+                AlertDialogSimpleDesign(
+                    text = stringResource(id = R.string.text_config_success),
+                    setCloseDialog = setCloseDialog,
+                    setActionButtonOK = onNavInitialMenu,
+                )
             }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
-        } else {
-            AlertDialogSimpleDesign(
-                text = stringResource(id = R.string.text_config_success),
-                setCloseDialog = setCloseDialog,
-                setActionButtonOK = onNavInitialMenu,
-            )
         }
+        BackHandler {}
     }
 
 }

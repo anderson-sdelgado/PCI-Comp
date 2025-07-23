@@ -46,7 +46,7 @@ class IColabRepository @Inject constructor(
         return result
     }
 
-    override suspend fun recoverAll(token: String): Result<List<Colab>> {
+    override suspend fun listAll(token: String): Result<List<Colab>> {
         try {
             val result = colabRetrofitDatasource.recoverAll(token)
             if (result.isFailure) {
@@ -63,6 +63,10 @@ class IColabRepository @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun getByRegColab(regColab: Int): Result<Colab> {
+        TODO("Not yet implemented")
     }
 
 }

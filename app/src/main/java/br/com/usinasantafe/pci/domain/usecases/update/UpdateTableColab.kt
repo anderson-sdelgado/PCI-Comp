@@ -54,7 +54,7 @@ class IUpdateTableColab @Inject constructor(
             return@flow
         }
         val token = resultGetToken.getOrNull()!!
-        val resultRecoverAll = colabRepository.recoverAll(token)
+        val resultRecoverAll = colabRepository.listAll(token)
         if (resultRecoverAll.isFailure) {
             val error = resultRecoverAll.exceptionOrNull()!!
             val failure =

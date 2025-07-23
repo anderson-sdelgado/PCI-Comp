@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.di.usecase
 
-import br.com.usinasantafe.pci.domain.usecases.common.*
+import br.com.usinasantafe.pci.domain.usecases.header.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -9,14 +9,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface CommonModule {
+interface HeaderModule {
 
     @Binds
     @Singleton
-    fun bindCheckAccessInitial(usecase: ICheckAccessInitial): CheckAccessInitial
+    fun bindCheckAndSetRegColab(usecase: ICheckAndSetRegColabHeader): CheckAndSetRegColabHeader
 
-    @Binds
-    @Singleton
-    fun bindGetToken(usecase: IGetToken): GetToken
 
 }

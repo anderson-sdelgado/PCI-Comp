@@ -75,7 +75,7 @@ class IUpdateTableColabTest {
                 Result.success("token")
             )
             whenever(
-                colabRepository.recoverAll("token")
+                colabRepository.listAll("token")
             ).thenReturn(
                 resultFailure(
                     "IColabRepository.recoverAll",
@@ -130,7 +130,7 @@ class IUpdateTableColabTest {
                 Result.success("token")
             )
             whenever(
-                colabRepository.recoverAll("token")
+                colabRepository.listAll("token")
             ).thenReturn(
                 Result.success(
                     list
@@ -201,7 +201,7 @@ class IUpdateTableColabTest {
                 Result.success("token")
             )
             whenever(
-                colabRepository.recoverAll("token")
+                colabRepository.listAll("token")
             ).thenReturn(
                 Result.success(
                     list
