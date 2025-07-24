@@ -101,9 +101,9 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                     cause = resultConfig.exceptionOrNull()!!
                 )
             }
-            val config = resultConfig.getOrNull()!!
-            config.flagUpdate = flagUpdate
-            val resultSave = save(config)
+            val model = resultConfig.getOrNull()!!
+            model.flagUpdate = flagUpdate
+            val resultSave = save(model)
             if (resultSave.isFailure) {
                 return resultFailureMiddle(
                     context = getClassAndMethod(),

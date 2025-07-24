@@ -20,7 +20,7 @@ class IUpdateTableColabTest {
 
     private val getToken = mock<GetToken>()
     private val colabRepository = mock<ColabRepository>()
-    private val updateTableColab = IUpdateTableColab(
+    private val updateTableColab = IUpdateTableColabReg(
         getToken = getToken,
         colabRepository = colabRepository
     )

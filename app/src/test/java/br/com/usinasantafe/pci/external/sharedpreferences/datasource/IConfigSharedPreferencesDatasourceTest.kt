@@ -14,7 +14,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.intArrayOf
-import kotlin.text.get
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -103,10 +102,10 @@ class IConfigSharedPreferencesDatasourceTest {
     @Test
     fun `setFlagUpdate - Check return data correct the Config SharedPreferences internal`() =
         runTest {
-            val data = ConfigSharedPreferencesModel(
+            val model = ConfigSharedPreferencesModel(
                 statusSend = StatusSend.SENT
             )
-            datasource.save(data)
+            datasource.save(model)
             val resultBefore = datasource.get()
             assertEquals(
                 resultBefore.isSuccess,

@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,6 +38,7 @@ import br.com.usinasantafe.pci.utils.TypeButton
 fun ColabHeaderScreen(
     viewModel: ColabHeaderViewModel = hiltViewModel(),
     onNavInitialMenu: () -> Unit,
+    onNavOS: () -> Unit
 ) {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -51,6 +53,7 @@ fun ColabHeaderScreen(
                 errors = uiState.errors,
                 flagProgress = uiState.flagProgress,
                 onNavInitialMenu = onNavInitialMenu,
+                onNavOS = onNavOS,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -68,6 +71,7 @@ fun ColabHeaderContent(
     errors: Errors,
     flagProgress: Boolean,
     onNavInitialMenu: () -> Unit,
+    onNavOS: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -137,8 +141,15 @@ fun ColabHeaderContent(
                 )
             )
         }
-
     }
+
+    LaunchedEffect(flagAccess) {
+        if(flagAccess) {
+            onNavOS()
+        }
+    }
+
+
 }
 
 @Preview(showBackground = true)
@@ -156,6 +167,7 @@ fun ColabHeaderPagePreview() {
                 errors = Errors.INVALID,
                 flagProgress = false,
                 onNavInitialMenu = {},
+                onNavOS = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -177,6 +189,7 @@ fun ColabHeaderPagePreviewInvalid() {
                 errors = Errors.INVALID,
                 flagProgress = false,
                 onNavInitialMenu = {},
+                onNavOS = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -198,6 +211,7 @@ fun ColabHeaderPagePreviewEmpty() {
                 errors = Errors.FIELD_EMPTY,
                 flagProgress = false,
                 onNavInitialMenu = {},
+                onNavOS = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -219,6 +233,7 @@ fun ColabHeaderPagePreviewFailure() {
                 errors = Errors.EXCEPTION,
                 flagProgress = false,
                 onNavInitialMenu = {},
+                onNavOS = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -240,6 +255,7 @@ fun ColabHeaderPagePreviewProgress() {
                 errors = Errors.EXCEPTION,
                 flagProgress = true,
                 onNavInitialMenu = {},
+                onNavOS = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

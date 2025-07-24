@@ -192,4 +192,53 @@ class IColabRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `add - Check success if have row is correct`() =
+        runTest {
+            val qtdBefore = colabDao.all().size
+            assertEquals(
+                qtdBefore,
+                0
+            )
+            val result = datasource.add(
+                ColabRoomModel(
+                    idColab = 1,
+                    regColab = 1,
+                    nameColab = "TESTE 1",
+                    idFactorySectionColab = 1
+                ),
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val qtdAfter = colabDao.all().size
+            assertEquals(
+                qtdAfter,
+                1
+            )
+            val list = colabDao.all()
+            val entity1 = list[0]
+            assertEquals(
+                entity1.idColab,
+                1
+            )
+            assertEquals(
+                entity1.regColab,
+                1
+            )
+            assertEquals(
+                entity1.nameColab,
+                "TESTE 1"
+            )
+            assertEquals(
+                entity1.idFactorySectionColab,
+                1
+            )
+        }
+
 }

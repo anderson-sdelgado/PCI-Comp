@@ -7,7 +7,7 @@ import br.com.usinasantafe.pci.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.pci.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.pci.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.pci.domain.usecases.config.SetFinishUpdateAllTable
-import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableColab
+import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableColabReg
 import br.com.usinasantafe.pci.presenter.model.ConfigModel
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.pci.utils.Errors
@@ -35,7 +35,6 @@ class ConfigViewModelTest {
     private val getConfigInternal = mock<GetConfigInternal>()
     private val sendDataConfig = mock<SendDataConfig>()
     private val saveDataConfig = mock<SaveDataConfig>()
-    private val updateTableColab = mock<UpdateTableColab>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
     private var contUpdate = 0f
     private var contWhenever = 0f
@@ -45,7 +44,6 @@ class ConfigViewModelTest {
         getConfigInternal = getConfigInternal,
         sendDataConfig = sendDataConfig,
         saveDataConfig = saveDataConfig,
-        updateTableColab = updateTableColab,
         setFinishUpdateAllTable = setFinishUpdateAllTable
     )
 
@@ -348,57 +346,6 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateTableColab`() =
-        runTest {
-            val qtdBefore = 0f
-            val sizeAll = sizeUpdate(QTD_TABLE)
-            whenever(
-                updateTableColab(
-                    sizeAll = sizeAll,
-                    count = (qtdBefore + 1)
-                )
-            ).thenReturn(
-                flowOf(
-                    ResultUpdateModel(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
-                    ),
-                    ResultUpdateModel(
-                        errors = Errors.UPDATE,
-                        flagDialog = true,
-                        flagFailure = true,
-                        failure = "ICleanColab -> java.lang.NullPointerException",
-                    )
-                )
-            )
-            val result = viewModel.updateAllDatabase().toList()
-            assertEquals(
-                result.count(),
-                ((qtdBefore * 3) + 2).toInt()
-            )
-            assertEquals(
-                result[(qtdBefore * 3).toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
-                )
-            )
-            assertEquals(
-                result[((qtdBefore * 3) + 1).toInt()],
-                ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> ICleanColab -> java.lang.NullPointerException",
-                )
-            )
-        }
-
-    @Test
     fun `update - Check return failure if have error in SetCheckUpdateAllTable`() =
         runTest {
             whenever(
@@ -424,7 +371,6 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(true)
             )
-            wheneverSuccessColab()
             whenever(
                 setFinishUpdateAllTable()
             ).thenReturn(
@@ -440,11 +386,10 @@ class ConfigViewModelTest {
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((QTD_TABLE * 3) + 1).toInt()
+                1
             )
-            checkResultUpdateColab(result)
             assertEquals(
-                result[(QTD_TABLE * 3).toInt()],
+                result[0],
                 ConfigState(
                     errors = Errors.EXCEPTION,
                     flagFailure = true,
@@ -495,7 +440,6 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(true)
             )
-            wheneverSuccessColab()
             whenever(
                 setFinishUpdateAllTable()
             ).thenReturn(
@@ -507,11 +451,10 @@ class ConfigViewModelTest {
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((QTD_TABLE * 3) + 1).toInt()
+                1
             )
-            checkResultUpdateColab(result)
             assertEquals(
-                result[(QTD_TABLE * 3).toInt()],
+                result[0],
                 ConfigState(
                     flagDialog = true,
                     flagProgress = true,
@@ -534,67 +477,4 @@ class ConfigViewModelTest {
             )
         }
 
-    private fun wheneverSuccessColab() =
-        runTest {
-            val sizeAll = sizeUpdate(QTD_TABLE)
-            whenever(
-                updateTableColab(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    ResultUpdateModel(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    ResultUpdateModel(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    ResultUpdateModel(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateColab(result: List<ConfigState>) =
-        runTest {
-            val sizeAll = sizeUpdate(QTD_TABLE)
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-        }
 }

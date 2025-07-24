@@ -14,5 +14,5 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableColab(usecase: IUpdateTableColab): UpdateTableColab
+    fun bindUpdateTableColab(usecase: IUpdateTableColabReg): UpdateTableColabReg
 }

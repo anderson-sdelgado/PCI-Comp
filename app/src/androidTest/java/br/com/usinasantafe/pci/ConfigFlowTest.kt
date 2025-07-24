@@ -38,6 +38,7 @@ import kotlin.time.Duration.Companion.minutes
 
 @HiltAndroidTest
 class ConfigFlowTest {
+
     companion object {
 
         private lateinit var server: MockWebServer
@@ -88,10 +89,7 @@ class ConfigFlowTest {
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
-
-    @Inject
-    lateinit var colabDao: ColabDao
-
+    
     @Before
     fun setup() {
         hiltRule.inject()
@@ -217,29 +215,6 @@ class ConfigFlowTest {
                     statusSend = StatusSend.STARTED,
                     flagUpdate = FlagUpdate.UPDATED
                 )
-            )
-
-            val colabList = colabDao.all()
-            assertEquals(
-                colabList.size,
-                1
-            )
-            val entityColab = colabList[0]
-            assertEquals(
-                entityColab.idColab,
-                1
-            )
-            assertEquals(
-                entityColab.regColab,
-                19759
-            )
-            assertEquals(
-                entityColab.nameColab,
-                "ANDERSON DA SILVA DELGADO"
-            )
-            assertEquals(
-                entityColab.idFactorySectionColab,
-                1
             )
 
             Log.d("TestDebug", "Position 15")

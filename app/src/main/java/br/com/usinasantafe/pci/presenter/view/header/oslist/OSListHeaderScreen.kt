@@ -1,4 +1,4 @@
-package br.com.usinasantafe.pci.presenter.view.header.os
+package br.com.usinasantafe.pci.presenter.view.header.oslist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,10 +12,10 @@ import br.com.usinasantafe.pci.presenter.theme.TitleDesign
 import br.com.usinasantafe.pci.presenter.theme.PCITheme
 
 @Composable
-fun OSHeaderScreen() {
+fun OSListHeaderScreen() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            OSHeaderContent(
+            OSListHeaderContent(
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -23,14 +23,14 @@ fun OSHeaderScreen() {
 }
 
 @Composable
-fun OSHeaderContent(
+fun OSListHeaderContent(
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .padding(16.dp)
     ) {
-        TitleDesign(text = "")
+        TitleDesign(text = "ORDEM SERVIÇO")
     }
 }
 
@@ -39,7 +39,7 @@ fun OSHeaderContent(
 fun OSHeaderPagePreview() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            OSHeaderContent(
+            OSListHeaderContent(
                 modifier = Modifier.padding(innerPadding)
             )
         }

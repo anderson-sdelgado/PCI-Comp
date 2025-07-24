@@ -16,4 +16,8 @@ interface SharedPreferencesDatasourceModule {
     @Singleton
     fun bindConfigSharedPreferencesDatasource(dataSource: IConfigSharedPreferencesDatasource): ConfigSharedPreferencesDatasource
 
+    @Binds
+    @Singleton
+    fun bindHeaderSharedPreferencesDatasource(dataSource: IHeaderSharedPreferencesDatasource): HeaderSharedPreferencesDatasource
+
 }

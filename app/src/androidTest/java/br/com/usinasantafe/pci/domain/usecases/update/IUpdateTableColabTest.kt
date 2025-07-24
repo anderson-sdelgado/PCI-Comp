@@ -17,7 +17,6 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
-import kotlin.collections.get
 
 @HiltAndroidTest
 class IUpdateTableColabTest {
@@ -26,7 +25,7 @@ class IUpdateTableColabTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: UpdateTableColab
+    lateinit var usecase: UpdateTableColabReg
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource

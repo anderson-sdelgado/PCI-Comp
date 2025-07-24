@@ -9,12 +9,14 @@ import androidx.navigation.compose.rememberNavController
 import br.com.usinasantafe.pci.presenter.Routes.COLAB_HEADER_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.CONFIG_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.INITIAL_MENU_ROUTE
+import br.com.usinasantafe.pci.presenter.Routes.OS_HEADER_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.PASSWORD_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.SPLASH_ROUTE
 import br.com.usinasantafe.pci.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.pci.presenter.view.configuration.initial.InitialMenuScreen
 import br.com.usinasantafe.pci.presenter.view.configuration.password.PasswordScreen
 import br.com.usinasantafe.pci.presenter.view.header.colab.ColabHeaderScreen
+import br.com.usinasantafe.pci.presenter.view.header.oslist.OSListHeaderScreen
 import br.com.usinasantafe.pci.presenter.view.splash.SplashScreen
 
 
@@ -83,8 +85,15 @@ fun NavigationGraph(
             ColabHeaderScreen(
                 onNavInitialMenu = {
                     navActions.navigateToInitialMenu()
+                },
+                onNavOS = {
+                    navActions.navigateToOS()
                 }
             )
+        }
+
+        composable(OS_HEADER_ROUTE) {
+            OSListHeaderScreen()
         }
 
         ////////////////////////////////////////////////////////////////////

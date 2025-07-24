@@ -10,6 +10,9 @@ import br.com.usinasantafe.pci.utils.TB_COLAB
 interface ColabDao {
 
     @Insert
+    fun insert(model: ColabRoomModel)
+
+    @Insert
     fun insertAll(list: List<ColabRoomModel>)
 
     @Query("DELETE FROM $TB_COLAB")

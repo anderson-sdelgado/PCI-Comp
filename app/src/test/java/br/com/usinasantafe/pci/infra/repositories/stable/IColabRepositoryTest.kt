@@ -149,7 +149,7 @@ class IColabRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                colabRetrofitDatasource.recoverAll("token")
+                colabRetrofitDatasource.listAll("token")
             ).thenReturn(
                 resultFailure(
                     "IColabRetrofitDatasource.recoverAll",
@@ -204,7 +204,7 @@ class IColabRepositoryTest {
                 )
             )
             whenever(
-                colabRetrofitDatasource.recoverAll("token")
+                colabRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList
@@ -218,6 +218,150 @@ class IColabRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 entityList
+            )
+        }
+
+    @Test
+    fun `getByRegColab - Check return failure if have error in ColabRetrofitDatasource getByReg`() =
+        runTest {
+            whenever(
+                colabRetrofitDatasource.getByReg(
+                    token = "token",
+                    regColab = 12345
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IColabRetrofitDatasource.getByReg",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getByRegColab(
+                token = "token",
+                regColab = 12345
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IColabRepository.getByRegColab -> IColabRetrofitDatasource.getByReg"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getByRegColab - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                colabRetrofitDatasource.getByReg(
+                    token = "token",
+                    regColab = 12345
+                )
+            ).thenReturn(
+                Result.success(
+                    ColabRetrofitModel(
+                        idColab = 1,
+                        regColab = 12345L,
+                        nameColab = "ANDERSON DA SILVA",
+                        idFactorySectionColab = 1
+                    )
+                )
+            )
+            val result = repository.getByRegColab(
+                token = "token",
+                regColab = 12345
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Colab(
+                    idColab = 1,
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA",
+                    idFactorySectionColab = 1
+                )
+            )
+        }
+
+    @Test
+    fun `add - Check return failure if have error in ColabRoomDatasource add`() =
+        runTest {
+            whenever(
+                colabRoomDatasource.add(
+                    ColabRoomModel(
+                        idColab = 1,
+                        regColab = 12345L,
+                        nameColab = "ANDERSON DA SILVA",
+                        idFactorySectionColab = 1
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IColabRoomDatasource.add",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.add(
+                Colab(
+                    idColab = 1,
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA",
+                    idFactorySectionColab = 1
+                )
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IColabRepository.add -> IColabRoomDatasource.add"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `add - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                colabRoomDatasource.add(
+                    ColabRoomModel(
+                        idColab = 1,
+                        regColab = 12345L,
+                        nameColab = "ANDERSON DA SILVA",
+                        idFactorySectionColab = 1
+                    )
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.add(
+                Colab(
+                    idColab = 1,
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA",
+                    idFactorySectionColab = 1
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 

@@ -12,17 +12,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-interface UpdateTableColab {
+interface UpdateTableColabReg {
     suspend operator fun invoke(
         sizeAll: Float,
         count: Float
     ): Flow<ResultUpdateModel>
 }
 
-class IUpdateTableColab @Inject constructor(
+class IUpdateTableColabReg @Inject constructor(
     private val getToken: GetToken,
     private val colabRepository: ColabRepository
-): UpdateTableColab {
+): UpdateTableColabReg {
 
     override suspend fun invoke(
         sizeAll: Float,

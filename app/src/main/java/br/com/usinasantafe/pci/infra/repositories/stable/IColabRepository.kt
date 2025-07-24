@@ -18,8 +18,8 @@ class IColabRepository @Inject constructor(
 
     override suspend fun addAll(list: List<Colab>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
-            val result = colabRoomDatasource.addAll(roomModelList)
+            val modelList = list.map { it.entityToRoomModel() }
+            val result = colabRoomDatasource.addAll(modelList)
             if (result.isFailure) {
                 return resultFailureMiddle(
                     context = getClassAndMethod(),
@@ -48,7 +48,7 @@ class IColabRepository @Inject constructor(
 
     override suspend fun listAll(token: String): Result<List<Colab>> {
         try {
-            val result = colabRetrofitDatasource.recoverAll(token)
+            val result = colabRetrofitDatasource.listAll(token)
             if (result.isFailure) {
                 return resultFailureMiddle(
                     context = getClassAndMethod(),
@@ -65,8 +65,40 @@ class IColabRepository @Inject constructor(
         }
     }
 
-    override suspend fun getByRegColab(regColab: Int): Result<Colab> {
-        TODO("Not yet implemented")
+    override suspend fun getByRegColab(
+        token: String,
+        regColab: Int
+    ): Result<Colab> {
+        try {
+            val result = colabRetrofitDatasource.getByReg(
+                token = token,
+                regColab = regColab
+            )
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entity = result.getOrNull()!!.retrofitModelToEntity()
+            return Result.success(entity)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun add(entity: Colab): Result<Boolean> {
+        val result = colabRoomDatasource.add(entity.entityToRoomModel())
+        if (result.isFailure) {
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
     }
 
 }

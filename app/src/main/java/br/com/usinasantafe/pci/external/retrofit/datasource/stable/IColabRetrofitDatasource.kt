@@ -10,9 +10,27 @@ import javax.inject.Inject
 class IColabRetrofitDatasource @Inject constructor(
     private val colabApi: ColabApi
 ) : ColabRetrofitDatasource {
-    override suspend fun recoverAll(token: String): Result<List<ColabRetrofitModel>> {
+    override suspend fun listAll(token: String): Result<List<ColabRetrofitModel>> {
         try {
             val response = colabApi.all(token)
+            return Result.success(response.body()!!)
+        } catch (e: Exception){
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getByReg(
+        token: String,
+        regColab: Int
+    ): Result<ColabRetrofitModel> {
+        try {
+            val response = colabApi.getByReg(
+                auth = token,
+                regColab = regColab
+            )
             return Result.success(response.body()!!)
         } catch (e: Exception){
             return resultFailureFinish(
