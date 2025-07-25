@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.presenter.MainActivity
 import br.com.usinasantafe.pci.utils.FlagUpdate
@@ -82,6 +83,9 @@ class HeaderFlowTest {
 
     @Inject
     lateinit var colabDao: ColabDao
+
+    @Inject
+    lateinit var headerSharedPreferencesDatasource: HeaderSharedPreferencesDatasource
 
     @Before
     fun setup() {
@@ -171,6 +175,23 @@ class HeaderFlowTest {
             entity.idFactorySectionColab,
             1
         )
+
+        val resultGetHeaderIdColabAndIdFactorySection = headerSharedPreferencesDatasource.get()
+        assertEquals(
+            resultGetHeaderIdColabAndIdFactorySection.isSuccess,
+            true
+        )
+        val headerIdColabAndIdFactorySection = resultGetHeaderIdColabAndIdFactorySection.getOrNull()!!
+        assertEquals(
+            headerIdColabAndIdFactorySection.idColab,
+            1
+        )
+        assertEquals(
+            headerIdColabAndIdFactorySection.idFactorySection,
+            1
+        )
+
+        Log.d("TestDebug", "Position 7")
 
         composeTestRule.waitUntilTimeout(10_000)
 

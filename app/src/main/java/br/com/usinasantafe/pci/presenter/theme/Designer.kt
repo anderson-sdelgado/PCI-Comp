@@ -15,6 +15,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +44,56 @@ fun ItemListDesign(
             }
             .testTag("item_list_$id")
     )
+}
+
+@Composable
+fun ItemListOSDesign(
+    id: Int = 0,
+    period: String,
+    os: String,
+    codPlant: String,
+    descPlant: String,
+    font: Int = 22,
+    padding: Int = 8,
+    setActionItem: () -> Unit
+) {
+    return  Column(
+        modifier = Modifier
+            .testTag("item_list_$id")
+            .padding(vertical = padding.dp)
+            .clickable {
+                setActionItem()
+            }
+    ) {
+        Text(
+            textAlign = TextAlign.Left,
+            text = period,
+            fontSize = font.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Text(
+            textAlign = TextAlign.Left,
+            text = os,
+            fontSize = font.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Text(
+            textAlign = TextAlign.Left,
+            text = codPlant,
+            fontSize = font.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Text(
+            textAlign = TextAlign.Left,
+            text = descPlant,
+            fontSize = font.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
 }
 
 @Composable

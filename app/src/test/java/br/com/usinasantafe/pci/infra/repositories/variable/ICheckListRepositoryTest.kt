@@ -16,10 +16,13 @@ class ICheckListRepositoryTest {
     )
 
     @Test
-    fun `setIdColabHeader - Check return failure if have error in HeaderSharedPreferencesDatasource setRegColab`() =
+    fun `setIdColabAndIdFactorySectionHeader - Check return failure if have error in HeaderSharedPreferencesDatasource setRegColab`() =
         runTest {
             whenever(
-                headerSharedPreferencesDatasource.setIdColab(1)
+                headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
+                    idColab = 1,
+                    idFactorySection = 1
+                )
             ).thenReturn(
                 resultFailure(
                     "IHeaderSharedPreferencesDatasource.setRegColab",
@@ -27,14 +30,17 @@ class ICheckListRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.setIdColabHeader(1)
+            val result = repository.setIdColabAndIdFactorySectionHeader(
+                idColab = 1,
+                idFactorySection = 1
+            )
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.setIdColabHeader -> IHeaderSharedPreferencesDatasource.setRegColab"
+                "ICheckListRepository.setIdColabAndIdFactorySectionHeader -> IHeaderSharedPreferencesDatasource.setRegColab"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -43,14 +49,20 @@ class ICheckListRepositoryTest {
         }
 
     @Test
-    fun `setIdColabHeader - Check return correct if function execute successfully`() =
+    fun `setIdColabAndIdFactorySectionHeader - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerSharedPreferencesDatasource.setIdColab(1)
+                headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
+                    idColab = 1,
+                    idFactorySection = 1
+                )
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.setIdColabHeader(1)
+            val result = repository.setIdColabAndIdFactorySectionHeader(
+                idColab = 1,
+                idFactorySection = 1
+            )
             assertEquals(
                 result.isSuccess,
                 true
@@ -58,6 +70,52 @@ class ICheckListRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `getIdFactorySectionHeaderOpen - Check return failure if have error in HeaderSharedPreferencesDatasource getIdFactorySection`() =
+        runTest {
+            whenever(
+                headerSharedPreferencesDatasource.getIdFactorySection()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderSharedPreferencesDatasource.getIdFactorySection",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdFactorySectionHeaderOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.getIdFactorySectionHeaderOpen -> IHeaderSharedPreferencesDatasource.getIdFactorySection"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdFactorySectionHeaderOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerSharedPreferencesDatasource.getIdFactorySection()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdFactorySectionHeaderOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
             )
         }
 

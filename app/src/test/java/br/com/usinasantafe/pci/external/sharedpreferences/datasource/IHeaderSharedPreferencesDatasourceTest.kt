@@ -29,10 +29,11 @@ class IHeaderSharedPreferencesDatasourceTest {
     }
 
     @Test
-    fun `setIdColab - Check return data correct the Config SharedPreferences internal`() =
+    fun `setIdColabAndIdFactorySection - Check return data correct the Config SharedPreferences internal`() =
         runTest {
             val model = HeaderSharedPreferencesModel(
-                idColab = 1
+                idColab = 1,
+                idFactorySection = 1
             )
             datasource.save(model)
             val resultBefore = datasource.get()
@@ -45,7 +46,14 @@ class IHeaderSharedPreferencesDatasourceTest {
                 resultGetBefore.idColab,
                 1
             )
-            val result = datasource.setIdColab(2)
+            assertEquals(
+                resultGetBefore.idFactorySection,
+                1
+            )
+            val result = datasource.setIdColabAndIdFactorySection(
+                idColab = 2,
+                idFactorySection = 2
+            )
             assertEquals(
                 result.isSuccess,
                 true
@@ -62,6 +70,47 @@ class IHeaderSharedPreferencesDatasourceTest {
             val resultGetAfter = resultAfter.getOrNull()!!
             assertEquals(
                 resultGetAfter.idColab,
+                2
+            )
+            assertEquals(
+                resultGetAfter.idFactorySection,
+                2
+            )
+        }
+
+    @Test
+    fun `getIdFactorySection - Check return failure if not have data in Config SharedPreferences internal`() =
+        runTest {
+            val result = datasource.getIdFactorySection()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderSharedPreferencesDatasource.getIdFactorySection"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getIdFactorySection - Check return correct if function execute successfully`() =
+        runTest {
+            val data = HeaderSharedPreferencesModel(
+                idColab = 1,
+                idFactorySection = 2
+            )
+            datasource.save(data)
+            val result = datasource.getIdFactorySection()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
                 2
             )
         }

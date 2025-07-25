@@ -231,7 +231,10 @@ class ICheckAndSetRegColabHeaderTest {
                 Result.success(true)
             )
             whenever(
-                checkListRepository.setIdColabHeader(1)
+                checkListRepository.setIdColabAndIdFactorySectionHeader(
+                    idColab = 1,
+                    idFactorySection = 1
+                )
             ).thenReturn(
                 resultFailure(
                     "ICheckListRepository.setIdColabHeader",
@@ -290,7 +293,10 @@ class ICheckAndSetRegColabHeaderTest {
                 Result.success(true)
             )
             whenever(
-                checkListRepository.setIdColabHeader(1)
+                checkListRepository.setIdColabAndIdFactorySectionHeader(
+                    idColab = 1,
+                    idFactorySection = 1
+                )
             ).thenReturn(
                 Result.success(true)
             )

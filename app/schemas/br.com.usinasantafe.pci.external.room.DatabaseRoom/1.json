@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8124a653a99e44ead8d99e2b1f16c39c",
+    "identityHash": "230d09c584c7ef07322b8275ebe3998f",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -41,12 +41,56 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tb_os",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idPlantOS` INTEGER NOT NULL, `qtdDayOS` INTEGER NOT NULL, `descPeriodOS` TEXT NOT NULL, PRIMARY KEY(`idOS`))",
+        "fields": [
+          {
+            "fieldPath": "idOS",
+            "columnName": "idOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idPlantOS",
+            "columnName": "idPlantOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "qtdDayOS",
+            "columnName": "qtdDayOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descPeriodOS",
+            "columnName": "descPeriodOS",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idOS"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8124a653a99e44ead8d99e2b1f16c39c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '230d09c584c7ef07322b8275ebe3998f')"
     ]
   }
 }

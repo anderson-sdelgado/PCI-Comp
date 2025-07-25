@@ -5,19 +5,23 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao
+import br.com.usinasantafe.pci.external.room.dao.stable.OSDao
 import br.com.usinasantafe.pci.infra.models.room.stable.ColabRoomModel
+import br.com.usinasantafe.pci.infra.models.room.stable.OSRoomModel
 import br.com.usinasantafe.pci.utils.VERSION_DB
 import java.util.Date
 
 @Database(
     entities = [
         ColabRoomModel::class,
+        OSRoomModel::class,
     ],
     version = VERSION_DB, exportSchema = true,
 )
 @TypeConverters(Converters::class)
 abstract class DatabaseRoom : RoomDatabase() {
     abstract fun colabDao(): ColabDao
+    abstract fun osDao(): OSDao
 }
 
 class Converters {

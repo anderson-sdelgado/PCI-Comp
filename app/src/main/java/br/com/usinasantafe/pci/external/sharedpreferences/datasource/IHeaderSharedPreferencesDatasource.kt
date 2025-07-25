@@ -15,7 +15,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): HeaderSharedPreferencesDatasource {
 
-    fun get(): Result<HeaderSharedPreferencesModel> {
+    override suspend fun get(): Result<HeaderSharedPreferencesModel> {
         try {
             val config = sharedPreferences.getString(
                 BASE_SHARE_PREFERENCES_TABLE_HEADER,
@@ -56,7 +56,10 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setIdColab(idColab: Int): Result<Boolean> {
+    override suspend fun setIdColabAndIdFactorySection(
+        idColab: Int,
+        idFactorySection: Int
+    ): Result<Boolean> {
         try {
             val resultConfig = get()
             if (resultConfig.isFailure) {
@@ -67,6 +70,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             }
             val model = resultConfig.getOrNull()!!
             model.idColab = idColab
+            model.idFactorySection = idFactorySection
             val resultSave = save(model)
             if (resultSave.isFailure) {
                 return resultFailureMiddle(
@@ -75,6 +79,25 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
                 )
             }
             return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getIdFactorySection(): Result<Int> {
+        try {
+            val result = get()
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.idFactorySection!!)
         } catch (e: Exception) {
             return resultFailureFinish(
                 context = getClassAndMethod(),

@@ -5,8 +5,6 @@ import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.pci.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.domain.usecases.common.GetToken
-import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -49,7 +47,10 @@ class ICheckAndSetRegColabHeader @Inject constructor(
                     cause = resultAdd.exceptionOrNull()!!
                 )
             }
-            val resultSet = checkListRepository.setIdColabHeader(entity.idColab)
+            val resultSet = checkListRepository.setIdColabAndIdFactorySectionHeader(
+                idColab = entity.idColab,
+                idFactorySection = entity.idFactorySectionColab
+            )
             if (resultSet.isFailure) {
                 return resultFailureMiddle(
                     context = getClassAndMethod(),

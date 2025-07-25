@@ -10,8 +10,24 @@ class ICheckListRepository @Inject constructor(
     private val headerSharedPreferencesDatasource: HeaderSharedPreferencesDatasource
 ): CheckListRepository {
 
-    override suspend fun setIdColabHeader(idColab: Int): Result<Boolean> {
-        val result = headerSharedPreferencesDatasource.setIdColab(idColab)
+    override suspend fun setIdColabAndIdFactorySectionHeader(
+        idColab: Int,
+        idFactorySection: Int
+    ): Result<Boolean> {
+        val result = headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
+            idColab = idColab,
+            idFactorySection = idFactorySection
+        )
+        if (result.isFailure)
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        return result
+    }
+
+    override suspend fun getIdFactorySectionHeaderOpen(): Result<Int> {
+        val result = headerSharedPreferencesDatasource.getIdFactorySection()
         if (result.isFailure)
             return resultFailureMiddle(
                 context = getClassAndMethod(),

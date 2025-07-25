@@ -93,7 +93,11 @@ fun NavigationGraph(
         }
 
         composable(OS_HEADER_ROUTE) {
-            OSListHeaderScreen()
+            OSListHeaderScreen(
+                onNavColab = {
+                    navActions.navigateToColabHeader()
+                }
+            )
         }
 
         ////////////////////////////////////////////////////////////////////

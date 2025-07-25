@@ -7,7 +7,7 @@ import br.com.usinasantafe.pci.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
-class IColabRoomDatasource@Inject constructor(
+class IColabRoomDatasource @Inject constructor(
     private val colabDao: ColabDao
 ) : ColabRoomDatasource {
 

@@ -16,4 +16,8 @@ interface StableRepositoryModule {
     @Singleton
     fun bindColabRepository(repository: IColabRepository): ColabRepository
 
+    @Binds
+    @Singleton
+    fun bindOSRepository(repository: IOSRepository): OSRepository
+
 }

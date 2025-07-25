@@ -19,4 +19,10 @@ object StableRetrofitModule {
         @DefaultRetrofit retrofit: Retrofit
     ): ColabApi = retrofit.create(ColabApi::class.java)
 
+    @Provides
+    @Singleton
+    fun osApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): ColabApi = retrofit.create(ColabApi::class.java)
+
 }
