@@ -20,5 +20,8 @@ interface StableRetrofitDatasourceModule {
     @Singleton
     fun bindOSRetrofitDatasource(dataSource: IOSRetrofitDatasource): OSRetrofitDatasource
 
+    @Binds
+    @Singleton
+    fun bindPlantRetrofitDatasource(dataSource: IPlantRetrofitDatasource): PlantRetrofitDatasource
 
 }

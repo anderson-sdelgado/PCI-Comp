@@ -2,6 +2,8 @@ package br.com.usinasantafe.pci.di.external.retrofit
 
 import br.com.usinasantafe.pci.di.provider.DefaultRetrofit
 import br.com.usinasantafe.pci.external.retrofit.api.stable.ColabApi
+import br.com.usinasantafe.pci.external.retrofit.api.stable.OSApi
+import br.com.usinasantafe.pci.external.retrofit.api.stable.PlantApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +25,12 @@ object StableRetrofitModule {
     @Singleton
     fun osApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
-    ): ColabApi = retrofit.create(ColabApi::class.java)
+    ): OSApi = retrofit.create(OSApi::class.java)
+
+    @Provides
+    @Singleton
+    fun plantApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): PlantApi = retrofit.create(PlantApi::class.java)
 
 }

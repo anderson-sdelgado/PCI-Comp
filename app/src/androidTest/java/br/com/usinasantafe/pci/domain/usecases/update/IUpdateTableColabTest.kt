@@ -40,12 +40,12 @@ class IUpdateTableColabTest {
     @Test
     fun verify_return_data_if_success_usecase() =
         runTest {
-            val mockWebServer = MockWebServer()
-            mockWebServer.start()
-            mockWebServer.enqueue(
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
                 MockResponse().setBody(resultColabRetrofit)
             )
-            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+            BaseUrlModuleTest.url = server.url("/").toString()
 
             hiltRule.inject()
 
@@ -117,7 +117,7 @@ class IUpdateTableColabTest {
                 roomModel.idFactorySectionColab,
                 1
             )
-            mockWebServer.shutdown()
+            server.shutdown()
         }
 
 }

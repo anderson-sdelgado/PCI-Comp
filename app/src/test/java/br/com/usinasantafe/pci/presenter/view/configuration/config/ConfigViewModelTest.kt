@@ -36,9 +36,6 @@ class ConfigViewModelTest {
     private val sendDataConfig = mock<SendDataConfig>()
     private val saveDataConfig = mock<SaveDataConfig>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
-    private var contUpdate = 0f
-    private var contWhenever = 0f
-    private var contResult = 0f
 
     private val viewModel = ConfigViewModel(
         getConfigInternal = getConfigInternal,

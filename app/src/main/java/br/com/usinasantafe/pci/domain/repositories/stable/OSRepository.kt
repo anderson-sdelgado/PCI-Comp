@@ -9,4 +9,5 @@ interface OSRepository {
         token: String,
         idFactorySection: Int
     ): Result<List<OS>>
+    suspend fun listAll(): Result<List<OS>>
 }

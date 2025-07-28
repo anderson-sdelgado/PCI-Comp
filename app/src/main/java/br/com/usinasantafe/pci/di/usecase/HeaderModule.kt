@@ -15,5 +15,12 @@ interface HeaderModule {
     @Singleton
     fun bindCheckAndSetRegColab(usecase: ICheckAndSetRegColabHeader): CheckAndSetRegColabHeader
 
+    @Binds
+    @Singleton
+    fun bindListOS(usecase: IListOSHeader): ListOSHeader
+
+    @Binds
+    @Singleton
+    fun bindSetIdOS(usecase: ISetIdOSHeader): SetIdOSHeader
 
 }

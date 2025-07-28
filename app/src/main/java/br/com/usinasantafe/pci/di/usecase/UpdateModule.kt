@@ -11,8 +11,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 interface UpdateModule {
 
-
     @Binds
     @Singleton
     fun bindUpdateTableColab(usecase: IUpdateTableColabReg): UpdateTableColabReg
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableOSByIdFactorySection(usecase: IUpdateTableOSByIdFactorySection): UpdateTableOSByIdFactorySection
+
+    @Binds
+    @Singleton
+    fun bindUpdateTablePlantByIdFactorySection(usecase: IUpdateTablePlantByIdFactorySection): UpdateTablePlantByIdFactorySection
+
 }

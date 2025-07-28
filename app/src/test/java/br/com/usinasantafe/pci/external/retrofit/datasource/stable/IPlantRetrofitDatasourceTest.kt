@@ -1,20 +1,20 @@
 package br.com.usinasantafe.pci.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.pci.di.provider.PersistenceModuleTest.provideRetrofitTest
-import br.com.usinasantafe.pci.external.retrofit.api.stable.OSApi
-import br.com.usinasantafe.pci.infra.models.retrofit.stable.OSRetrofitModel
+import br.com.usinasantafe.pci.external.retrofit.api.stable.PlantApi
+import br.com.usinasantafe.pci.infra.models.retrofit.stable.PlantRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
 import org.junit.Test
 
-class IOSRetrofitDatasourceTest {
+class IPlantRetrofitDatasourceTest {
 
-    private val resultOSList = """
+    private val resultPlantList = """
         [
-            {"idOS":1,"nroOS":1,"idPlantOS":1,"qtdDayOS":1,"descPeriodOS":"DIARIO"},
-            {"idOS":2,"nroOS":2,"idPlantOS":2,"qtdDayOS":2,"descPeriodOS":"SEMANAL"}
+            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01"},
+            {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02"}
         ]
     """.trimIndent()
 
@@ -29,8 +29,8 @@ class IOSRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(OSApi::class.java)
-            val datasource = IOSRetrofitDatasource(service)
+            val service = retrofit.create(PlantApi::class.java)
+            val datasource = IPlantRetrofitDatasource(service)
             val result = datasource.listByIdFactorySection(
                 token = "TOKEN",
                 idFactorySection = 1
@@ -40,7 +40,7 @@ class IOSRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IOSRetrofitDatasource.listByIdFactorySection",
+                "IPlantRetrofitDatasource.listByIdFactorySection",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -61,8 +61,8 @@ class IOSRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(OSApi::class.java)
-            val datasource = IOSRetrofitDatasource(service)
+            val service = retrofit.create(PlantApi::class.java)
+            val datasource = IPlantRetrofitDatasource(service)
             val result = datasource.listByIdFactorySection(
                 token = "TOKEN",
                 idFactorySection = 1
@@ -72,7 +72,7 @@ class IOSRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IOSRetrofitDatasource.listByIdFactorySection",
+                "IPlantRetrofitDatasource.listByIdFactorySection",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -89,13 +89,13 @@ class IOSRetrofitDatasourceTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(resultOSList)
+                MockResponse().setBody(resultPlantList)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(OSApi::class.java)
-            val datasource = IOSRetrofitDatasource(service)
+            val service = retrofit.create(PlantApi::class.java)
+            val datasource = IPlantRetrofitDatasource(service)
             val result = datasource.listByIdFactorySection(
                 token = "TOKEN",
                 idFactorySection = 1
@@ -107,19 +107,15 @@ class IOSRetrofitDatasourceTest {
             assertEquals(
                 Result.success(
                     listOf(
-                        OSRetrofitModel(
-                            idOS = 1,
-                            nroOS = 1,
-                            idPlantOS = 1,
-                            qtdDayOS = 1,
-                            descPeriodOS = "DIARIO"
+                        PlantRetrofitModel(
+                            idPlant = 1,
+                            codPlant = "01",
+                            descPlant = "PLANTA 01"
                         ),
-                        OSRetrofitModel(
-                            idOS = 2,
-                            nroOS = 2,
-                            idPlantOS = 2,
-                            qtdDayOS = 2,
-                            descPeriodOS = "SEMANAL"
+                        PlantRetrofitModel(
+                            idPlant = 2,
+                            codPlant = "02",
+                            descPlant = "PLANTA 02"
                         )
                     )
                 ),

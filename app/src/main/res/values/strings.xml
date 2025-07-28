@@ -44,4 +44,5 @@
     <string name="text_check_data">CHECANDO \"%1$s\" NO WEB SERVICE</string>
     <string name="text_pattern_return">RETORNAR</string>
     <string name="text_title_os">ORDEM SERVIÇO</string>
+    <string name="text_question_update">DESEJA REALMENTE ATUALIZAR BASE DE DADOS?</string>
 </resources>

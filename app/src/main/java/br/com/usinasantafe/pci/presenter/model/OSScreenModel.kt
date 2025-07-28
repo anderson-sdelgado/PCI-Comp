@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.presenter.model
 
-data class OSModel(
+data class OSScreenModel(
     val id: Int,
     val period: String,
     val os: String,

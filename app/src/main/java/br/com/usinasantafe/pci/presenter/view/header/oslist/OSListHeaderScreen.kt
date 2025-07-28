@@ -2,7 +2,6 @@ package br.com.usinasantafe.pci.presenter.view.header.oslist
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +15,8 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,24 +24,45 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.pci.R
-import br.com.usinasantafe.pci.presenter.model.OSModel
-import br.com.usinasantafe.pci.presenter.theme.ItemListDesign
+import br.com.usinasantafe.pci.presenter.model.OSScreenModel
+import br.com.usinasantafe.pci.presenter.theme.AlertDialogCheckDesign
+import br.com.usinasantafe.pci.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.pci.presenter.theme.ItemListOSDesign
 import br.com.usinasantafe.pci.presenter.theme.TitleDesign
 import br.com.usinasantafe.pci.presenter.theme.PCITheme
 import br.com.usinasantafe.pci.presenter.theme.TextButtonDesign
+import br.com.usinasantafe.pci.utils.Errors
+import br.com.usinasantafe.pci.utils.LevelUpdate
 
 @Composable
 fun OSListHeaderScreen(
-    osListHeaderViewModel: OSListHeaderViewModel = hiltViewModel(),
+    viewModel: OSListHeaderViewModel = hiltViewModel(),
     onNavColab: () -> Unit,
 ) {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.recoverAndUpdateData()
+            }
+
             OSListHeaderContent(
-                flagCheckUpdate = true,
-                osList = listOf(),
+                flagProgress = uiState.flagProgress,
+                osList = uiState.osList,
+                recoverList = viewModel::recoverList,
+                setId = viewModel::setId,
+                flagMsgUpdate = uiState.flagMsgUpdate,
+                recoverAndUpdateData = viewModel::recoverAndUpdateData,
+                setCloseDialog = viewModel::setCloseDialog,
+                flagDialog = uiState.flagDialog,
+                failure = uiState.failure,
+                currentProgress = uiState.currentProgress,
+                levelUpdate = uiState.levelUpdate,
+                tableUpdate = uiState.tableUpdate,
+                errors = uiState.errors,
                 onNavColab = onNavColab,
                 modifier = Modifier.padding(innerPadding)
             )
@@ -50,8 +72,19 @@ fun OSListHeaderScreen(
 
 @Composable
 fun OSListHeaderContent(
-    flagCheckUpdate: Boolean,
-    osList: List<OSModel>,
+    flagProgress: Boolean,
+    osList: List<OSScreenModel>,
+    recoverList: () -> Unit,
+    setId: (Int) -> Unit,
+    flagMsgUpdate: Boolean,
+    recoverAndUpdateData: () -> Unit,
+    setCloseDialog: () -> Unit,
+    flagDialog: Boolean,
+    failure: String,
+    currentProgress: Float,
+    levelUpdate: LevelUpdate?,
+    tableUpdate: String,
+    errors: Errors,
     onNavColab: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -66,7 +99,7 @@ fun OSListHeaderContent(
             )
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        if (flagCheckUpdate) {
+        if (flagProgress) {
             Column(
                 modifier = modifier
                     .fillMaxWidth()
@@ -75,6 +108,7 @@ fun OSListHeaderContent(
                 verticalArrangement = Arrangement.Center
             ) {
                 LinearProgressIndicator(
+                    progress = { currentProgress },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(30.dp)
@@ -82,11 +116,30 @@ fun OSListHeaderContent(
                 Spacer(
                     modifier = Modifier.padding(vertical = 4.dp)
                 )
+                val msgProgress = when(levelUpdate){
+                    LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
+                    LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
+                    LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
+                    LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
+                    LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
+                    LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
+                    LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+                    null -> failure
+                }
                 Text(
-                    text = "Update in progress...",
+                    text = msgProgress,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Button(
+                onClick = onNavColab,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TextButtonDesign(
+                    text = stringResource(id = R.string.text_pattern_update)
                 )
             }
         } else {
@@ -101,14 +154,14 @@ fun OSListHeaderContent(
                         os = os.os,
                         codPlant = os.codPlant,
                         descPlant = os.descPlant,
-                        setActionItem = {},
+                        setActionItem = { setId(os.id) },
                         font = 24,
                         padding = 6
                     )
                 }
             }
         }
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = onNavColab,
             modifier = Modifier.fillMaxWidth(),
@@ -117,9 +170,45 @@ fun OSListHeaderContent(
                 text = stringResource(id = R.string.text_pattern_return)
             )
         }
-        BackHandler {
+        BackHandler {}
+
+        if (flagDialog) {
+            val text =
+                when(errors) {
+                    Errors.UPDATE -> stringResource(
+                        id = R.string.text_update_failure,
+                        failure
+                    )
+                    else -> stringResource(
+                        id = R.string.text_failure,
+                        failure
+                    )
+                }
+            AlertDialogSimpleDesign(
+                text = text,
+                setCloseDialog = setCloseDialog,
+            )
+        }
+
+        if(flagMsgUpdate) {
+            AlertDialogCheckDesign(
+                text = stringResource(id = R.string.text_question_update),
+                setCloseDialog = setCloseDialog,
+                setActionButtonOK = {
+                    recoverAndUpdateData()
+                }
+            )
+
+        }
+
+    }
+
+    LaunchedEffect(levelUpdate) {
+        if(levelUpdate == LevelUpdate.FINISH_UPDATE_COMPLETED){
+            recoverList()
         }
     }
+
 }
 
 @Preview(showBackground = true)
@@ -128,8 +217,19 @@ fun OSHeaderPagePreviewUpdate() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSListHeaderContent(
-                flagCheckUpdate = true,
+                flagProgress = true,
                 osList = listOf(),
+                recoverList = {},
+                setId = {},
+                recoverAndUpdateData = {},
+                flagMsgUpdate = false,
+                setCloseDialog = {},
+                flagDialog = false,
+                failure = "",
+                levelUpdate = null,
+                tableUpdate = "",
+                currentProgress = 0.0f,
+                errors = Errors.FIELD_EMPTY,
                 onNavColab = {},
                 modifier = Modifier.padding(innerPadding)
             )
@@ -137,6 +237,109 @@ fun OSHeaderPagePreviewUpdate() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun OSHeaderPagePreviewDataUpdate() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            OSListHeaderContent(
+                flagProgress = true,
+                osList = listOf(),
+                recoverList = {},
+                setId = {},
+                recoverAndUpdateData = {},
+                flagMsgUpdate = false,
+                setCloseDialog = {},
+                flagDialog = false,
+                failure = "",
+                levelUpdate = LevelUpdate.CLEAN,
+                tableUpdate = "tb_os",
+                currentProgress = 0.25555f,
+                errors = Errors.FIELD_EMPTY,
+                onNavColab = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OSHeaderPagePreviewFinish() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            OSListHeaderContent(
+                flagProgress = true,
+                osList = listOf(),
+                recoverList = {},
+                setId = {},
+                recoverAndUpdateData = {},
+                flagMsgUpdate = false,
+                setCloseDialog = {},
+                flagDialog = false,
+                failure = "",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "tb_os",
+                currentProgress = 1f,
+                errors = Errors.FIELD_EMPTY,
+                onNavColab = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OSHeaderPagePreviewFailureUpdate() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            OSListHeaderContent(
+                flagProgress = true,
+                osList = listOf(),
+                recoverList = {},
+                setId = {},
+                recoverAndUpdateData = {},
+                flagMsgUpdate = false,
+                setCloseDialog = {},
+                flagDialog = true,
+                failure = "Failure",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "tb_os",
+                currentProgress = 1f,
+                errors = Errors.UPDATE,
+                onNavColab = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OSHeaderPagePreviewFailure() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            OSListHeaderContent(
+                flagProgress = true,
+                osList = listOf(),
+                recoverList = {},
+                setId = {},
+                recoverAndUpdateData = {},
+                flagMsgUpdate = false,
+                setCloseDialog = {},
+                flagDialog = true,
+                failure = "Failure",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "tb_os",
+                currentProgress = 1f,
+                errors = Errors.EXCEPTION,
+                onNavColab = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -144,16 +347,16 @@ fun OSHeaderPagePreviewList() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSListHeaderContent(
-                flagCheckUpdate = false,
+                flagProgress = false,
                 osList = listOf(
-                    OSModel(
+                    OSScreenModel(
                         id = 1,
                         os = "OS 99975",
                         period = "DIÁRIO",
                         codPlant = "1.04.01.04",
                         descPlant = "PRÉDIO"
                     ),
-                    OSModel(
+                    OSScreenModel(
                         id = 1,
                         os = "OS 99976",
                         period = "DIÁRIO",
@@ -161,6 +364,17 @@ fun OSHeaderPagePreviewList() {
                         descPlant = "PATIO"
                     ),
                 ),
+                recoverList = {},
+                setId = {},
+                recoverAndUpdateData = {},
+                flagMsgUpdate = false,
+                setCloseDialog = {},
+                flagDialog = false,
+                failure = "",
+                levelUpdate = null,
+                tableUpdate = "",
+                currentProgress = 0.0f,
+                errors = Errors.FIELD_EMPTY,
                 onNavColab = {},
                 modifier = Modifier.padding(innerPadding)
             )

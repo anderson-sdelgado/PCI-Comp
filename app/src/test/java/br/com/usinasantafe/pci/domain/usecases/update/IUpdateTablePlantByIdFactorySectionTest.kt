@@ -1,8 +1,8 @@
 package br.com.usinasantafe.pci.domain.usecases.update
 
-import br.com.usinasantafe.pci.domain.entities.stable.OS
+import br.com.usinasantafe.pci.domain.entities.stable.Plant
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.domain.repositories.stable.OSRepository
+import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.domain.usecases.common.GetToken
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
@@ -17,15 +17,15 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class IUpdateTableOSByIdFactorySectionTest {
+class IUpdateTablePlantByIdFactorySectionTest {
 
     private val getToken = mock<GetToken>()
     private val checkListRepository = mock<CheckListRepository>()
-    private val osRepository = mock<OSRepository>()
-    private val usecase = IUpdateTableOSByIdFactorySection(
+    private val plantRepository = mock<PlantRepository>()
+    private val usecase = IUpdateTablePlantByIdFactorySection(
         getToken = getToken,
         checkListRepository = checkListRepository,
-        osRepository = osRepository
+        plantRepository = plantRepository
     )
 
     @Test
@@ -54,7 +54,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -64,7 +64,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableOSByIdFactorySection -> GetToken -> java.lang.Exception",
+                    failure = "IUpdateTablePlantByIdFactorySection -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -101,7 +101,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -111,7 +111,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableOSByIdFactorySection -> ICheckListRepository.getIdFactorySectionHeaderOpen -> java.lang.Exception",
+                    failure = "IUpdateTablePlantByIdFactorySection -> ICheckListRepository.getIdFactorySectionHeaderOpen -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -131,13 +131,13 @@ class IUpdateTableOSByIdFactorySectionTest {
                 Result.success(1)
             )
             whenever(
-                osRepository.listByIdFactorySection(
+                plantRepository.listByIdFactorySection(
                     token = "token",
                     idFactorySection = 1
                 )
             ).thenReturn(
                 resultFailure(
-                    "IOSRepository.listByIdFactorySection",
+                    "IPlantRepository.listByIdFactorySection",
                     "-",
                     Exception()
                 )
@@ -156,7 +156,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -166,7 +166,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableOSByIdFactorySection -> IOSRepository.listByIdFactorySection -> java.lang.Exception",
+                    failure = "IUpdateTablePlantByIdFactorySection -> IPlantRepository.listByIdFactorySection -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -186,28 +186,26 @@ class IUpdateTableOSByIdFactorySectionTest {
                 Result.success(1)
             )
             whenever(
-                osRepository.listByIdFactorySection(
+                plantRepository.listByIdFactorySection(
                     token = "token",
                     idFactorySection = 1
                 )
             ).thenReturn(
                 Result.success(
                     listOf(
-                        OS(
-                            idOS = 1,
-                            nroOS = 1,
-                            idPlantOS = 1,
-                            qtdDayOS = 1,
-                            descPeriodOS = "DIÁRIO"
+                        Plant(
+                            idPlant = 1,
+                            codPlant = "01",
+                            descPlant = "PLANT 1"
                         )
                     )
                 )
             )
             whenever(
-                osRepository.deleteAll()
+                plantRepository.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    "IOSRepository.deleteAll",
+                    "IPlantRepository.deleteAll",
                     "-",
                     Exception()
                 )
@@ -226,7 +224,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -235,7 +233,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -245,7 +243,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableOSByIdFactorySection -> IOSRepository.deleteAll -> java.lang.Exception",
+                    failure = "IUpdateTablePlantByIdFactorySection -> IPlantRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -255,12 +253,10 @@ class IUpdateTableOSByIdFactorySectionTest {
     fun `Check return failure if have error in OSRepository addAll`() =
         runTest {
             val entityList = listOf(
-                OS(
-                    idOS = 1,
-                    nroOS = 1,
-                    idPlantOS = 1,
-                    qtdDayOS = 1,
-                    descPeriodOS = "DIÁRIO"
+                Plant(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 1"
                 )
             )
             whenever(
@@ -274,7 +270,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 Result.success(1)
             )
             whenever(
-                osRepository.listByIdFactorySection(
+                plantRepository.listByIdFactorySection(
                     token = "token",
                     idFactorySection = 1
                 )
@@ -282,15 +278,15 @@ class IUpdateTableOSByIdFactorySectionTest {
                 Result.success(entityList)
             )
             whenever(
-                osRepository.deleteAll()
+                plantRepository.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.addAll(entityList)
+                plantRepository.addAll(entityList)
             ).thenReturn(
                 resultFailure(
-                    "IOSRepository.addAll",
+                    "IPlantRepository.addAll",
                     "-",
                     Exception()
                 )
@@ -309,7 +305,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -318,7 +314,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -327,7 +323,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
@@ -337,7 +333,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableOSByIdFactorySection -> IOSRepository.addAll -> java.lang.Exception",
+                    failure = "IUpdateTablePlantByIdFactorySection -> IPlantRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -347,12 +343,10 @@ class IUpdateTableOSByIdFactorySectionTest {
     fun `Check return correct if process execute successfully`() =
         runTest {
             val entityList = listOf(
-                OS(
-                    idOS = 1,
-                    nroOS = 1,
-                    idPlantOS = 1,
-                    qtdDayOS = 1,
-                    descPeriodOS = "DIÁRIO"
+                Plant(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 1"
                 )
             )
             whenever(
@@ -366,7 +360,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 Result.success(1)
             )
             whenever(
-                osRepository.listByIdFactorySection(
+                plantRepository.listByIdFactorySection(
                     token = "token",
                     idFactorySection = 1
                 )
@@ -374,12 +368,12 @@ class IUpdateTableOSByIdFactorySectionTest {
                 Result.success(entityList)
             )
             whenever(
-                osRepository.deleteAll()
+                plantRepository.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.addAll(entityList)
+                plantRepository.addAll(entityList)
             ).thenReturn(
                 Result.success(true)
             )
@@ -397,7 +391,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -406,7 +400,7 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -415,9 +409,10 @@ class IUpdateTableOSByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_os",
+                    tableUpdate = "tb_plant",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
         }
+
 }

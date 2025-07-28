@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.di.external.room
 
 import br.com.usinasantafe.pci.external.room.DatabaseRoom
-import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao
-import br.com.usinasantafe.pci.external.room.dao.stable.OSDao
+import br.com.usinasantafe.pci.external.room.dao.stable.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +24,10 @@ object StableRoomModule {
         return database.osDao()
     }
 
+    @Provides
+    @Singleton
+    fun providePlantDao(database: DatabaseRoom): PlantDao {
+        return database.plantDao()
+    }
 
 }

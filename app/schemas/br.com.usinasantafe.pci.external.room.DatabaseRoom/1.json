@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "230d09c584c7ef07322b8275ebe3998f",
+    "identityHash": "039200efc2789947cadab273dd486224",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -85,12 +85,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tb_plant",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPlant` INTEGER NOT NULL, `codPlant` TEXT NOT NULL, `descPlant` TEXT NOT NULL, PRIMARY KEY(`idPlant`))",
+        "fields": [
+          {
+            "fieldPath": "idPlant",
+            "columnName": "idPlant",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codPlant",
+            "columnName": "codPlant",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descPlant",
+            "columnName": "descPlant",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idPlant"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '230d09c584c7ef07322b8275ebe3998f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '039200efc2789947cadab273dd486224')"
     ]
   }
 }

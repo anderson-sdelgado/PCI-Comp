@@ -1,25 +1,25 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
-import br.com.usinasantafe.pci.domain.entities.stable.OS
+import br.com.usinasantafe.pci.domain.entities.stable.Plant
 import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
 import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
-import br.com.usinasantafe.pci.domain.repositories.stable.OSRepository
-import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.OSRetrofitDatasource
-import br.com.usinasantafe.pci.infra.datasource.room.stable.OSRoomDatasource
+import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
+import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.PlantRetrofitDatasource
+import br.com.usinasantafe.pci.infra.datasource.room.stable.PlantRoomDatasource
 import br.com.usinasantafe.pci.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.pci.infra.models.room.stable.entityToRoomModel
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
-class IOSRepository @Inject constructor(
-    private val osRoomDatasource: OSRoomDatasource,
-    private val osRetrofitDatasource: OSRetrofitDatasource
-): OSRepository {
+class IPlantRepository @Inject constructor(
+    private val plantRoomDatasource: PlantRoomDatasource,
+    private val plantRetrofitDatasource: PlantRetrofitDatasource
+): PlantRepository {
 
-    override suspend fun addAll(list: List<OS>): Result<Boolean> {
+    override suspend fun addAll(list: List<Plant>): Result<Boolean> {
         try {
             val modelList = list.map { it.entityToRoomModel() }
-            val result = osRoomDatasource.addAll(modelList)
+            val result = plantRoomDatasource.addAll(modelList)
             if(result.isFailure){
                 return resultFailureMiddle(
                     context = getClassAndMethod(),
@@ -36,7 +36,7 @@ class IOSRepository @Inject constructor(
     }
 
     override suspend fun deleteAll(): Result<Boolean> {
-        val result = osRoomDatasource.deleteAll()
+        val result = plantRoomDatasource.deleteAll()
         if(result.isFailure){
             return resultFailureMiddle(
                 context = getClassAndMethod(),
@@ -49,9 +49,9 @@ class IOSRepository @Inject constructor(
     override suspend fun listByIdFactorySection(
         token: String,
         idFactorySection: Int
-    ): Result<List<OS>> {
+    ): Result<List<Plant>> {
         try {
-            val result = osRetrofitDatasource.listByIdFactorySection(
+            val result = plantRetrofitDatasource.listByIdFactorySection(
                 token = token,
                 idFactorySection = idFactorySection
             )
@@ -71,7 +71,7 @@ class IOSRepository @Inject constructor(
         }
     }
 
-    override suspend fun listAll(): Result<List<OS>> {
+    override suspend fun listAll(): Result<List<Plant>> {
         TODO("Not yet implemented")
     }
 

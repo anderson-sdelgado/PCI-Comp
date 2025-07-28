@@ -16,4 +16,12 @@ interface StableRoomDatasourceModule {
     @Singleton
     fun bindColabRoomDatasource(dataSource: IColabRoomDatasource): ColabRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindOSRoomDatasource(dataSource: IOSRoomDatasource): OSRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindPlantRoomDatasource(dataSource: IPlantRoomDatasource): PlantRoomDatasource
+
 }

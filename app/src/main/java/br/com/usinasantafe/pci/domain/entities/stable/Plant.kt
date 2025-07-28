@@ -1,7 +1,7 @@
 package br.com.usinasantafe.pci.domain.entities.stable
 
 data class Plant(
-    val idPlant: String,
+    val idPlant: Int,
     val codPlant: String,
     val descPlant: String,
 )

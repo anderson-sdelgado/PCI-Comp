@@ -38,13 +38,14 @@ class IUpdateTableOSByIdFactorySection @Inject constructor(
                 levelUpdate = LevelUpdate.RECOVERY
             )
         )
-        val resultGetToken = getToken() // ok
+        val resultGetToken = getToken()
         if (resultGetToken.isFailure) {
             val error = resultGetToken.exceptionOrNull()!!
             val failure =
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -56,13 +57,14 @@ class IUpdateTableOSByIdFactorySection @Inject constructor(
             return@flow
         }
         val token = resultGetToken.getOrNull()!!
-        val resultGetIdFactorySection = checkListRepository.getIdFactorySectionHeaderOpen() // ok
+        val resultGetIdFactorySection = checkListRepository.getIdFactorySectionHeaderOpen()
         if (resultGetIdFactorySection.isFailure) {
             val error = resultGetIdFactorySection.exceptionOrNull()!!
             val failure =
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -84,6 +86,7 @@ class IUpdateTableOSByIdFactorySection @Inject constructor(
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -109,6 +112,7 @@ class IUpdateTableOSByIdFactorySection @Inject constructor(
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -135,6 +139,7 @@ class IUpdateTableOSByIdFactorySection @Inject constructor(
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,

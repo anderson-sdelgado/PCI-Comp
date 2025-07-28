@@ -1,52 +1,48 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
-import br.com.usinasantafe.pci.domain.entities.stable.OS
+import br.com.usinasantafe.pci.domain.entities.stable.Plant
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.OSRetrofitDatasource
-import br.com.usinasantafe.pci.infra.datasource.room.stable.OSRoomDatasource
-import br.com.usinasantafe.pci.infra.models.retrofit.stable.OSRetrofitModel
-import br.com.usinasantafe.pci.infra.models.room.stable.OSRoomModel
+import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.PlantRetrofitDatasource
+import br.com.usinasantafe.pci.infra.datasource.room.stable.PlantRoomDatasource
+import br.com.usinasantafe.pci.infra.models.retrofit.stable.PlantRetrofitModel
+import br.com.usinasantafe.pci.infra.models.room.stable.PlantRoomModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class IOSRepositoryTest {
+class IPlantRepositoryTest {
 
-    private val osRetrofitDatasource = mock<OSRetrofitDatasource>()
-    private val osRoomDatasource = mock<OSRoomDatasource>()
-    private val repository = IOSRepository(
-        osRoomDatasource = osRoomDatasource,
-        osRetrofitDatasource = osRetrofitDatasource
+    private val plantRetrofitDatasource = mock<PlantRetrofitDatasource>()
+    private val plantRoomDatasource = mock<PlantRoomDatasource>()
+    private val repository = IPlantRepository(
+        plantRoomDatasource = plantRoomDatasource,
+        plantRetrofitDatasource = plantRetrofitDatasource
     )
 
     @Test
     fun `addAll - Check return failure if have error`() =
         runTest {
             val modelList = listOf(
-                OSRoomModel(
-                    idOS = 1,
-                    nroOS = 1,
-                    idPlantOS = 1,
-                    qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                PlantRoomModel(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01"
                 )
             )
             val entityList = listOf(
-                OS(
-                    idOS = 1,
-                    nroOS = 1,
-                    idPlantOS = 1,
-                    qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                Plant(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01"
                 )
             )
             whenever(
-                osRoomDatasource.addAll(modelList)
+                plantRoomDatasource.addAll(modelList)
             ).thenReturn(
                 resultFailure(
-                    context = "IOSRoomDatasource.addAll",
+                    context = "IPlantRoomDatasource.addAll",
                     "-",
                     Exception()
                 )
@@ -58,7 +54,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.addAll -> IOSRoomDatasource.addAll"
+                "IPlantRepository.addAll -> IPlantRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -70,25 +66,21 @@ class IOSRepositoryTest {
     fun `addAll - Check return true if function execute successfully`() =
         runTest {
             val modelList = listOf(
-                OSRoomModel(
-                    idOS = 1,
-                    nroOS = 1,
-                    idPlantOS = 1,
-                    qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                PlantRoomModel(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01"
                 )
             )
             val entityList = listOf(
-                OS(
-                    idOS = 1,
-                    nroOS = 1,
-                    idPlantOS = 1,
-                    qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                Plant(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01"
                 )
             )
             whenever(
-                osRoomDatasource.addAll(modelList)
+                plantRoomDatasource.addAll(modelList)
             ).thenReturn(
                 Result.success(true)
             )
@@ -107,10 +99,10 @@ class IOSRepositoryTest {
     fun `deleteAll - Check return failure if have error`() =
         runTest {
             whenever(
-                osRoomDatasource.deleteAll()
+                plantRoomDatasource.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    context = "IOSRoomDatasource.deleteAll",
+                    context = "IPlantRoomDatasource.deleteAll",
                     "-",
                     Exception()
                 )
@@ -123,7 +115,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.deleteAll -> IOSRoomDatasource.deleteAll"
+                "IPlantRepository.deleteAll -> IPlantRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -135,7 +127,7 @@ class IOSRepositoryTest {
     fun `deleteAll - Check return true if function execute successfully`() =
         runTest {
             whenever(
-                osRoomDatasource.deleteAll()
+                plantRoomDatasource.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )
@@ -155,13 +147,13 @@ class IOSRepositoryTest {
     fun `listByIdFactorySection - Check return failure if have error`() =
         runTest {
             whenever(
-                osRetrofitDatasource.listByIdFactorySection(
+                plantRetrofitDatasource.listByIdFactorySection(
                     token = "token",
                     idFactorySection = 1
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IOSRetrofitDatasource.listByIdFactorySection",
+                    context = "IPlantRetrofitDatasource.listByIdFactorySection",
                     "-",
                     Exception()
                 )
@@ -177,7 +169,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.listByIdFactorySection -> IOSRetrofitDatasource.listByIdFactorySection"
+                "IPlantRepository.listByIdFactorySection -> IPlantRetrofitDatasource.listByIdFactorySection"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -189,25 +181,21 @@ class IOSRepositoryTest {
     fun `listByIdFactorySection - Check return true if function execute successfully`() =
         runTest {
             val modelList = listOf(
-                OSRetrofitModel(
-                    idOS = 1,
-                    nroOS = 1,
-                    idPlantOS = 1,
-                    qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                PlantRetrofitModel(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01"
                 )
             )
             val entityList = listOf(
-                OS(
-                    idOS = 1,
-                    nroOS = 1,
-                    idPlantOS = 1,
-                    qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                Plant(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01"
                 )
             )
             whenever(
-                osRetrofitDatasource.listByIdFactorySection(
+                plantRetrofitDatasource.listByIdFactorySection(
                     token = "token",
                     idFactorySection = 1
                 )

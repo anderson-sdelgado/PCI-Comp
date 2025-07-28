@@ -1,8 +1,13 @@
 package br.com.usinasantafe.pci.domain.usecases.update
 
+import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
+import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
+import br.com.usinasantafe.pci.domain.usecases.common.GetToken
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
-import br.com.usinasantafe.pci.utils.TB_COLAB
+import br.com.usinasantafe.pci.utils.TB_PLANT
+import br.com.usinasantafe.pci.utils.getClassAndMethod
 import br.com.usinasantafe.pci.utils.updatePercentage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,12 +21,135 @@ interface UpdateTablePlantByIdFactorySection {
 }
 
 class IUpdateTablePlantByIdFactorySection @Inject constructor(
+    private val getToken: GetToken,
+    private val checkListRepository: CheckListRepository,
+    private val plantRepository: PlantRepository
 ): UpdateTablePlantByIdFactorySection {
 
     override suspend fun invoke(
         sizeAll: Float,
         count: Float
     ): Flow<ResultUpdateModel> = flow {
+        emit(
+            ResultUpdateModel(
+                flagProgress = true,
+                currentProgress = updatePercentage(1f, count, sizeAll),
+                tableUpdate = TB_PLANT,
+                levelUpdate = LevelUpdate.RECOVERY
+            )
+        )
+        val resultGetToken = getToken()
+        if (resultGetToken.isFailure) {
+            val error = resultGetToken.exceptionOrNull()!!
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            emit(
+                ResultUpdateModel(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = failure,
+                    currentProgress = 1f,
+                    levelUpdate = null,
+                )
+            )
+            return@flow
+        }
+        val token = resultGetToken.getOrNull()!!
+        val resultGetIdFactorySection = checkListRepository.getIdFactorySectionHeaderOpen()
+        if (resultGetIdFactorySection.isFailure) {
+            val error = resultGetIdFactorySection.exceptionOrNull()!!
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            emit(
+                ResultUpdateModel(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = failure,
+                    currentProgress = 1f,
+                    levelUpdate = null,
+                )
+            )
+            return@flow
+        }
+        val idFactorySection = resultGetIdFactorySection.getOrNull()!!
+        val resultList = plantRepository.listByIdFactorySection(
+            token = token,
+            idFactorySection = idFactorySection
+        )
+        if (resultList.isFailure) {
+            val error = resultList.exceptionOrNull()!!
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            emit(
+                ResultUpdateModel(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = failure,
+                    currentProgress = 1f,
+                    levelUpdate = null,
+                )
+            )
+            return@flow
+        }
+        emit(
+            ResultUpdateModel(
+                flagProgress = true,
+                currentProgress = updatePercentage(2f, count, sizeAll),
+                tableUpdate = TB_PLANT,
+                levelUpdate = LevelUpdate.CLEAN
+            )
+        )
+        val resultDeleteAll = plantRepository.deleteAll()
+        if (resultDeleteAll.isFailure) {
+            val error = resultDeleteAll.exceptionOrNull()!!
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            emit(
+                ResultUpdateModel(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = failure,
+                    currentProgress = 1f,
+                    levelUpdate = null,
+                )
+            )
+            return@flow
+        }
+        emit(
+            ResultUpdateModel(
+                flagProgress = true,
+                currentProgress = updatePercentage(3f, count, sizeAll),
+                tableUpdate = TB_PLANT,
+                levelUpdate = LevelUpdate.SAVE
+            )
+        )
+        val entityList = resultList.getOrNull()!!
+        val resultAddAll = plantRepository.addAll(entityList)
+        if (resultAddAll.isFailure) {
+            val error = resultAddAll.exceptionOrNull()!!
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            emit(
+                ResultUpdateModel(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = failure,
+                    currentProgress = 1f,
+                    levelUpdate = null,
+                )
+            )
+            return@flow
+        }
     }
 
 }

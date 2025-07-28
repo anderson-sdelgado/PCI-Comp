@@ -20,4 +20,8 @@ interface StableRepositoryModule {
     @Singleton
     fun bindOSRepository(repository: IOSRepository): OSRepository
 
+    @Binds
+    @Singleton
+    fun bindPlantRepository(repository: IPlantRepository): PlantRepository
+
 }
