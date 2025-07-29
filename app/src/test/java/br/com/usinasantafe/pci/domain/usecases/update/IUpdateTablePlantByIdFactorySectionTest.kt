@@ -196,7 +196,8 @@ class IUpdateTablePlantByIdFactorySectionTest {
                         Plant(
                             idPlant = 1,
                             codPlant = "01",
-                            descPlant = "PLANT 1"
+                            descPlant = "PLANT 1",
+                            idFactorySectionPlant = 1
                         )
                     )
                 )
@@ -256,7 +257,8 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 Plant(
                     idPlant = 1,
                     codPlant = "01",
-                    descPlant = "PLANT 1"
+                    descPlant = "PLANT 1",
+                    idFactorySectionPlant = 1
                 )
             )
             whenever(
@@ -346,7 +348,8 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 Plant(
                     idPlant = 1,
                     codPlant = "01",
-                    descPlant = "PLANT 1"
+                    descPlant = "PLANT 1",
+                    idFactorySectionPlant = 1
                 )
             )
             whenever(

@@ -9,6 +9,5 @@ interface PlantRepository {
         token: String,
         idFactorySection: Int
     ): Result<List<Plant>>
-    suspend fun listAll(): Result<List<Plant>>
-
+    suspend fun listByIdFactorySection(idFactorySection: Int): Result<List<Plant>>
 }

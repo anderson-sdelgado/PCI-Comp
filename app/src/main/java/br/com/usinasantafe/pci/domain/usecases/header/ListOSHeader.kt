@@ -4,6 +4,7 @@ import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
 import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.pci.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
+import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.presenter.model.OSScreenModel
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
@@ -14,12 +15,21 @@ interface ListOSHeader {
 
 class IListOSHeader @Inject constructor(
     private val osRepository: OSRepository,
-    private val plantRepository: PlantRepository
+    private val plantRepository: PlantRepository,
+    private val checkListRepository: CheckListRepository
 ): ListOSHeader {
 
     override suspend fun invoke(): Result<List<OSScreenModel>> {
         try{
-            val resultListOS = osRepository.listAll()
+            val resultGetIdFactorySection = checkListRepository.getIdFactorySectionHeaderOpen() //ok
+            if (resultGetIdFactorySection.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetIdFactorySection.exceptionOrNull()!!
+                )
+            }
+            val idFactorySection = resultGetIdFactorySection.getOrNull()!!
+            val resultListOS = osRepository.listByIdFactorySection(idFactorySection) // ok
             if(resultListOS.isFailure){
                 return resultFailureMiddle(
                     context = getClassAndMethod(),
@@ -27,7 +37,7 @@ class IListOSHeader @Inject constructor(
                 )
             }
             val osList = resultListOS.getOrNull()!!
-            val resultListPlant = plantRepository.listAll()
+            val resultListPlant = plantRepository.listByIdFactorySection(idFactorySection)
             if(resultListPlant.isFailure){
                 return resultFailureMiddle(
                     context = getClassAndMethod(),

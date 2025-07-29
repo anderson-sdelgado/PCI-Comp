@@ -10,7 +10,8 @@ data class PlantRoomModel(
     @PrimaryKey
     val idPlant: Int,
     val codPlant: String,
-    val descPlant: String
+    val descPlant: String,
+    val idFactorySectionPlant: Int
 )
 
 fun PlantRoomModel.roomModelToEntity(): Plant {
@@ -18,7 +19,8 @@ fun PlantRoomModel.roomModelToEntity(): Plant {
         Plant(
             idPlant = idPlant,
             codPlant = codPlant,
-            descPlant = descPlant
+            descPlant = descPlant,
+            idFactorySectionPlant = idFactorySectionPlant
         )
     }
 }
@@ -28,7 +30,8 @@ fun Plant.entityToRoomModel(): PlantRoomModel {
         PlantRoomModel(
             idPlant = idPlant,
             codPlant = codPlant,
-            descPlant = descPlant
+            descPlant = descPlant,
+            idFactorySectionPlant = idFactorySectionPlant
         )
     }
 }

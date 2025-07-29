@@ -28,14 +28,16 @@ class IPlantRepositoryTest {
                 PlantRoomModel(
                     idPlant = 1,
                     codPlant = "01",
-                    descPlant = "PLANT 01"
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
                 )
             )
             val entityList = listOf(
                 Plant(
                     idPlant = 1,
                     codPlant = "01",
-                    descPlant = "PLANT 01"
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
                 )
             )
             whenever(
@@ -69,14 +71,16 @@ class IPlantRepositoryTest {
                 PlantRoomModel(
                     idPlant = 1,
                     codPlant = "01",
-                    descPlant = "PLANT 01"
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
                 )
             )
             val entityList = listOf(
                 Plant(
                     idPlant = 1,
                     codPlant = "01",
-                    descPlant = "PLANT 01"
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
                 )
             )
             whenever(
@@ -184,14 +188,16 @@ class IPlantRepositoryTest {
                 PlantRetrofitModel(
                     idPlant = 1,
                     codPlant = "01",
-                    descPlant = "PLANT 01"
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
                 )
             )
             val entityList = listOf(
                 Plant(
                     idPlant = 1,
                     codPlant = "01",
-                    descPlant = "PLANT 01"
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
                 )
             )
             whenever(
@@ -215,4 +221,76 @@ class IPlantRepositoryTest {
                 entityList
             )
         }
+
+    @Test
+    fun `listByIdFactorySection - Check return failure if have error in PlantRoomDatasource listByIdFactorySection`() =
+        runTest {
+            whenever(
+                plantRoomDatasource.listByIdFactorySection(1)
+            ).thenReturn(
+                resultFailure(
+                    "IPlantRoomDatasource.listByIdFactorySection",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdFactorySection(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IPlantRepository.listByIdFactorySection -> IPlantRoomDatasource.listByIdFactorySection"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdFactorySection - Check return correct if function execute successfully`() =
+        runTest {
+            val modelList = listOf(
+                PlantRoomModel(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
+                )
+            )
+            whenever(
+                plantRoomDatasource.listByIdFactorySection(1)
+            ).thenReturn(
+                Result.success(modelList)
+            )
+            val result = repository.listByIdFactorySection(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            assertEquals(
+                list[0].idPlant,
+                1
+            )
+            assertEquals(
+                list[0].codPlant,
+                "01"
+            )
+            assertEquals(
+                list[0].descPlant,
+                "PLANT 01"
+            )
+            assertEquals(
+                list[0].idFactorySectionPlant,
+                1
+            )
+        }
+
 }

@@ -124,22 +124,16 @@ fun OSListHeaderContent(
                     LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
                     LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
                     LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                    null -> failure
+                    null -> stringResource(
+                        id = R.string.text_update_failure,
+                        failure
+                    )
                 }
                 Text(
                     text = msgProgress,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Button(
-                onClick = onNavColab,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                TextButtonDesign(
-                    text = stringResource(id = R.string.text_pattern_update)
                 )
             }
         } else {
@@ -150,6 +144,7 @@ fun OSListHeaderContent(
             ) {
                 items(osList) { os ->
                     ItemListOSDesign(
+                        id = os.id,
                         period = os.period,
                         os = os.os,
                         codPlant = os.codPlant,
@@ -160,6 +155,15 @@ fun OSListHeaderContent(
                     )
                 }
             }
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Button(
+            onClick = onNavColab,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            TextButtonDesign(
+                text = stringResource(id = R.string.text_pattern_update)
+            )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(

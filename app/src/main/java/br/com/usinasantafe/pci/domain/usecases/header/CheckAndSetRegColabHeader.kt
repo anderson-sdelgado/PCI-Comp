@@ -40,6 +40,13 @@ class ICheckAndSetRegColabHeader @Inject constructor(
             }
             val entity = resultGet.getOrNull()!!
             if (entity.idColab == 0) return Result.success(false)
+            val resultDeleteAll = colabRepository.deleteAll()
+            if (resultDeleteAll.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultDeleteAll.exceptionOrNull()!!
+                )
+            }
             val resultAdd = colabRepository.add(entity)
             if (resultAdd.isFailure) {
                 return resultFailureMiddle(

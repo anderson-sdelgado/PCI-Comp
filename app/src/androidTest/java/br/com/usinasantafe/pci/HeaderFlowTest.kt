@@ -13,6 +13,8 @@ import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.pci.presenter.MainActivity
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.WEB_GET_COLAB_BY_REG
+import br.com.usinasantafe.pci.utils.WEB_LIST_OS_BY_ID_FACTORY_SECTION
+import br.com.usinasantafe.pci.utils.WEB_LIST_PLANT_BY_ID_FACTORY_SECTION
 import br.com.usinasantafe.pci.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -45,12 +47,28 @@ class HeaderFlowTest {
                 {"idColab":1,"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO","idFactorySectionColab":1}
             """.trimIndent()
 
+            val resultOSList = """
+                [
+                    {"idOS":1,"nroOS":1,"idPlantOS":1,"qtdDayOS":1,"descPeriodOS":"DIARIO","idFactorySectionOS":1},
+                    {"idOS":2,"nroOS":2,"idPlantOS":2,"qtdDayOS":2,"descPeriodOS":"SEMANAL","idFactorySectionOS":1}
+                ]
+            """.trimIndent()
+
+            val resultPlantList = """
+                [
+                    {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
+                    {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02","idFactorySectionPlant":1}
+                ]
+            """.trimIndent()
+
             val dispatcherSuccess: Dispatcher = object : Dispatcher() {
 
                 @Throws(InterruptedException::class)
                 override fun dispatch(request: RecordedRequest): MockResponse {
                     return when (request.path) {
                         "/$WEB_GET_COLAB_BY_REG" -> MockResponse().setBody(resultColabByReg)
+                        "/$WEB_LIST_OS_BY_ID_FACTORY_SECTION" -> MockResponse().setBody(resultOSList)
+                        "/$WEB_LIST_PLANT_BY_ID_FACTORY_SECTION" -> MockResponse().setBody(resultPlantList)
                         else -> MockResponse().setResponseCode(404)
                     }
                 }
@@ -193,7 +211,31 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 7")
 
-        composeTestRule.waitUntilTimeout(10_000)
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("RETORNAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 8")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("1")
+            .performClick()
+        composeTestRule.onNodeWithText("9")
+            .performClick()
+        composeTestRule.onNodeWithText("7")
+            .performClick()
+        composeTestRule.onNodeWithText("5")
+            .performClick()
+        composeTestRule.onNodeWithText("9")
+            .performClick()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 9")
+
+        composeTestRule.waitUntilTimeout(20_000)
 
     }
 

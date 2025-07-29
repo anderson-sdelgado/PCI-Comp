@@ -5,7 +5,8 @@ import br.com.usinasantafe.pci.domain.entities.stable.Plant
 data class PlantRetrofitModel(
     val idPlant: Int,
     val codPlant: String,
-    val descPlant: String
+    val descPlant: String,
+    val idFactorySectionPlant: Int
 )
 
 fun PlantRetrofitModel.retrofitModelToEntity(): Plant {
@@ -13,7 +14,8 @@ fun PlantRetrofitModel.retrofitModelToEntity(): Plant {
         Plant(
             idPlant = idPlant,
             codPlant = codPlant,
-            descPlant = descPlant
+            descPlant = descPlant,
+            idFactorySectionPlant = idFactorySectionPlant
         )
     }
 }

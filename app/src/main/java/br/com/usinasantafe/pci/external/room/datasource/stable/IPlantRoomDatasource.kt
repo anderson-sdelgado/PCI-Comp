@@ -34,4 +34,16 @@ class IPlantRoomDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun listByIdFactorySection(idFactorySection: Int): Result<List<PlantRoomModel>> {
+        try {
+            val list = plantDao.listByIdFactorySection(idFactorySection)
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 }

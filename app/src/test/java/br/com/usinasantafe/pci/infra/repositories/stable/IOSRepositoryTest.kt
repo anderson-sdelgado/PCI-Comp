@@ -30,7 +30,8 @@ class IOSRepositoryTest {
                     nroOS = 1,
                     idPlantOS = 1,
                     qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                    descPeriodOS = "DIARIO",
+                    idFactorySectionOS = 1
                 )
             )
             val entityList = listOf(
@@ -39,7 +40,8 @@ class IOSRepositoryTest {
                     nroOS = 1,
                     idPlantOS = 1,
                     qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                    descPeriodOS = "DIARIO",
+                    idFactorySectionOS = 1
                 )
             )
             whenever(
@@ -75,7 +77,8 @@ class IOSRepositoryTest {
                     nroOS = 1,
                     idPlantOS = 1,
                     qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                    descPeriodOS = "DIARIO",
+                    idFactorySectionOS = 1
                 )
             )
             val entityList = listOf(
@@ -84,7 +87,8 @@ class IOSRepositoryTest {
                     nroOS = 1,
                     idPlantOS = 1,
                     qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                    descPeriodOS = "DIARIO",
+                    idFactorySectionOS = 1
                 )
             )
             whenever(
@@ -194,7 +198,8 @@ class IOSRepositoryTest {
                     nroOS = 1,
                     idPlantOS = 1,
                     qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                    descPeriodOS = "DIARIO",
+                    idFactorySectionOS = 1
                 )
             )
             val entityList = listOf(
@@ -203,7 +208,8 @@ class IOSRepositoryTest {
                     nroOS = 1,
                     idPlantOS = 1,
                     qtdDayOS = 1,
-                    descPeriodOS = "DIARIO"
+                    descPeriodOS = "DIARIO",
+                    idFactorySectionOS = 1
                 )
             )
             whenever(
@@ -227,4 +233,83 @@ class IOSRepositoryTest {
                 entityList
             )
         }
+
+    @Test
+    fun `listByIdFactorySection - Check return failure if have error in OSRoomDatasource listByIdFactorySection`() =
+        runTest {
+            whenever(
+                osRoomDatasource.listByIdFactorySection(1)
+            ).thenReturn(
+                resultFailure(
+                    "IOSRoomDatasource.listByIdFactorySection",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdFactorySection(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IOSRepository.listByIdFactorySection -> IOSRoomDatasource.listByIdFactorySection"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdFactorySection - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                osRoomDatasource.listByIdFactorySection(1)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        OSRoomModel(
+                            idOS = 1,
+                            nroOS = 1,
+                            idPlantOS = 1,
+                            qtdDayOS = 1,
+                            descPeriodOS = "DIARIO",
+                            idFactorySectionOS = 1
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdFactorySection(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val entityList = result.getOrNull()!!
+            assertEquals(
+                entityList.size,
+                1
+            )
+            assertEquals(
+                entityList[0].idOS,
+                1
+            )
+            assertEquals(
+                entityList[0].nroOS,
+                1
+            )
+            assertEquals(
+                entityList[0].idPlantOS,
+                1
+            )
+            assertEquals(
+                entityList[0].qtdDayOS,
+                1
+            )
+            assertEquals(
+                entityList[0].descPeriodOS,
+                "DIARIO"
+            )
+        }
+
 }

@@ -110,12 +110,14 @@ class IPlantRetrofitDatasourceTest {
                         PlantRetrofitModel(
                             idPlant = 1,
                             codPlant = "01",
-                            descPlant = "PLANTA 01"
+                            descPlant = "PLANTA 01",
+                            idFactorySectionPlant = 1
                         ),
                         PlantRetrofitModel(
                             idPlant = 2,
                             codPlant = "02",
-                            descPlant = "PLANTA 02"
+                            descPlant = "PLANTA 02",
+                            idFactorySectionPlant = 1
                         )
                     )
                 ),

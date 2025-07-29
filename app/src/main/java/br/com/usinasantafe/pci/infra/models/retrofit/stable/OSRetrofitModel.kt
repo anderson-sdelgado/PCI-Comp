@@ -8,7 +8,8 @@ data class OSRetrofitModel(
     val nroOS: Int,
     val idPlantOS: Int,
     val qtdDayOS: Int,
-    val descPeriodOS: String
+    val descPeriodOS: String,
+    val idFactorySectionOS: Int
 )
 
 fun OSRetrofitModel.retrofitModelToEntity(): OS {
@@ -18,7 +19,8 @@ fun OSRetrofitModel.retrofitModelToEntity(): OS {
             nroOS = nroOS,
             idPlantOS = idPlantOS,
             qtdDayOS = qtdDayOS,
-            descPeriodOS = descPeriodOS
+            descPeriodOS = descPeriodOS,
+            idFactorySectionOS = idFactorySectionOS
         )
     }
 }

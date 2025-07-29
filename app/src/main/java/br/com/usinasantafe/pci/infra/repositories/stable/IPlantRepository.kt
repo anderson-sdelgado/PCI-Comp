@@ -8,6 +8,7 @@ import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.PlantRetrofitDat
 import br.com.usinasantafe.pci.infra.datasource.room.stable.PlantRoomDatasource
 import br.com.usinasantafe.pci.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.pci.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.pci.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -71,8 +72,23 @@ class IPlantRepository @Inject constructor(
         }
     }
 
-    override suspend fun listAll(): Result<List<Plant>> {
-        TODO("Not yet implemented")
+    override suspend fun listByIdFactorySection(idFactorySection: Int): Result<List<Plant>> {
+        try {
+            val result = plantRoomDatasource.listByIdFactorySection(idFactorySection)
+            if(result.isFailure){
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception){
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

@@ -17,4 +17,8 @@ interface OSDao {
 
     @Query("SELECT * FROM $TB_OS")
     suspend fun all(): List<OSRoomModel>
+
+
+    @Query("SELECT * FROM $TB_OS WHERE idFactorySectionOS = :idFactorySection")
+    suspend fun listByIdFactorySection(idFactorySection: Int): List<OSRoomModel>
 }

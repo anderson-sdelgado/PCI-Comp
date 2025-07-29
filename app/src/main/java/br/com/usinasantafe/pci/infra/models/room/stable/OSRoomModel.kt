@@ -12,7 +12,8 @@ data class OSRoomModel(
     val nroOS: Int,
     val idPlantOS: Int,
     val qtdDayOS: Int,
-    val descPeriodOS: String
+    val descPeriodOS: String,
+    val idFactorySectionOS: Int
 )
 
 fun OSRoomModel.roomModelToEntity(): OS {
@@ -22,7 +23,8 @@ fun OSRoomModel.roomModelToEntity(): OS {
             nroOS = nroOS,
             idPlantOS = idPlantOS,
             qtdDayOS = qtdDayOS,
-            descPeriodOS = descPeriodOS
+            descPeriodOS = descPeriodOS,
+            idFactorySectionOS = idFactorySectionOS
         )
     }
 }
@@ -34,7 +36,8 @@ fun OS.entityToRoomModel(): OSRoomModel {
             nroOS = nroOS,
             idPlantOS = idPlantOS,
             qtdDayOS = qtdDayOS,
-            descPeriodOS = descPeriodOS
+            descPeriodOS = descPeriodOS,
+            idFactorySectionOS = idFactorySectionOS
         )
     }
 }

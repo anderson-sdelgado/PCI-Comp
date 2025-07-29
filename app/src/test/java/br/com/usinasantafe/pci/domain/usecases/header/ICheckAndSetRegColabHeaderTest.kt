@@ -142,6 +142,53 @@ class ICheckAndSetRegColabHeaderTest {
         }
 
     @Test
+    fun `Check return failure if have error in ColabRepository deleteAll`() =
+        runTest {
+            whenever(
+                getToken()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                colabRepository.getByRegColab(
+                    token = "token",
+                    regColab = 19759
+                )
+            ).thenReturn(
+                Result.success(
+                    Colab(
+                        idColab = 1,
+                        regColab = 19759,
+                        nameColab = "ANDERSON DA SILVA DELGADO",
+                        idFactorySectionColab = 1
+                    )
+                )
+            )
+            whenever(
+                colabRepository.deleteAll()
+            ).thenReturn(
+                resultFailure(
+                    "IColabRepository.deleteAll",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase("19759")
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckAndSetRegColabHeader -> IColabRepository.deleteAll"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
     fun `Check return failure if have error in ColabRepository add`() =
         runTest {
             whenever(
@@ -163,6 +210,11 @@ class ICheckAndSetRegColabHeaderTest {
                         idFactorySectionColab = 1
                     )
                 )
+            )
+            whenever(
+                colabRepository.deleteAll()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 colabRepository.add(
@@ -217,6 +269,11 @@ class ICheckAndSetRegColabHeaderTest {
                         idFactorySectionColab = 1
                     )
                 )
+            )
+            whenever(
+                colabRepository.deleteAll()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 colabRepository.add(
@@ -279,6 +336,11 @@ class ICheckAndSetRegColabHeaderTest {
                         idFactorySectionColab = 1
                     )
                 )
+            )
+            whenever(
+                colabRepository.deleteAll()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 colabRepository.add(

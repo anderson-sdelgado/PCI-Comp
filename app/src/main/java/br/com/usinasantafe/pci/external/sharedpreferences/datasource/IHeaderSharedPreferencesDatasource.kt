@@ -106,4 +106,31 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun setIdOS(idOS: Int): Result<Boolean> {
+        try {
+            val resultConfig = get()
+            if (resultConfig.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultConfig.exceptionOrNull()!!
+                )
+            }
+            val model = resultConfig.getOrNull()!!
+            model.idOS = idOS
+            val resultSave = save(model)
+            if (resultSave.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

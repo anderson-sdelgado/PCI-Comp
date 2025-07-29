@@ -198,7 +198,8 @@ class IUpdateTableOSByIdFactorySectionTest {
                             nroOS = 1,
                             idPlantOS = 1,
                             qtdDayOS = 1,
-                            descPeriodOS = "DIÁRIO"
+                            descPeriodOS = "DIÁRIO",
+                            idFactorySectionOS = 1
                         )
                     )
                 )
@@ -260,7 +261,8 @@ class IUpdateTableOSByIdFactorySectionTest {
                     nroOS = 1,
                     idPlantOS = 1,
                     qtdDayOS = 1,
-                    descPeriodOS = "DIÁRIO"
+                    descPeriodOS = "DIÁRIO",
+                    idFactorySectionOS = 1
                 )
             )
             whenever(
@@ -352,7 +354,8 @@ class IUpdateTableOSByIdFactorySectionTest {
                     nroOS = 1,
                     idPlantOS = 1,
                     qtdDayOS = 1,
-                    descPeriodOS = "DIÁRIO"
+                    descPeriodOS = "DIÁRIO",
+                    idFactorySectionOS = 1
                 )
             )
             whenever(

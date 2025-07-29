@@ -6,4 +6,5 @@ interface CheckListRepository {
         idFactorySection: Int
     ): Result<Boolean>
     suspend fun getIdFactorySectionHeaderOpen(): Result<Int>
+    suspend fun setIdOSHeader(idOS: Int): Result<Boolean>
 }

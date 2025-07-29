@@ -13,8 +13,8 @@ class IOSRetrofitDatasourceTest {
 
     private val resultOSList = """
         [
-            {"idOS":1,"nroOS":1,"idPlantOS":1,"qtdDayOS":1,"descPeriodOS":"DIARIO"},
-            {"idOS":2,"nroOS":2,"idPlantOS":2,"qtdDayOS":2,"descPeriodOS":"SEMANAL"}
+            {"idOS":1,"nroOS":1,"idPlantOS":1,"qtdDayOS":1,"descPeriodOS":"DIARIO","idFactorySectionOS":1},
+            {"idOS":2,"nroOS":2,"idPlantOS":2,"qtdDayOS":2,"descPeriodOS":"SEMANAL","idFactorySectionOS":1}
         ]
     """.trimIndent()
 
@@ -112,14 +112,16 @@ class IOSRetrofitDatasourceTest {
                             nroOS = 1,
                             idPlantOS = 1,
                             qtdDayOS = 1,
-                            descPeriodOS = "DIARIO"
+                            descPeriodOS = "DIARIO",
+                            idFactorySectionOS = 1
                         ),
                         OSRetrofitModel(
                             idOS = 2,
                             nroOS = 2,
                             idPlantOS = 2,
                             qtdDayOS = 2,
-                            descPeriodOS = "SEMANAL"
+                            descPeriodOS = "SEMANAL",
+                            idFactorySectionOS = 1
                         )
                     )
                 ),

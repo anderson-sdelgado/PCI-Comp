@@ -17,4 +17,8 @@ interface PlantDao {
 
     @Query("SELECT * FROM $TB_PLANT")
     suspend fun all(): List<PlantRoomModel>
+
+    @Query("SELECT * FROM $TB_PLANT WHERE idFactorySectionPlant = :idFactorySection")
+    suspend fun listByIdFactorySection(idFactorySection: Int): List<PlantRoomModel>
+
 }

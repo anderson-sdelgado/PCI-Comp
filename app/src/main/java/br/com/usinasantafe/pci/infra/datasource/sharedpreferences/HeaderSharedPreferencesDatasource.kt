@@ -9,5 +9,5 @@ interface HeaderSharedPreferencesDatasource {
         idFactorySection: Int
     ): Result<Boolean>
     suspend fun getIdFactorySection(): Result<Int>
-
+    suspend fun setIdOS(idOS: Int): Result<Boolean>
 }

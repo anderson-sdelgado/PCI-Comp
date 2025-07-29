@@ -5,5 +5,6 @@ data class OS(
     val nroOS: Int,
     val idPlantOS: Int,
     val qtdDayOS: Int,
-    val descPeriodOS: String
+    val descPeriodOS: String,
+    val idFactorySectionOS: Int
 )

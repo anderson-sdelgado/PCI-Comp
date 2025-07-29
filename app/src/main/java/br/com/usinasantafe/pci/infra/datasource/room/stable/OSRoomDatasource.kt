@@ -6,4 +6,5 @@ import br.com.usinasantafe.pci.infra.models.room.stable.OSRoomModel
 interface OSRoomDatasource {
     suspend fun addAll(list: List<OSRoomModel>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
+    suspend fun listByIdFactorySection(idFactorySection: Int): Result<List<OSRoomModel>>
 }

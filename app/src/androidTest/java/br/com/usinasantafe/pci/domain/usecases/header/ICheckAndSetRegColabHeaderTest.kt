@@ -25,7 +25,6 @@ class ICheckAndSetRegColabHeaderTest {
         {"idColab":1,"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO","idFactorySectionColab":1}
     """.trimIndent()
 
-
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 

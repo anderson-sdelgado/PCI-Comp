@@ -40,15 +40,15 @@ class IUpdateTablePlantByIdFactorySectionTest {
 
     private val resultPlantListIncorrect = """
         [
-            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01"},
-            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01"}
+            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
+            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1}
         ]
     """.trimIndent()
 
     private val resultPlantList = """
         [
-            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01"},
-            {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02"}
+            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
+            {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02","idFactorySectionPlant":1}
         ]
     """.trimIndent()
 

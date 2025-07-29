@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "039200efc2789947cadab273dd486224",
+    "identityHash": "7bd64208d6dfc61499ce60213dc1e45b",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "tb_os",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idPlantOS` INTEGER NOT NULL, `qtdDayOS` INTEGER NOT NULL, `descPeriodOS` TEXT NOT NULL, PRIMARY KEY(`idOS`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idPlantOS` INTEGER NOT NULL, `qtdDayOS` INTEGER NOT NULL, `descPeriodOS` TEXT NOT NULL, `idFactorySectionOS` INTEGER NOT NULL, PRIMARY KEY(`idOS`))",
         "fields": [
           {
             "fieldPath": "idOS",
@@ -75,6 +75,12 @@
             "columnName": "descPeriodOS",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "idFactorySectionOS",
+            "columnName": "idFactorySectionOS",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -88,7 +94,7 @@
       },
       {
         "tableName": "tb_plant",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPlant` INTEGER NOT NULL, `codPlant` TEXT NOT NULL, `descPlant` TEXT NOT NULL, PRIMARY KEY(`idPlant`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPlant` INTEGER NOT NULL, `codPlant` TEXT NOT NULL, `descPlant` TEXT NOT NULL, `idFactorySectionPlant` INTEGER NOT NULL, PRIMARY KEY(`idPlant`))",
         "fields": [
           {
             "fieldPath": "idPlant",
@@ -107,6 +113,12 @@
             "columnName": "descPlant",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "idFactorySectionPlant",
+            "columnName": "idFactorySectionPlant",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -117,12 +129,68 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tb_header",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idColab` INTEGER NOT NULL, `idFactorySection` INTEGER NOT NULL, `idOS` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idColab",
+            "columnName": "idColab",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idFactorySection",
+            "columnName": "idFactorySection",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idOS",
+            "columnName": "idOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateHour",
+            "columnName": "dateHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '039200efc2789947cadab273dd486224')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7bd64208d6dfc61499ce60213dc1e45b')"
     ]
   }
 }

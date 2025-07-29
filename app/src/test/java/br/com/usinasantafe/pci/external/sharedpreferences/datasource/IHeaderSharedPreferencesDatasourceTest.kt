@@ -114,4 +114,44 @@ class IHeaderSharedPreferencesDatasourceTest {
                 2
             )
         }
+
+    @Test
+    fun `setIdOS - Check return data correct the Config SharedPreferences internal`() =
+        runTest {
+            val model = HeaderSharedPreferencesModel(
+                idOS = 1
+            )
+            datasource.save(model)
+            val resultBefore = datasource.get()
+            assertEquals(
+                resultBefore.isSuccess,
+                true
+            )
+            val resultGetBefore = resultBefore.getOrNull()!!
+            assertEquals(
+                resultGetBefore.idOS,
+                1
+            )
+            val result = datasource.setIdOS(
+                idOS = 2
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val resultAfter = datasource.get()
+            assertEquals(
+                resultAfter.isSuccess,
+                true
+            )
+            val resultGetAfter = resultAfter.getOrNull()!!
+            assertEquals(
+                resultGetAfter.idOS,
+                2
+            )
+        }
 }

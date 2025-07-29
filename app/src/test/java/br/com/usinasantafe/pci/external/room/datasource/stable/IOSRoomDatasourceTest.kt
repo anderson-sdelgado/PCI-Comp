@@ -52,14 +52,16 @@ class IOSRoomDatasourceTest {
                         nroOS = 1,
                         idPlantOS = 1,
                         qtdDayOS = 1,
-                        descPeriodOS = "DIARIO"
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
                     ),
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 1,
                         idPlantOS = 1,
                         qtdDayOS = 1,
-                        descPeriodOS = "DIARIO"
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
                     )
                 )
             )
@@ -97,14 +99,16 @@ class IOSRoomDatasourceTest {
                         nroOS = 1,
                         idPlantOS = 1,
                         qtdDayOS = 1,
-                        descPeriodOS = "DIARIO"
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
                     ),
                     OSRoomModel(
                         idOS = 2,
                         nroOS = 2,
                         idPlantOS = 1,
                         qtdDayOS = 1,
-                        descPeriodOS = "DIARIO"
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
                     )
                 )
             )
@@ -174,7 +178,8 @@ class IOSRoomDatasourceTest {
                         nroOS = 1,
                         idPlantOS = 1,
                         qtdDayOS = 1,
-                        descPeriodOS = "DIARIO"
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
                     )
                 )
             )
@@ -198,4 +203,124 @@ class IOSRoomDatasourceTest {
                 0
             )
         }
+
+    @Test
+    fun `listByIdFactorySection - Check return list empty if not have data field`() =
+        runTest {
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        idPlantOS = 1,
+                        qtdDayOS = 1,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    )
+                )
+            )
+            val result = datasource.listByIdFactorySection(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                0
+            )
+        }
+
+    @Test
+    fun `listByIdFactorySection - Check return correct`() =
+        runTest {
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        idPlantOS = 1,
+                        qtdDayOS = 1,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        idPlantOS = 1,
+                        qtdDayOS = 1,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 2
+                    ),
+
+                    OSRoomModel(
+                        idOS = 3,
+                        nroOS = 3,
+                        idPlantOS = 1,
+                        qtdDayOS = 1,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    )
+                )
+            )
+            val result = datasource.listByIdFactorySection(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                2
+            )
+            assertEquals(
+                list[0].idOS,
+                1
+            )
+            assertEquals(
+                list[0].nroOS,
+                1
+            )
+            assertEquals(
+                list[0].idPlantOS,
+                1
+            )
+            assertEquals(
+                list[0].qtdDayOS,
+                1
+            )
+            assertEquals(
+                list[0].descPeriodOS,
+                "DIARIO"
+            )
+            assertEquals(
+                list[0].idFactorySectionOS,
+                1
+            )
+            assertEquals(
+                list[1].idOS,
+                3
+            )
+            assertEquals(
+                list[1].nroOS,
+                3
+            )
+            assertEquals(
+                list[1].idPlantOS,
+                1
+            )
+            assertEquals(
+                list[1].qtdDayOS,
+                1
+            )
+            assertEquals(
+                list[1].descPeriodOS,
+                "DIARIO"
+            )
+            assertEquals(
+                list[1].idFactorySectionOS,
+                1
+            )
+        }
+
 }
