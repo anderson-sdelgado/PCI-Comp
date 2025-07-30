@@ -10,6 +10,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao
+import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
+import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.presenter.MainActivity
@@ -18,6 +20,8 @@ import br.com.usinasantafe.pci.presenter.view.configuration.config.TAG_PASSWORD_
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.StatusSend
 import br.com.usinasantafe.pci.utils.WEB_ALL_COLAB
+import br.com.usinasantafe.pci.utils.WEB_ALL_COMPONENT
+import br.com.usinasantafe.pci.utils.WEB_ALL_SERVICE
 import br.com.usinasantafe.pci.utils.WEB_SAVE_TOKEN
 import br.com.usinasantafe.pci.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -49,8 +53,12 @@ class ConfigFlowTest {
 
             val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
 
-            val resultColabRetrofit = """
-                [{"idColab":1,"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO","idFactorySectionColab":1}]
+            val resultComponentRetrofit = """
+                [{"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"}]
+            """.trimIndent()
+
+            val resultServiceRetrofit = """
+                [{"idService":1,"codService":1,"descService":"TESTE 1"}]
             """.trimIndent()
 
             val dispatcherSuccess: Dispatcher = object : Dispatcher() {
@@ -59,7 +67,8 @@ class ConfigFlowTest {
                 override fun dispatch(request: RecordedRequest): MockResponse {
                     return when (request.path) {
                         "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                        "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColabRetrofit)
+                        "/$WEB_ALL_COMPONENT" -> MockResponse().setBody(resultComponentRetrofit)
+                        "/$WEB_ALL_SERVICE" -> MockResponse().setBody(resultServiceRetrofit)
                         else -> MockResponse().setResponseCode(404)
                     }
                 }
@@ -89,7 +98,13 @@ class ConfigFlowTest {
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
-    
+
+    @Inject
+    lateinit var componentDao: ComponentDao
+
+    @Inject
+    lateinit var serviceDao: ServiceDao
+
     @Before
     fun setup() {
         hiltRule.inject()
@@ -215,6 +230,44 @@ class ConfigFlowTest {
                     statusSend = StatusSend.STARTED,
                     flagUpdate = FlagUpdate.UPDATED
                 )
+            )
+
+            val componentList = componentDao.all()
+            assertEquals(
+                componentList.size,
+                1
+            )
+            val entityComponent = componentList[0]
+            assertEquals(
+                entityComponent.idComponent,
+                1
+            )
+            assertEquals(
+                entityComponent.codComponent,
+                1
+            )
+            assertEquals(
+                entityComponent.descComponent,
+                "TESTE 1"
+            )
+
+            val serviceList = serviceDao.all()
+            assertEquals(
+                serviceList.size,
+                1
+            )
+            val entityService = serviceList[0]
+            assertEquals(
+                entityService.idService,
+                1
+            )
+            assertEquals(
+                entityService.codService,
+                1
+            )
+            assertEquals(
+                entityService.descService,
+                "TESTE 1"
             )
 
             Log.d("TestDebug", "Position 15")

@@ -20,6 +20,12 @@ object StableRoomModule {
 
     @Provides
     @Singleton
+    fun provideComponentDao(database: DatabaseRoom): ComponentDao {
+        return database.componentDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideOSDao(database: DatabaseRoom): OSDao {
         return database.osDao()
     }
@@ -28,6 +34,12 @@ object StableRoomModule {
     @Singleton
     fun providePlantDao(database: DatabaseRoom): PlantDao {
         return database.plantDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideServiceDao(database: DatabaseRoom): ServiceDao {
+        return database.serviceDao()
     }
 
 }

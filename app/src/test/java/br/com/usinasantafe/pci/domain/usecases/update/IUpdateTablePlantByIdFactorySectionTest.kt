@@ -61,6 +61,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -108,6 +109,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -163,6 +165,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -241,6 +244,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
             assertEquals(
                 list[2],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -332,6 +336,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
             assertEquals(
                 list[3],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,

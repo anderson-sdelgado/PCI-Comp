@@ -24,6 +24,7 @@ class IUpdateTableColabTest {
         getToken = getToken,
         colabRepository = colabRepository
     )
+
     @Test
     fun `Check return failure if have error in GetToken`() =
         runTest {

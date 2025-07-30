@@ -3,6 +3,7 @@ package br.com.usinasantafe.pci
 import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
@@ -112,7 +113,7 @@ class HeaderFlowTest {
 
     @Test
     fun flow_header() = runTest(
-        timeout = 2.minutes
+        timeout = 10.minutes
     ) {
 
         initialRegister()
@@ -235,7 +236,14 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 9")
 
-        composeTestRule.waitUntilTimeout(20_000)
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag("item_list_1")
+            .performClick()
+
+        Log.d("TestDebug", "Position 10")
+
+        composeTestRule.waitUntilTimeout(10_000)
 
     }
 

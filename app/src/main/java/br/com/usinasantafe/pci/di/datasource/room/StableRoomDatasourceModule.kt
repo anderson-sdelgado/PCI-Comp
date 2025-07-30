@@ -18,10 +18,22 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
+    fun bindComponentRoomDatasource(dataSource: IComponentRoomDatasource): ComponentRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindItemRoomDatasource(dataSource: IItemRoomDatasource): ItemRoomDatasource
+
+    @Binds
+    @Singleton
     fun bindOSRoomDatasource(dataSource: IOSRoomDatasource): OSRoomDatasource
 
     @Binds
     @Singleton
     fun bindPlantRoomDatasource(dataSource: IPlantRoomDatasource): PlantRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindServiceRoomDatasource(dataSource: IServiceRoomDatasource): ServiceRoomDatasource
 
 }

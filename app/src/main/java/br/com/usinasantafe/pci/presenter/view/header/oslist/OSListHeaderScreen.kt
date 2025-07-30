@@ -40,6 +40,7 @@ import br.com.usinasantafe.pci.utils.LevelUpdate
 fun OSListHeaderScreen(
     viewModel: OSListHeaderViewModel = hiltViewModel(),
     onNavColab: () -> Unit,
+    onNavPlantList: () -> Unit
 ) {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -56,6 +57,7 @@ fun OSListHeaderScreen(
                 setId = viewModel::setId,
                 flagMsgUpdate = uiState.flagMsgUpdate,
                 recoverAndUpdateData = viewModel::recoverAndUpdateData,
+                flagAccess = uiState.flagAccess,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
@@ -64,6 +66,7 @@ fun OSListHeaderScreen(
                 tableUpdate = uiState.tableUpdate,
                 errors = uiState.errors,
                 onNavColab = onNavColab,
+                onNavPlantList = onNavPlantList,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -78,6 +81,7 @@ fun OSListHeaderContent(
     setId: (Int) -> Unit,
     flagMsgUpdate: Boolean,
     recoverAndUpdateData: () -> Unit,
+    flagAccess: Boolean,
     setCloseDialog: () -> Unit,
     flagDialog: Boolean,
     failure: String,
@@ -86,6 +90,7 @@ fun OSListHeaderContent(
     tableUpdate: String,
     errors: Errors,
     onNavColab: () -> Unit,
+    onNavPlantList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -213,6 +218,12 @@ fun OSListHeaderContent(
         }
     }
 
+    LaunchedEffect(flagAccess) {
+        if(flagAccess) {
+            onNavPlantList()
+        }
+    }
+
 }
 
 @Preview(showBackground = true)
@@ -227,6 +238,7 @@ fun OSHeaderPagePreviewUpdate() {
                 setId = {},
                 recoverAndUpdateData = {},
                 flagMsgUpdate = false,
+                flagAccess = false,
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
@@ -235,6 +247,7 @@ fun OSHeaderPagePreviewUpdate() {
                 currentProgress = 0.0f,
                 errors = Errors.FIELD_EMPTY,
                 onNavColab = {},
+                onNavPlantList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -253,6 +266,7 @@ fun OSHeaderPagePreviewDataUpdate() {
                 setId = {},
                 recoverAndUpdateData = {},
                 flagMsgUpdate = false,
+                flagAccess = false,
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
@@ -261,6 +275,7 @@ fun OSHeaderPagePreviewDataUpdate() {
                 currentProgress = 0.25555f,
                 errors = Errors.FIELD_EMPTY,
                 onNavColab = {},
+                onNavPlantList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -279,6 +294,7 @@ fun OSHeaderPagePreviewFinish() {
                 setId = {},
                 recoverAndUpdateData = {},
                 flagMsgUpdate = false,
+                flagAccess = false,
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
@@ -287,6 +303,7 @@ fun OSHeaderPagePreviewFinish() {
                 currentProgress = 1f,
                 errors = Errors.FIELD_EMPTY,
                 onNavColab = {},
+                onNavPlantList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -305,6 +322,7 @@ fun OSHeaderPagePreviewFailureUpdate() {
                 setId = {},
                 recoverAndUpdateData = {},
                 flagMsgUpdate = false,
+                flagAccess = false,
                 setCloseDialog = {},
                 flagDialog = true,
                 failure = "Failure",
@@ -313,6 +331,7 @@ fun OSHeaderPagePreviewFailureUpdate() {
                 currentProgress = 1f,
                 errors = Errors.UPDATE,
                 onNavColab = {},
+                onNavPlantList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -331,6 +350,7 @@ fun OSHeaderPagePreviewFailure() {
                 setId = {},
                 recoverAndUpdateData = {},
                 flagMsgUpdate = false,
+                flagAccess = false,
                 setCloseDialog = {},
                 flagDialog = true,
                 failure = "Failure",
@@ -339,6 +359,7 @@ fun OSHeaderPagePreviewFailure() {
                 currentProgress = 1f,
                 errors = Errors.EXCEPTION,
                 onNavColab = {},
+                onNavPlantList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -372,6 +393,7 @@ fun OSHeaderPagePreviewList() {
                 setId = {},
                 recoverAndUpdateData = {},
                 flagMsgUpdate = false,
+                flagAccess = false,
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
@@ -380,6 +402,7 @@ fun OSHeaderPagePreviewList() {
                 currentProgress = 0.0f,
                 errors = Errors.FIELD_EMPTY,
                 onNavColab = {},
+                onNavPlantList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

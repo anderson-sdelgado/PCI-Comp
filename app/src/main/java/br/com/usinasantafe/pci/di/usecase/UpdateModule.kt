@@ -17,10 +17,22 @@ interface UpdateModule {
 
     @Binds
     @Singleton
+    fun bindUpdateTableComponent(usecase: IUpdateTableComponent): UpdateTableComponent
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableItemByIdOS(usecase: IUpdateTableItemByIdOS): UpdateTableItemByIdOS
+
+    @Binds
+    @Singleton
     fun bindUpdateTableOSByIdFactorySection(usecase: IUpdateTableOSByIdFactorySection): UpdateTableOSByIdFactorySection
 
     @Binds
     @Singleton
     fun bindUpdateTablePlantByIdFactorySection(usecase: IUpdateTablePlantByIdFactorySection): UpdateTablePlantByIdFactorySection
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableService(usecase: IUpdateTableService): UpdateTableService
 
 }

@@ -154,4 +154,42 @@ class IHeaderSharedPreferencesDatasourceTest {
                 2
             )
         }
+
+
+    @Test
+    fun `getIdOS - Check return failure if not have data in Config SharedPreferences internal`() =
+        runTest {
+            val result = datasource.getIdOS()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderSharedPreferencesDatasource.getIdOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getIdOS - Check return correct if function execute successfully`() =
+        runTest {
+            val data = HeaderSharedPreferencesModel(
+                idOS = 2
+            )
+            datasource.save(data)
+            val result = datasource.getIdOS()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                2
+            )
+        }
+
 }

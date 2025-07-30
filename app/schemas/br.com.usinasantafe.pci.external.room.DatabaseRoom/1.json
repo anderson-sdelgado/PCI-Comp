@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7bd64208d6dfc61499ce60213dc1e45b",
+    "identityHash": "1ed8bc43c0cfe7c82a28df1ee1e6e2d1",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -37,6 +37,38 @@
           "autoGenerate": false,
           "columnNames": [
             "idColab"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_component",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idComponent` INTEGER NOT NULL, `codComponent` INTEGER NOT NULL, `descComponent` TEXT NOT NULL, PRIMARY KEY(`idComponent`))",
+        "fields": [
+          {
+            "fieldPath": "idComponent",
+            "columnName": "idComponent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codComponent",
+            "columnName": "codComponent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descComponent",
+            "columnName": "descComponent",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idComponent"
           ]
         },
         "indices": [],
@@ -131,6 +163,38 @@
         "foreignKeys": []
       },
       {
+        "tableName": "tb_service",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idService` INTEGER NOT NULL, `codService` INTEGER NOT NULL, `descService` TEXT NOT NULL, PRIMARY KEY(`idService`))",
+        "fields": [
+          {
+            "fieldPath": "idService",
+            "columnName": "idService",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codService",
+            "columnName": "codService",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descService",
+            "columnName": "descService",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idService"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "tb_header",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idColab` INTEGER NOT NULL, `idFactorySection` INTEGER NOT NULL, `idOS` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL)",
         "fields": [
@@ -190,7 +254,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7bd64208d6dfc61499ce60213dc1e45b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1ed8bc43c0cfe7c82a28df1ee1e6e2d1')"
     ]
   }
 }

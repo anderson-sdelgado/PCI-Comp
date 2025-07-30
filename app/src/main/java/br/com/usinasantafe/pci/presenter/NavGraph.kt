@@ -11,12 +11,19 @@ import br.com.usinasantafe.pci.presenter.Routes.CONFIG_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.INITIAL_MENU_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.OS_HEADER_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.PASSWORD_ROUTE
+import br.com.usinasantafe.pci.presenter.Routes.PLANT_LIST_NOTE_ROUTE
+import br.com.usinasantafe.pci.presenter.Routes.QUESTION_DESC_NOTE_ROUTE
+import br.com.usinasantafe.pci.presenter.Routes.QUESTION_LIST_NOTE_ROUTE
+import br.com.usinasantafe.pci.presenter.Routes.QUESTION_OBS_NOTE_ROUTE
+import br.com.usinasantafe.pci.presenter.Routes.QUESTION_RESP_NOTE_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.SPLASH_ROUTE
 import br.com.usinasantafe.pci.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.pci.presenter.view.configuration.initial.InitialMenuScreen
 import br.com.usinasantafe.pci.presenter.view.configuration.password.PasswordScreen
 import br.com.usinasantafe.pci.presenter.view.header.colab.ColabHeaderScreen
 import br.com.usinasantafe.pci.presenter.view.header.oslist.OSListHeaderScreen
+import br.com.usinasantafe.pci.presenter.view.note.plantlist.PlantListNoteScreen
+import br.com.usinasantafe.pci.presenter.view.note.questionlist.QuestionListNoteScreen
 import br.com.usinasantafe.pci.presenter.view.splash.SplashScreen
 
 
@@ -87,7 +94,7 @@ fun NavigationGraph(
                     navActions.navigateToInitialMenu()
                 },
                 onNavOS = {
-                    navActions.navigateToOS()
+                    navActions.navigateToOSHeader()
                 }
             )
         }
@@ -96,9 +103,45 @@ fun NavigationGraph(
             OSListHeaderScreen(
                 onNavColab = {
                     navActions.navigateToColabHeader()
+                },
+                onNavPlantList = {
+                    navActions.navigateToPlantListNote()
+                },
+            )
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        ////////////////////////// Note //////////////////////////////////
+
+        composable(PLANT_LIST_NOTE_ROUTE) {
+            PlantListNoteScreen(
+                onNavOSList = {
+                    navActions.navigateToOSHeader()
                 }
             )
         }
+
+        composable(QUESTION_LIST_NOTE_ROUTE) {
+            QuestionListNoteScreen(
+            )
+        }
+
+        composable(QUESTION_DESC_NOTE_ROUTE) {
+            QuestionListNoteScreen(
+            )
+        }
+
+        composable(QUESTION_OBS_NOTE_ROUTE) {
+            QuestionListNoteScreen(
+            )
+        }
+
+        composable(QUESTION_RESP_NOTE_ROUTE) {
+            QuestionListNoteScreen(
+            )
+        }
+
 
         ////////////////////////////////////////////////////////////////////
 

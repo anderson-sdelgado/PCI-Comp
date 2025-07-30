@@ -14,8 +14,10 @@ import java.util.Date
 @Database(
     entities = [
         ColabRoomModel::class,
+        ComponentRoomModel::class,
         OSRoomModel::class,
         PlantRoomModel::class,
+        ServiceRoomModel::class,
         HeaderRoomModel::class,
     ],
     version = VERSION_DB, exportSchema = true,
@@ -23,8 +25,10 @@ import java.util.Date
 @TypeConverters(Converters::class)
 abstract class DatabaseRoom : RoomDatabase() {
     abstract fun colabDao(): ColabDao
+    abstract fun componentDao(): ComponentDao
     abstract fun osDao(): OSDao
     abstract fun plantDao(): PlantDao
+    abstract fun serviceDao(): ServiceDao
     abstract fun headerDao(): HeaderDao
 }
 

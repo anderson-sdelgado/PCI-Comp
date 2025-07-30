@@ -9,12 +9,14 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.usinasantafe.pci.HiltTestActivity
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
-import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao
+import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
+import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.StatusSend
-import br.com.usinasantafe.pci.utils.WEB_ALL_COLAB
+import br.com.usinasantafe.pci.utils.WEB_ALL_COMPONENT
+import br.com.usinasantafe.pci.utils.WEB_ALL_SERVICE
 import br.com.usinasantafe.pci.utils.WEB_SAVE_TOKEN
 import br.com.usinasantafe.pci.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -43,21 +45,82 @@ class ConfigScreenTest {
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
     @Inject
-    lateinit var colabDao: ColabDao
+    lateinit var componentDao: ComponentDao
+
+    @Inject
+    lateinit var serviceDao: ServiceDao
 
     private val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
 
-    private val resultColabRetrofit = """
-        [{"idColab":1,"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO","idFactorySectionColab":1}]
+    private val resultComponentRetrofit = """
+        [{"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"}]
     """.trimIndent()
 
-    private val dispatcherFailureColab: Dispatcher = object : Dispatcher() {
+    private val resultComponentRetrofitFailure = """
+        [
+            {"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"},
+            {"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"}
+        ]
+    """.trimIndent()
+
+    private val resultServiceRetrofit = """
+        [{"idService":1,"codService":1,"descService":"TESTE 1"}]
+    """.trimIndent()
+
+    private val resultServiceRetrofitFailure = """
+        [
+            {"idService":1,"codService":1,"descService":"TESTE 1"},
+            {"idService":1,"codService":1,"descService":"TESTE 1"}
+        ]
+    """.trimIndent()
+
+    private val dispatcherComponentFailure: Dispatcher = object : Dispatcher() {
 
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
                 "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                "/$WEB_ALL_COLAB" -> MockResponse().setBody("")
+                "/$WEB_ALL_COMPONENT" -> MockResponse().setBody("")
+                "/$WEB_ALL_SERVICE" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherComponentDuplicate: Dispatcher = object : Dispatcher() {
+
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_COMPONENT" -> MockResponse().setBody(resultComponentRetrofitFailure)
+                "/$WEB_ALL_SERVICE" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherServiceFailure: Dispatcher = object : Dispatcher() {
+
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_COMPONENT" -> MockResponse().setBody(resultComponentRetrofit)
+                "/$WEB_ALL_SERVICE" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherServiceDuplicate: Dispatcher = object : Dispatcher() {
+
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_COMPONENT" -> MockResponse().setBody(resultComponentRetrofit)
+                "/$WEB_ALL_SERVICE" -> MockResponse().setBody(resultServiceRetrofitFailure)
                 else -> MockResponse().setResponseCode(404)
             }
         }
@@ -69,7 +132,8 @@ class ConfigScreenTest {
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
                 "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColabRetrofit)
+                "/$WEB_ALL_COMPONENT" -> MockResponse().setBody(resultComponentRetrofit)
+                "/$WEB_ALL_SERVICE" -> MockResponse().setBody(resultServiceRetrofit)
                 else -> MockResponse().setResponseCode(404)
             }
         }
@@ -173,13 +237,13 @@ class ConfigScreenTest {
         }
 
     @Test
-    fun check_open_screen_and_msg_if_web_service_return_token_correct_and_not_return_data_colab() =
+    fun check_open_screen_and_msg_if_web_service_return_token_correct_and_not_return_data_component() =
         runTest(
             timeout = 1.minutes
         ) {
 
             val server = MockWebServer()
-            server.dispatcher = dispatcherFailureColab
+            server.dispatcher = dispatcherComponentFailure
             server.start()
 
             BaseUrlModuleTest.url = server.url("/").toString()
@@ -200,7 +264,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableColab -> IColabRepository.recoverAll -> IColabRetrofitDatasource.recoverAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableComponent -> IComponentRepository.listAll -> IComponentRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
 
             composeTestRule.waitUntilTimeout(3_000)
 
@@ -226,7 +290,170 @@ class ConfigScreenTest {
         }
 
     @Test
-    fun check_open_screen_and_update_correct() =
+    fun check_open_screen_and_msg_if_web_service_return_token_correct_and_return_data_component_duplicate() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val server = MockWebServer()
+            server.dispatcher = dispatcherComponentDuplicate
+            server.start()
+
+            BaseUrlModuleTest.url = server.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableComponent -> IComponentRepository.addAll -> IComponentRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_component.idComponent (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            val resultGet = configSharedPreferencesDatasource.get()
+            assertEquals(
+                resultGet.isSuccess,
+                true
+            )
+            val entity = resultGet.getOrNull()!!
+            assertEquals(
+                entity,
+                ConfigSharedPreferencesModel(
+                    number = 16997417840,
+                    password = "12345",
+                    idBD = 1,
+                    version = "1.0",
+                    statusSend = StatusSend.STARTED,
+                    flagUpdate = FlagUpdate.OUTDATED
+                )
+            )
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_token_correct_and_not_return_data_service() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val server = MockWebServer()
+            server.dispatcher = dispatcherServiceFailure
+            server.start()
+
+            BaseUrlModuleTest.url = server.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableService -> IServiceRepository.listAll -> IServiceRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            val componentList = componentDao.all()
+            assertEquals(
+                componentList.size,
+                1
+            )
+            val entityComponent = componentList[0]
+            assertEquals(
+                entityComponent.idComponent,
+                1
+            )
+            assertEquals(
+                entityComponent.codComponent,
+                1
+            )
+            assertEquals(
+                entityComponent.descComponent,
+                "TESTE 1"
+            )
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_token_correct_and_return_data_service_duplicate() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val server = MockWebServer()
+            server.dispatcher = dispatcherServiceDuplicate
+            server.start()
+
+            BaseUrlModuleTest.url = server.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableService -> IServiceRepository.addAll -> IServiceRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_service.idService (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            val componentList = componentDao.all()
+            assertEquals(
+                componentList.size,
+                1
+            )
+            val entityComponent = componentList[0]
+            assertEquals(
+                entityComponent.idComponent,
+                1
+            )
+            assertEquals(
+                entityComponent.codComponent,
+                1
+            )
+            assertEquals(
+                entityComponent.descComponent,
+                "TESTE 1"
+            )
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun check_open_screen_and_msg_of_success_if_update_execute_successfully() =
         runTest(
             timeout = 1.minutes
         ) {
@@ -275,27 +502,42 @@ class ConfigScreenTest {
                 )
             )
 
-            val colabList = colabDao.all()
+            val componentList = componentDao.all()
             assertEquals(
-                colabList.size,
+                componentList.size,
                 1
             )
-            val entityColab = colabList[0]
+            val entityComponent = componentList[0]
             assertEquals(
-                entityColab.idColab,
+                entityComponent.idComponent,
                 1
             )
             assertEquals(
-                entityColab.regColab,
-                19759
-            )
-            assertEquals(
-                entityColab.nameColab,
-                "ANDERSON DA SILVA DELGADO"
-            )
-            assertEquals(
-                entityColab.idFactorySectionColab,
+                entityComponent.codComponent,
                 1
+            )
+            assertEquals(
+                entityComponent.descComponent,
+                "TESTE 1"
+            )
+
+            val serviceList = serviceDao.all()
+            assertEquals(
+                serviceList.size,
+                1
+            )
+            val entityService = serviceList[0]
+            assertEquals(
+                entityService.idService,
+                1
+            )
+            assertEquals(
+                entityService.codService,
+                1
+            )
+            assertEquals(
+                entityService.descService,
+                "TESTE 1"
             )
 
             composeTestRule.waitUntilTimeout(3_000)
@@ -311,3 +553,5 @@ class ConfigScreenTest {
     }
 
 }
+
+

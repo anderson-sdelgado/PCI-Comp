@@ -72,4 +72,14 @@ class ICheckListRepository @Inject constructor(
         }
     }
 
+    override suspend fun getIdOSHeaderOpen(): Result<Int> {
+        val result = headerSharedPreferencesDatasource.getIdOS()
+        if (result.isFailure)
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        return result
+    }
+
 }

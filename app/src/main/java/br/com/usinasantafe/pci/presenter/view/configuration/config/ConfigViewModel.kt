@@ -6,11 +6,14 @@ import br.com.usinasantafe.pci.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.pci.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.pci.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.pci.domain.usecases.config.SetFinishUpdateAllTable
+import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
+import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import br.com.usinasantafe.pci.utils.percentage
+import br.com.usinasantafe.pci.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,7 +63,8 @@ class ConfigViewModel @Inject constructor(
     private val getConfigInternal: GetConfigInternal,
     private val sendDataConfig: SendDataConfig,
     private val saveDataConfig: SaveDataConfig,
-//    private val updateTableColab: UpdateTableColab,
+    private val updateTableComponent: UpdateTableComponent,
+    private val updateTableService: UpdateTableService,
     private val setFinishUpdateAllTable: SetFinishUpdateAllTable
 ) : ViewModel() {
 
@@ -221,20 +225,29 @@ class ConfigViewModel @Inject constructor(
     }
 
     fun updateAllDatabase(): Flow<ConfigState> = flow {
-//        var pos = 0f
-//        val sizeAllUpdate = sizeUpdate(QTD_TABLE)
-//        var configState = ConfigState()
-//        val classAndMethod = getClassAndMethod()
-//        updateTableColab(
-//            sizeAll = sizeAllUpdate,
-//            count = ++pos
-//        ).collect {
-//            configState = it.resultUpdateToConfig(classAndMethod)
-//            emit(
-//                it.resultUpdateToConfig(classAndMethod)
-//            )
-//        }
-//        if (configState.flagFailure) return@flow
+        val sizeAllUpdate = sizeUpdate(2f)
+        var configState = ConfigState()
+        val classAndMethod = getClassAndMethod()
+        updateTableComponent(
+            sizeAll = sizeAllUpdate,
+            count = 1f
+        ).collect {
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(
+                it.resultUpdateToConfig(classAndMethod)
+            )
+        }
+        if (configState.flagFailure) return@flow
+        updateTableService(
+            sizeAll = sizeAllUpdate,
+            count = 2f
+        ).collect {
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(
+                it.resultUpdateToConfig(classAndMethod)
+            )
+        }
+        if (configState.flagFailure) return@flow
         val result = setFinishUpdateAllTable()
         if (result.isFailure) {
             val error = result.exceptionOrNull()!!

@@ -18,10 +18,22 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
+    fun bindComponentRepository(repository: IComponentRepository): ComponentRepository
+
+    @Binds
+    @Singleton
+    fun bindItemRepository(repository: IItemRepository): ItemRepository
+
+    @Binds
+    @Singleton
     fun bindOSRepository(repository: IOSRepository): OSRepository
 
     @Binds
     @Singleton
     fun bindPlantRepository(repository: IPlantRepository): PlantRepository
+
+    @Binds
+    @Singleton
+    fun bindServiceRepository(repository: IServiceRepository): ServiceRepository
 
 }

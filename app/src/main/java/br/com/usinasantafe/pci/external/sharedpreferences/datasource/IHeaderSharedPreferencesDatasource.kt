@@ -133,4 +133,23 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getIdOS(): Result<Int> {
+        try {
+            val result = get()
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.idOS!!)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

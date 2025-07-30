@@ -398,7 +398,8 @@ class OSListHeaderScreenTest {
     private fun setContent() {
         composeTestRule.setContent {
             OSListHeaderScreen(
-                onNavColab = {}
+                onNavColab = {},
+                onNavPlantList = {}
             )
         }
     }

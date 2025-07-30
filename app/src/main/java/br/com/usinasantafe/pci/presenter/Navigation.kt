@@ -6,6 +6,11 @@ import br.com.usinasantafe.pci.presenter.Screens.CONFIG_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.INITIAL_MENU_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.OS_HEADER_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.PASSWORD_SCREEN
+import br.com.usinasantafe.pci.presenter.Screens.PLANT_LIST_NOTE_SCREEN
+import br.com.usinasantafe.pci.presenter.Screens.QUESTION_DESC_NOTE_SCREEN
+import br.com.usinasantafe.pci.presenter.Screens.QUESTION_LIST_NOTE_SCREEN
+import br.com.usinasantafe.pci.presenter.Screens.QUESTION_OBS_NOTE_SCREEN
+import br.com.usinasantafe.pci.presenter.Screens.QUESTION_RESP_NOTE_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.SPLASH_SCREEN
 
 object Screens {
@@ -15,6 +20,11 @@ object Screens {
     const val CONFIG_SCREEN = "configScreen"
     const val COLAB_HEADER_SCREEN = "colabHeaderScreen"
     const val OS_HEADER_SCREEN = "osHeaderScreen"
+    const val PLANT_LIST_NOTE_SCREEN = "plantListNoteScreen"
+    const val QUESTION_LIST_NOTE_SCREEN = "questionListNoteScreen"
+    const val QUESTION_DESC_NOTE_SCREEN = "questionDescNoteScreen"
+    const val QUESTION_OBS_NOTE_SCREEN = "questionObsNoteScreen"
+    const val QUESTION_RESP_NOTE_SCREEN = "questionRespNoteScreen"
 }
 
 object Args {
@@ -28,6 +38,11 @@ object Routes {
     const val CONFIG_ROUTE = CONFIG_SCREEN
     const val COLAB_HEADER_ROUTE = COLAB_HEADER_SCREEN
     const val OS_HEADER_ROUTE = OS_HEADER_SCREEN
+    const val PLANT_LIST_NOTE_ROUTE = PLANT_LIST_NOTE_SCREEN
+    const val QUESTION_LIST_NOTE_ROUTE = QUESTION_LIST_NOTE_SCREEN
+    const val QUESTION_DESC_NOTE_ROUTE = QUESTION_DESC_NOTE_SCREEN
+    const val QUESTION_OBS_NOTE_ROUTE = QUESTION_OBS_NOTE_SCREEN
+    const val QUESTION_RESP_NOTE_ROUTE = QUESTION_RESP_NOTE_SCREEN
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -62,8 +77,32 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate(COLAB_HEADER_SCREEN)
     }
 
-    fun navigateToOS() {
+    fun navigateToOSHeader() {
         navController.navigate(OS_HEADER_SCREEN)
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
+    ////////////////////////// note //////////////////////////////////
+
+    fun navigateToPlantListNote() {
+        navController.navigate(PLANT_LIST_NOTE_SCREEN)
+    }
+
+    fun navigateToQuestionListNote() {
+        navController.navigate(QUESTION_LIST_NOTE_SCREEN)
+    }
+
+    fun navigateToQuestionDescNote() {
+        navController.navigate(QUESTION_DESC_NOTE_SCREEN)
+    }
+
+    fun navigateToQuestionObsNote() {
+        navController.navigate(QUESTION_OBS_NOTE_SCREEN)
+    }
+
+    fun navigateToQuestionRespNote() {
+        navController.navigate(QUESTION_RESP_NOTE_SCREEN)
     }
 
     ////////////////////////////////////////////////////////////////////

@@ -18,10 +18,22 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
+    fun bindComponentRetrofitDatasource(dataSource: IComponentRetrofitDatasource): ComponentRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindItemRetrofitDatasource(dataSource: IItemRetrofitDatasource): ItemRetrofitDatasource
+
+    @Binds
+    @Singleton
     fun bindOSRetrofitDatasource(dataSource: IOSRetrofitDatasource): OSRetrofitDatasource
 
     @Binds
     @Singleton
     fun bindPlantRetrofitDatasource(dataSource: IPlantRetrofitDatasource): PlantRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindServiceRetrofitDatasource(dataSource: IServiceRetrofitDatasource): ServiceRetrofitDatasource
 
 }

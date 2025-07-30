@@ -1,4 +1,4 @@
-package br.com.usinasantafe.pci.presenter.view.note.plantlist
+package br.com.usinasantafe.pci.presenter.view.note.questionresp
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,10 +12,10 @@ import br.com.usinasantafe.pci.presenter.theme.TitleDesign
 import br.com.usinasantafe.pci.presenter.theme.PCITheme
 
 @Composable
-fun PlantListScreen() {
+fun QuestionRespNoteScreen() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            PlantListContent(
+            QuestionRespNoteContent(
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -23,7 +23,7 @@ fun PlantListScreen() {
 }
 
 @Composable
-fun PlantListContent(
+fun QuestionRespNoteContent(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -36,10 +36,10 @@ fun PlantListContent(
 
 @Preview(showBackground = true)
 @Composable
-fun PlantListPagePreview() {
+fun QuestionRespNotePagePreview() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            PlantListContent(
+            QuestionRespNoteContent(
                 modifier = Modifier.padding(innerPadding)
             )
         }

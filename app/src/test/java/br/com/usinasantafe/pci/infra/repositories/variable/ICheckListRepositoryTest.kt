@@ -313,4 +313,51 @@ class ICheckListRepositoryTest {
                 StatusSend.SEND
             )
         }
+
+    @Test
+    fun `getIdOSHeaderOpen - Check return failure if have error in HeaderSharedPreferencesDatasource getIdOS`() =
+        runTest {
+            whenever(
+                headerSharedPreferencesDatasource.getIdOS()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderSharedPreferencesDatasource.getIdOS",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdOSHeaderOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.getIdOSHeaderOpen -> IHeaderSharedPreferencesDatasource.getIdOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdOSHeaderOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerSharedPreferencesDatasource.getIdOS()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdOSHeaderOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
 }
