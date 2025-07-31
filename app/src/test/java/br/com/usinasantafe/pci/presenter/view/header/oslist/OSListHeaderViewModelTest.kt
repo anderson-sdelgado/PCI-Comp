@@ -200,7 +200,6 @@ class OSListHeaderViewModelTest {
             )
         }
 
-
     @Test
     fun `update - Check return success if update execute successfully`() =
         runTest {

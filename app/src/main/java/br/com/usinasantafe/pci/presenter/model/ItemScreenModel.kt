@@ -1,7 +1,8 @@
 package br.com.usinasantafe.pci.presenter.model
 
-data class PlantScreenModel(
+data class ItemScreenModel(
     val id: Int,
-    val cod: String,
+    val pos: String,
     val desc: String,
+    val status: String,
 )

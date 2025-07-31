@@ -8,6 +8,7 @@ import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.ItemRetrofitData
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ItemRoomDatasource
 import br.com.usinasantafe.pci.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.pci.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.pci.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -62,6 +63,25 @@ class IItemRepository @Inject constructor(
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception){
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listAll(): Result<List<Item>> {
+        try {
+            val result = itemRoomDatasource.listAll()
+            if(result.isFailure){
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
             return resultFailureFinish(

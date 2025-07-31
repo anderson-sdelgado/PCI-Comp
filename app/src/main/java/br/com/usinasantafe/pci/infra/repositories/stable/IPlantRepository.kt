@@ -91,4 +91,23 @@ class IPlantRepository @Inject constructor(
         }
     }
 
+    override suspend fun listByIdList(ids: List<Int>): Result<List<Plant>> {
+        try {
+            val result = plantRoomDatasource.listByIdList(ids)
+            if(result.isFailure){
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception){
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

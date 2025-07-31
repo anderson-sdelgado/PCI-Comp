@@ -3,9 +3,12 @@ package br.com.usinasantafe.pci.presenter
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.presenter.Routes.COLAB_HEADER_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.CONFIG_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.INITIAL_MENU_ROUTE
@@ -118,28 +121,38 @@ fun NavigationGraph(
             PlantListNoteScreen(
                 onNavOSList = {
                     navActions.navigateToOSHeader()
+                },
+                onNavQuestionList = {
+                    navActions.navigateToQuestionListNote(
+                        it
+                    )
                 }
             )
         }
 
-        composable(QUESTION_LIST_NOTE_ROUTE) {
+        composable(
+            QUESTION_LIST_NOTE_ROUTE,
+            arguments = listOf(
+                navArgument(ID_PLANT_ARG) {
+                    type = NavType.IntType
+                }
+            )
+        ) {
             QuestionListNoteScreen(
+                onNavPlantList = {}
             )
         }
 
         composable(QUESTION_DESC_NOTE_ROUTE) {
-            QuestionListNoteScreen(
-            )
+
         }
 
         composable(QUESTION_OBS_NOTE_ROUTE) {
-            QuestionListNoteScreen(
-            )
+
         }
 
         composable(QUESTION_RESP_NOTE_ROUTE) {
-            QuestionListNoteScreen(
-            )
+
         }
 
 

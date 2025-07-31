@@ -273,4 +273,142 @@ class IPlantRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `listByIdList - Check return list empty if not have data field`() =
+        runTest {
+            plantDao.insertAll(
+                listOf(
+                    PlantRoomModel(
+                        idPlant = 1,
+                        codPlant = "01",
+                        descPlant = "PLANT 01",
+                        idFactorySectionPlant = 1
+                    ),
+                    PlantRoomModel(
+                        idPlant = 2,
+                        codPlant = "02",
+                        descPlant = "PLANT 02",
+                        idFactorySectionPlant = 1
+                    ),
+                    PlantRoomModel(
+                        idPlant = 3,
+                        codPlant = "03",
+                        descPlant = "PLANT 03",
+                        idFactorySectionPlant = 1
+                    ),
+                    PlantRoomModel(
+                        idPlant = 4,
+                        codPlant = "04",
+                        descPlant = "PLANT 04",
+                        idFactorySectionPlant = 1
+                    )
+                )
+            )
+            val ids = listOf(5, 6, 7)
+            val result = datasource.listByIdList(ids)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                0
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return correct`() =
+        runTest {
+            plantDao.insertAll(
+                listOf(
+                    PlantRoomModel(
+                        idPlant = 1,
+                        codPlant = "01",
+                        descPlant = "PLANT 01",
+                        idFactorySectionPlant = 1
+                    ),
+                    PlantRoomModel(
+                        idPlant = 2,
+                        codPlant = "02",
+                        descPlant = "PLANT 02",
+                        idFactorySectionPlant = 1
+                    ),
+                    PlantRoomModel(
+                        idPlant = 3,
+                        codPlant = "03",
+                        descPlant = "PLANT 03",
+                        idFactorySectionPlant = 1
+                    ),
+                    PlantRoomModel(
+                        idPlant = 4,
+                        codPlant = "04",
+                        descPlant = "PLANT 04",
+                        idFactorySectionPlant = 1
+                    )
+                )
+            )
+            val ids = listOf(1, 2, 3)
+            val result = datasource.listByIdList(ids)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                3
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1.idPlant,
+                1
+            )
+            assertEquals(
+                model1.codPlant,
+                "01"
+            )
+            assertEquals(
+                model1.descPlant,
+                "PLANT 01"
+            )
+            assertEquals(
+                model1.idFactorySectionPlant,
+                1
+            )
+            val model2 = list[1]
+            assertEquals(
+                model2.idPlant,
+                2
+            )
+            assertEquals(
+                model2.codPlant,
+                "02"
+            )
+            assertEquals(
+                model2.descPlant,
+                "PLANT 02"
+            )
+            assertEquals(
+                model2.idFactorySectionPlant,
+                1
+            )
+            val model3 = list[2]
+            assertEquals(
+                model3.idPlant,
+                3
+            )
+            assertEquals(
+            model3.codPlant,
+                "03"
+            )
+            assertEquals(
+                model3.descPlant,
+                "PLANT 03"
+            )
+            assertEquals(
+                model3.idFactorySectionPlant,
+                1
+            )
+        }
 }

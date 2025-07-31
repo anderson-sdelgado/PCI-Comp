@@ -15,6 +15,7 @@ import java.util.Date
     entities = [
         ColabRoomModel::class,
         ComponentRoomModel::class,
+        ItemRoomModel::class,
         OSRoomModel::class,
         PlantRoomModel::class,
         ServiceRoomModel::class,
@@ -26,6 +27,7 @@ import java.util.Date
 abstract class DatabaseRoom : RoomDatabase() {
     abstract fun colabDao(): ColabDao
     abstract fun componentDao(): ComponentDao
+    abstract fun itemDao(): ItemDao
     abstract fun osDao(): OSDao
     abstract fun plantDao(): PlantDao
     abstract fun serviceDao(): ServiceDao

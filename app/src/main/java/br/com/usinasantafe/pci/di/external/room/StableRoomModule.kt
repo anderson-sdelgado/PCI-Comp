@@ -26,6 +26,12 @@ object StableRoomModule {
 
     @Provides
     @Singleton
+    fun provideItemDao(database: DatabaseRoom): ItemDao {
+        return database.itemDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideOSDao(database: DatabaseRoom): OSDao {
         return database.osDao()
     }

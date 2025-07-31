@@ -10,4 +10,6 @@ interface PlantRepository {
         idFactorySection: Int
     ): Result<List<Plant>>
     suspend fun listByIdFactorySection(idFactorySection: Int): Result<List<Plant>>
+    suspend fun listByIdList(ids: List<Int>): Result<List<Plant>>
+
 }

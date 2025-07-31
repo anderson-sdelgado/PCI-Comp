@@ -193,7 +193,13 @@ fun ConfigContent(
                 LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
                 LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
                 LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                null -> failure
+                null -> stringResource(
+                    id = R.string.text_update_failure,
+                    failure
+                )
+                else -> stringResource(
+                    id = R.string.text_flow_inexistent,
+                )
             }
             Text(
                 text = msgProgress,

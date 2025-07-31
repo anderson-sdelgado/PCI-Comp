@@ -226,28 +226,28 @@ class ConfigViewModel @Inject constructor(
 
     fun updateAllDatabase(): Flow<ConfigState> = flow {
         val sizeAllUpdate = sizeUpdate(2f)
-        var configState = ConfigState()
+        var state = ConfigState()
         val classAndMethod = getClassAndMethod()
         updateTableComponent(
             sizeAll = sizeAllUpdate,
             count = 1f
         ).collect {
-            configState = it.resultUpdateToConfig(classAndMethod)
+            state = it.resultUpdateToConfig(classAndMethod)
             emit(
                 it.resultUpdateToConfig(classAndMethod)
             )
         }
-        if (configState.flagFailure) return@flow
+        if (state.flagFailure) return@flow
         updateTableService(
             sizeAll = sizeAllUpdate,
             count = 2f
         ).collect {
-            configState = it.resultUpdateToConfig(classAndMethod)
+            state = it.resultUpdateToConfig(classAndMethod)
             emit(
                 it.resultUpdateToConfig(classAndMethod)
             )
         }
-        if (configState.flagFailure) return@flow
+        if (state.flagFailure) return@flow
         val result = setFinishUpdateAllTable()
         if (result.isFailure) {
             val error = result.exceptionOrNull()!!

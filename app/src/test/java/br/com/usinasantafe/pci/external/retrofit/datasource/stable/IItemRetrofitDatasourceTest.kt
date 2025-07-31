@@ -1,25 +1,25 @@
 package br.com.usinasantafe.pci.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.pci.di.provider.PersistenceModuleTest.provideRetrofitTest
-import br.com.usinasantafe.pci.external.retrofit.api.stable.PlantApi
-import br.com.usinasantafe.pci.infra.models.retrofit.stable.PlantRetrofitModel
+import br.com.usinasantafe.pci.external.retrofit.api.stable.ItemApi
+import br.com.usinasantafe.pci.infra.models.retrofit.stable.ItemRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
 import org.junit.Test
 
-class IPlantRetrofitDatasourceTest {
+class IItemRetrofitDatasourceTest {
 
-    private val resultPlantList = """
+    private val resultItemList = """
         [
-            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01"},
-            {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02"}
+            {"idItem":1,"seqItem":1,"idOSItem":1,"idPlantItem":1,"idComponentItem":1,"idServiceItem":1},
+            {"idItem":2,"seqItem":2,"idOSItem":2,"idPlantItem":2,"idComponentItem":2,"idServiceItem":2}
         ]
     """.trimIndent()
 
     @Test
-    fun `listByIdFactorySection - Check return failure if token is invalid`() =
+    fun `listByIdOS - Check return failure if token is invalid`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -29,29 +29,29 @@ class IPlantRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(PlantApi::class.java)
-            val datasource = IPlantRetrofitDatasource(service)
-            val result = datasource.listByIdFactorySection(
+            val service = retrofit.create(ItemApi::class.java)
+            val datasource = IItemRetrofitDatasource(service)
+            val result = datasource.listByIdOS(
                 token = "TOKEN",
-                idFactorySection = 1
+                idOS = 1
             )
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IPlantRetrofitDatasource.listByIdFactorySection"
+                "IItemRetrofitDatasource.listByIdOS",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$"
+                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
+                result.exceptionOrNull()!!.cause.toString()
             )
             server.shutdown()
         }
 
     @Test
-    fun `listByIdFactorySection - Check return failure if have Error 404`() =
+    fun `listByIdOS - Check return failure if have Error 404`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -61,11 +61,11 @@ class IPlantRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(PlantApi::class.java)
-            val datasource = IPlantRetrofitDatasource(service)
-            val result = datasource.listByIdFactorySection(
+            val service = retrofit.create(ItemApi::class.java)
+            val datasource = IItemRetrofitDatasource(service)
+            val result = datasource.listByIdOS(
                 token = "TOKEN",
-                idFactorySection = 1
+                idOS = 1
             )
             assertEquals(
                 true,
@@ -73,7 +73,7 @@ class IPlantRetrofitDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IPlantRetrofitDatasource.listByIdFactorySection"
+                "IItemRetrofitDatasource.listByIdOS",
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -84,21 +84,21 @@ class IPlantRetrofitDatasourceTest {
 
 
     @Test
-    fun `listByIdFactorySection - Check return correct`() =
+    fun `listByIdOS - Check return correct`() =
         runTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(resultPlantList)
+                MockResponse().setBody(resultItemList)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(PlantApi::class.java)
-            val datasource = IPlantRetrofitDatasource(service)
-            val result = datasource.listByIdFactorySection(
+            val service = retrofit.create(ItemApi::class.java)
+            val datasource = IItemRetrofitDatasource(service)
+            val result = datasource.listByIdOS(
                 token = "TOKEN",
-                idFactorySection = 1
+                idOS = 1
             )
             assertEquals(
                 true,
@@ -107,17 +107,21 @@ class IPlantRetrofitDatasourceTest {
             assertEquals(
                 Result.success(
                     listOf(
-                        PlantRetrofitModel(
-                            idPlant = 1,
-                            codPlant = "01",
-                            descPlant = "PLANTA 01",
-                            idFactorySectionPlant = 1
+                        ItemRetrofitModel(
+                            idItem = 1,
+                            seqItem = 1,
+                            idOSItem = 1,
+                            idPlantItem = 1,
+                            idComponentItem = 1,
+                            idServiceItem = 1
                         ),
-                        PlantRetrofitModel(
-                            idPlant = 2,
-                            codPlant = "02",
-                            descPlant = "PLANTA 02",
-                            idFactorySectionPlant = 1
+                        ItemRetrofitModel(
+                            idItem = 2,
+                            seqItem = 2,
+                            idOSItem = 2,
+                            idPlantItem = 2,
+                            idComponentItem = 2,
+                            idServiceItem = 2
                         )
                     )
                 ),

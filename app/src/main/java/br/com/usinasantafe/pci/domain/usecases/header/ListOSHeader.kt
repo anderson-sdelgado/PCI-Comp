@@ -21,7 +21,7 @@ class IListOSHeader @Inject constructor(
 
     override suspend fun invoke(): Result<List<OSScreenModel>> {
         try{
-            val resultGetIdFactorySection = checkListRepository.getIdFactorySectionHeaderOpen() //ok
+            val resultGetIdFactorySection = checkListRepository.getIdFactorySectionHeaderOpen()
             if (resultGetIdFactorySection.isFailure) {
                 return resultFailureMiddle(
                     context = getClassAndMethod(),
@@ -29,7 +29,7 @@ class IListOSHeader @Inject constructor(
                 )
             }
             val idFactorySection = resultGetIdFactorySection.getOrNull()!!
-            val resultListOS = osRepository.listByIdFactorySection(idFactorySection) // ok
+            val resultListOS = osRepository.listByIdFactorySection(idFactorySection)
             if(resultListOS.isFailure){
                 return resultFailureMiddle(
                     context = getClassAndMethod(),

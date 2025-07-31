@@ -27,6 +27,12 @@ object StableRetrofitModule {
 
     @Provides
     @Singleton
+    fun itemApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): ItemApi = retrofit.create(ItemApi::class.java)
+
+    @Provides
+    @Singleton
     fun osApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): OSApi = retrofit.create(OSApi::class.java)

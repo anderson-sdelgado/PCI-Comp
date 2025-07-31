@@ -1,6 +1,7 @@
 package br.com.usinasantafe.pci.presenter
 
 import androidx.navigation.NavHostController
+import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.presenter.Screens.COLAB_HEADER_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.CONFIG_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.INITIAL_MENU_SCREEN
@@ -28,7 +29,7 @@ object Screens {
 }
 
 object Args {
-
+    const val ID_PLANT_ARG = "idPlant"
 }
 
 object Routes {
@@ -38,7 +39,7 @@ object Routes {
     const val CONFIG_ROUTE = CONFIG_SCREEN
     const val COLAB_HEADER_ROUTE = COLAB_HEADER_SCREEN
     const val OS_HEADER_ROUTE = OS_HEADER_SCREEN
-    const val PLANT_LIST_NOTE_ROUTE = PLANT_LIST_NOTE_SCREEN
+    const val PLANT_LIST_NOTE_ROUTE = "$PLANT_LIST_NOTE_SCREEN/{$ID_PLANT_ARG}"
     const val QUESTION_LIST_NOTE_ROUTE = QUESTION_LIST_NOTE_SCREEN
     const val QUESTION_DESC_NOTE_ROUTE = QUESTION_DESC_NOTE_SCREEN
     const val QUESTION_OBS_NOTE_ROUTE = QUESTION_OBS_NOTE_SCREEN
@@ -89,8 +90,10 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate(PLANT_LIST_NOTE_SCREEN)
     }
 
-    fun navigateToQuestionListNote() {
-        navController.navigate(QUESTION_LIST_NOTE_SCREEN)
+    fun navigateToQuestionListNote(
+        idPlant: Int
+    ) {
+        navController.navigate("${QUESTION_LIST_NOTE_SCREEN}/${idPlant}")
     }
 
     fun navigateToQuestionDescNote() {

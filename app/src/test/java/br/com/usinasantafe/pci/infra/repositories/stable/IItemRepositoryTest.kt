@@ -27,21 +27,21 @@ class IItemRepositoryTest {
             val modelList = listOf(
                 ItemRoomModel(
                     idItem = 1,
-                    nroItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
                     idPlantItem = 1,
-                    qtdDayItem = 1,
-                    descPeriodItem = "DIARIO",
-                    idFactorySectionItem = 1
+                    idComponentItem = 1,
+                    idServiceItem = 1
                 )
             )
             val entityList = listOf(
                 Item(
                     idItem = 1,
-                    nroItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
                     idPlantItem = 1,
-                    qtdDayItem = 1,
-                    descPeriodItem = "DIARIO",
-                    idFactorySectionItem = 1
+                    idComponentItem = 1,
+                    idServiceItem = 1
                 )
             )
             whenever(
@@ -74,21 +74,21 @@ class IItemRepositoryTest {
             val modelList = listOf(
                 ItemRoomModel(
                     idItem = 1,
-                    nroItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
                     idPlantItem = 1,
-                    qtdDayItem = 1,
-                    descPeriodItem = "DIARIO",
-                    idFactorySectionItem = 1
+                    idComponentItem = 1,
+                    idServiceItem = 1
                 )
             )
             val entityList = listOf(
                 Item(
                     idItem = 1,
-                    nroItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
                     idPlantItem = 1,
-                    qtdDayItem = 1,
-                    descPeriodItem = "DIARIO",
-                    idFactorySectionItem = 1
+                    idComponentItem = 1,
+                    idServiceItem = 1
                 )
             )
             whenever(
@@ -161,7 +161,7 @@ class IItemRepositoryTest {
             whenever(
                 itemRetrofitDatasource.listByIdOS(
                     token = "token",
-                    idFactorySection = 1
+                    idOS = 1
                 )
             ).thenReturn(
                 resultFailure(
@@ -173,7 +173,7 @@ class IItemRepositoryTest {
             val result = repository
                 .listByIdOS(
                     token = "token",
-                    idFactorySection = 1
+                    idOS = 1
                 )
             assertEquals(
                 result.isFailure,
@@ -195,35 +195,101 @@ class IItemRepositoryTest {
             val modelList = listOf(
                 ItemRetrofitModel(
                     idItem = 1,
-                    nroItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
                     idPlantItem = 1,
-                    qtdDayItem = 1,
-                    descPeriodItem = "DIARIO",
-                    idFactorySectionItem = 1
+                    idComponentItem = 1,
+                    idServiceItem = 1
                 )
             )
             val entityList = listOf(
                 Item(
                     idItem = 1,
-                    nroItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
                     idPlantItem = 1,
-                    qtdDayItem = 1,
-                    descPeriodItem = "DIARIO",
-                    idFactorySectionItem = 1
+                    idComponentItem = 1,
+                    idServiceItem = 1
                 )
             )
             whenever(
                 itemRetrofitDatasource.listByIdOS(
                     token = "token",
-                    idFactorySection = 1
+                    idOS = 1
                 )
             ).thenReturn(
                 Result.success(modelList)
             )
             val result = repository.listByIdOS(
                 token = "token",
-                idFactorySection = 1
+                idOS = 1
             )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
+
+    @Test
+    fun `listAll - Check return failure if have error in ItemRoomDatasource listAll`() =
+        runTest {
+            whenever(
+                itemRoomDatasource.listAll()
+            ).thenReturn(
+                resultFailure(
+                    "IItemRoomDatasource.listAll",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listAll()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemRepository.listAll -> IItemRoomDatasource.listAll"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listAll - Check return correct if function execute successfully`() =
+        runTest {
+            val modelList = listOf(
+                ItemRoomModel(
+                    idItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
+                    idPlantItem = 1,
+                    idComponentItem = 1,
+                    idServiceItem = 1
+                )
+            )
+            val entityList = listOf(
+                Item(
+                    idItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
+                    idPlantItem = 1,
+                    idComponentItem = 1,
+                    idServiceItem = 1
+                )
+            )
+            whenever(
+                itemRoomDatasource.listAll()
+            ).thenReturn(
+                Result.success(modelList)
+            )
+            val result = repository.listAll()
             assertEquals(
                 result.isSuccess,
                 true

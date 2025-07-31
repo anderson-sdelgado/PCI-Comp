@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1ed8bc43c0cfe7c82a28df1ee1e6e2d1",
+    "identityHash": "33be01305050726b009ddb25a859de84",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -69,6 +69,56 @@
           "autoGenerate": false,
           "columnNames": [
             "idComponent"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_item",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idItem` INTEGER NOT NULL, `seqItem` INTEGER NOT NULL, `idOSItem` INTEGER NOT NULL, `idPlantItem` INTEGER NOT NULL, `idComponentItem` INTEGER NOT NULL, `idServiceItem` INTEGER NOT NULL, PRIMARY KEY(`idItem`))",
+        "fields": [
+          {
+            "fieldPath": "idItem",
+            "columnName": "idItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "seqItem",
+            "columnName": "seqItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idOSItem",
+            "columnName": "idOSItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idPlantItem",
+            "columnName": "idPlantItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idComponentItem",
+            "columnName": "idComponentItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idServiceItem",
+            "columnName": "idServiceItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idItem"
           ]
         },
         "indices": [],
@@ -254,7 +304,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1ed8bc43c0cfe7c82a28df1ee1e6e2d1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '33be01305050726b009ddb25a859de84')"
     ]
   }
 }

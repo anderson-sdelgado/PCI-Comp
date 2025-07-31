@@ -42,12 +42,12 @@ class IColabRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IColabRetrofitDatasource.listAll",
-                result.exceptionOrNull()!!.message
+                result.exceptionOrNull()!!.message,
+                "IColabRetrofitDatasource.listAll"
             )
             assertEquals(
-                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$"
             )
             server.shutdown()
         }
@@ -72,12 +72,12 @@ class IColabRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
+                result.exceptionOrNull()!!.message,
                 "IColabRetrofitDatasource.listAll",
-                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                NullPointerException().toString(),
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
             )
             server.shutdown()
         }

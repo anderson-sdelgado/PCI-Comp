@@ -9,4 +9,5 @@ interface ItemRepository {
         token: String,
         idOS: Int
     ): Result<List<Item>>
+    suspend fun listAll(): Result<List<Item>>
 }

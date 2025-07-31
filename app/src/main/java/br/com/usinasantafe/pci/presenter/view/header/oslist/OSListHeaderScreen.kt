@@ -133,6 +133,9 @@ fun OSListHeaderContent(
                         id = R.string.text_update_failure,
                         failure
                     )
+                    else -> stringResource(
+                        id = R.string.text_flow_inexistent,
+                    )
                 }
                 Text(
                     text = msgProgress,
@@ -284,7 +287,7 @@ fun OSHeaderPagePreviewDataUpdate() {
 
 @Preview(showBackground = true)
 @Composable
-fun OSHeaderPagePreviewFinish() {
+fun OSHeaderPagePreviewFinishUpdate() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSListHeaderContent(
@@ -344,7 +347,7 @@ fun OSHeaderPagePreviewFailure() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSListHeaderContent(
-                flagProgress = true,
+                flagProgress = false,
                 osList = listOf(),
                 recoverList = {},
                 setId = {},

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.pci.domain.usecases.update
 
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
-import br.com.usinasantafe.pci.external.room.dao.stable.PlantDao
+import br.com.usinasantafe.pci.external.room.dao.stable.ItemDao
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -21,13 +21,13 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class IUpdateTablePlantByIdFactorySectionTest {
+class IUpdateTableItemByIdOSTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: IUpdateTablePlantByIdFactorySection
+    lateinit var usecase: UpdateTableItemByIdOS
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
@@ -36,19 +36,19 @@ class IUpdateTablePlantByIdFactorySectionTest {
     lateinit var headerSharedPreferencesDatasource: HeaderSharedPreferencesDatasource
 
     @Inject
-    lateinit var plantDao: PlantDao
+    lateinit var itemDao: ItemDao
 
-    private val resultPlantListIncorrect = """
+    private val resultItemListIncorrect = """
         [
-            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
-            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1}
+            {"idItem":1,"seqItem":1,"idOSItem":1,"idPlantItem":1,"idComponentItem":1,"idServiceItem":1},
+            {"idItem":1,"seqItem":1,"idOSItem":1,"idPlantItem":1,"idComponentItem":1,"idServiceItem":1}
         ]
     """.trimIndent()
 
-    private val resultPlantList = """
+    private val resultItemList = """
         [
-            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
-            {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02","idFactorySectionPlant":1}
+            {"idItem":1,"seqItem":1,"idOSItem":1,"idPlantItem":1,"idComponentItem":1,"idServiceItem":1},
+            {"idItem":2,"seqItem":2,"idOSItem":2,"idPlantItem":2,"idComponentItem":2,"idServiceItem":2}
         ]
     """.trimIndent()
 
@@ -72,7 +72,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_plant",
+                    tableUpdate = "tb_item",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -83,7 +83,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTablePlantByIdFactorySection -> IGetToken -> java.lang.NullPointerException",
+                    failure = "IUpdateTableItemByIdOS -> IGetToken -> java.lang.NullPointerException",
                     currentProgress = 1f,
                     levelUpdate = null,
                 )
@@ -119,7 +119,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_plant",
+                    tableUpdate = "tb_item",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -130,7 +130,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTablePlantByIdFactorySection -> ICheckListRepository.getIdFactorySectionHeaderOpen -> IHeaderSharedPreferencesDatasource.getIdFactorySection -> java.lang.NullPointerException",
+                    failure = "IUpdateTableItemByIdOS -> ICheckListRepository.getIdOSHeaderOpen -> IHeaderSharedPreferencesDatasource.getIdOS -> java.lang.NullPointerException",
                     currentProgress = 1f,
                     levelUpdate = null,
                 )
@@ -138,12 +138,12 @@ class IUpdateTablePlantByIdFactorySectionTest {
         }
 
     @Test
-    fun check_return_failure_if_web_service_return_value_repeated() =
+    fun check_return_failure_if_web_service_return_error() =
         runTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(resultPlantListIncorrect)
+                MockResponse().setBody("{ error : Authorization header is missing }")
             )
             BaseUrlModuleTest.url = server.url("/").toString()
 
@@ -158,9 +158,66 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 )
             )
 
-            headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
-                idColab = 1,
-                idFactorySection = 1
+            headerSharedPreferencesDatasource.setIdOS(
+                idOS = 1
+            )
+
+            val result = usecase(
+                sizeAll = 7f,
+                count = 1f
+            )
+            val list = result.toList()
+            assertEquals(
+                list.count(),
+                2
+            )
+            assertEquals(
+                list[0],
+                ResultUpdateModel(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item",
+                    currentProgress = updatePercentage(1f, 1f, 7f)
+                )
+            )
+            assertEquals(
+                list[1],
+                ResultUpdateModel(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "IUpdateTableItemByIdOS -> IItemRepository.listByIdOS -> IItemRetrofitDatasource.listByIdOS -> java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
+                    currentProgress = 1f,
+                    levelUpdate = null,
+                )
+            )
+            server.shutdown()
+        }
+
+    @Test
+    fun check_return_failure_if_web_service_return_value_repeated() =
+        runTest {
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
+                MockResponse().setBody(resultItemListIncorrect)
+            )
+            BaseUrlModuleTest.url = server.url("/").toString()
+
+            hiltRule.inject()
+
+            configSharedPreferencesDatasource.save(
+                ConfigSharedPreferencesModel(
+                    idBD = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                )
+            )
+
+            headerSharedPreferencesDatasource.setIdOS(
+                idOS = 1
             )
 
             val result = usecase(
@@ -177,7 +234,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_plant",
+                    tableUpdate = "tb_item",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -186,7 +243,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_plant",
+                    tableUpdate = "tb_item",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -195,7 +252,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_plant",
+                    tableUpdate = "tb_item",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
@@ -206,11 +263,12 @@ class IUpdateTablePlantByIdFactorySectionTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTablePlantByIdFactorySection -> IPlantRepository.addAll -> IPlantRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_plant.idPlant (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])",
+                    failure = "IUpdateTableItemByIdOS -> IItemRepository.addAll -> IItemRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_item.idItem (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])",
                     currentProgress = 1f,
                     levelUpdate = null,
                 )
             )
+            server.shutdown()
         }
 
     @Test
@@ -219,10 +277,11 @@ class IUpdateTablePlantByIdFactorySectionTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(resultPlantList)
+                MockResponse().setBody(resultItemList)
             )
             BaseUrlModuleTest.url = server.url("/").toString()
             hiltRule.inject()
+
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
                     idBD = 1,
@@ -231,10 +290,11 @@ class IUpdateTablePlantByIdFactorySectionTest {
                     password = "12345",
                 )
             )
-            headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
-                idColab = 1,
-                idFactorySection = 1
+
+            headerSharedPreferencesDatasource.setIdOS(
+                idOS = 1
             )
+
             val result = usecase(
                 sizeAll = 7f,
                 count = 1f
@@ -249,7 +309,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_plant",
+                    tableUpdate = "tb_item",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -258,7 +318,7 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_plant",
+                    tableUpdate = "tb_item",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -267,38 +327,62 @@ class IUpdateTablePlantByIdFactorySectionTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_plant",
+                    tableUpdate = "tb_item",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
-            val modelList = plantDao.all()
+            val modelList = itemDao.all()
             assertEquals(
                 modelList.count(),
                 2
             )
             assertEquals(
-                modelList[0].idPlant,
+                modelList[0].idItem,
                 1
             )
             assertEquals(
-                modelList[0].codPlant,
-                "01"
+                modelList[0].seqItem,
+                1
             )
             assertEquals(
-                modelList[0].descPlant,
-                "PLANTA 01"
+                modelList[0].idOSItem,
+                1
             )
             assertEquals(
-                modelList[1].idPlant,
+                modelList[0].idPlantItem,
+                1
+            )
+            assertEquals(
+                modelList[0].idComponentItem,
+                1
+            )
+            assertEquals(
+                modelList[0].idServiceItem,
+                1
+            )
+            assertEquals(
+                modelList[1].idItem,
                 2
             )
             assertEquals(
-                modelList[1].codPlant,
-                "02"
+                modelList[1].seqItem,
+                2
             )
             assertEquals(
-                modelList[1].descPlant,
-                "PLANTA 02"
+                modelList[1].idOSItem,
+                2
+            )
+            assertEquals(
+                modelList[1].idPlantItem,
+                2
+            )
+            assertEquals(
+                modelList[1].idComponentItem,
+                2
+            )
+            assertEquals(
+                modelList[1].idServiceItem,
+                2
             )
             server.shutdown()
         }

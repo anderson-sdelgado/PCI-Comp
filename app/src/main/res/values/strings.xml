@@ -34,6 +34,7 @@
     <string name="text_msg_save_token">Salvando dados de Token</string>
     <string name="text_msg_finish_update_initial">Ajuste iniciais finalizado com sucesso!</string>
     <string name="text_msg_finish_update_completed">Atualização de dados realizado com sucesso!</string>
+    <string name="text_msg_check_data">Checando Dados relativos a tela.</string>
     <string name="text_field_empty_config">CAMPO VAZIO! POR FAVOR, PREENCHA TODOS OS CAMPOS PARA SALVAR AS CONFIGURAÇÕES E ATUALIZAR TODAS AS BASES DE DADOS.</string>
     <string name="text_recover_token">FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
     <string name="text_update_failure">FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
@@ -46,4 +47,6 @@
     <string name="text_title_os">ORDEM(S) SERVIÇO(S)</string>
     <string name="text_question_update">DESEJA REALMENTE ATUALIZAR BASE DE DADOS?</string>
     <string name="text_title_plant">PLANTA(S)</string>
+    <string name="text_title_list_question">LISTA DE QUESTÃO</string>
+    <string name="text_flow_inexistent">FLUXO INEXISTENTE. POR FAVOR ENTRAR EM CONTATO COM A TI.</string>
 </resources>

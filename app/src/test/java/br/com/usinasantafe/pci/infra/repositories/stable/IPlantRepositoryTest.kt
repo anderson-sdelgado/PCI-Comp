@@ -293,4 +293,68 @@ class IPlantRepositoryTest {
             )
         }
 
+    @Test
+    fun `listByIdList - Check return failure if have error in PlantRoomDatasource listByIdList`() =
+        runTest {
+            val ids = listOf(1, 2, 3)
+            whenever(
+                plantRoomDatasource.listByIdList(ids)
+            ).thenReturn(
+                resultFailure(
+                    "IPlantRoomDatasource.listByIdList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdList(ids)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IPlantRepository.listByIdList -> IPlantRoomDatasource.listByIdList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return correct if function execute successfully`() =
+        runTest {
+            val modelList = listOf(
+                PlantRoomModel(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
+                )
+            )
+            val entityList = listOf(
+                Plant(
+                    idPlant = 1,
+                    codPlant = "01",
+                    descPlant = "PLANT 01",
+                    idFactorySectionPlant = 1
+                )
+            )
+            val ids = listOf(1, 2, 3)
+            whenever(
+                plantRoomDatasource.listByIdList(ids)
+            ).thenReturn(
+                Result.success(modelList)
+            )
+            val result = repository.listByIdList(ids)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
+
 }

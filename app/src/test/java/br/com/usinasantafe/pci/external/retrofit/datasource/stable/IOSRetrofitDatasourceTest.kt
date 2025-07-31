@@ -40,12 +40,12 @@ class IOSRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IOSRetrofitDatasource.listByIdFactorySection",
-                result.exceptionOrNull()!!.message
+                result.exceptionOrNull()!!.message,
+                "IOSRetrofitDatasource.listByIdFactorySection"
             )
             assertEquals(
-                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$"
             )
             server.shutdown()
         }
@@ -72,12 +72,12 @@ class IOSRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IOSRetrofitDatasource.listByIdFactorySection",
-                result.exceptionOrNull()!!.message
+                result.exceptionOrNull()!!.message,
+                "IOSRetrofitDatasource.listByIdFactorySection"
             )
             assertEquals(
-                NullPointerException().toString(),
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
             )
             server.shutdown()
         }
