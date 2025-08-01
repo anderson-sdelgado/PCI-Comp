@@ -90,7 +90,7 @@ class IListPlantNoteTest {
                     idOSItem = 1,
                     idPlantItem = 3,
                     idComponentItem = 3,
-                    idServiceItem = 3
+                    idServiceItem = 4
                 )
             )
             whenever(
@@ -100,7 +100,7 @@ class IListPlantNoteTest {
             )
             val ids = listOf(1, 2, 3)
             whenever(
-                plantRepository.listByIdList(ids)
+                plantRepository.listByIds(ids)
             ).thenReturn(
                 resultFailure(
                     "IPlantRepository.listByIdList",
@@ -212,7 +212,7 @@ class IListPlantNoteTest {
             )
             val ids = listOf(1, 2, 3)
             whenever(
-                plantRepository.listByIdList(ids)
+                plantRepository.listByIds(ids)
             ).thenReturn(
                 Result.success(plantList)
             )

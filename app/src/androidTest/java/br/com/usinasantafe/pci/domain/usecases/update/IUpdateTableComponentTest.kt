@@ -34,7 +34,7 @@ class IUpdateTableComponentTest {
     lateinit var componentDao: ComponentDao
 
     private val resultComponentRetrofit = """
-        [{"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"}]
+        [{"idComponent":1,"codComponent":"1","descComponent":"TESTE 1"}]
     """.trimIndent()
 
     @Test
@@ -107,7 +107,7 @@ class IUpdateTableComponentTest {
             )
             assertEquals(
                 roomModel.codComponent,
-                1
+                "1"
             )
             assertEquals(
                 roomModel.descComponent,

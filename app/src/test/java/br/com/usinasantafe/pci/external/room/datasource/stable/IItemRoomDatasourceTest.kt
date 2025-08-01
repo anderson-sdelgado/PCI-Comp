@@ -313,4 +313,107 @@ class IItemRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `listByIdOSAndIdPlant - Check execution correct`() =
+        runTest {
+            itemDao.insertAll(
+                listOf(
+                    ItemRoomModel(
+                        idItem = 1,
+                        seqItem = 1,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    ),
+                    ItemRoomModel(
+                        idItem = 2,
+                        seqItem = 2,
+                        idOSItem = 1,
+                        idPlantItem = 2,
+                        idComponentItem = 2,
+                        idServiceItem = 2
+                    ),
+                    ItemRoomModel(
+                        idItem = 3,
+                        seqItem = 3,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 2,
+                        idServiceItem = 2
+                    ),
+                    ItemRoomModel(
+                        idItem = 4,
+                        seqItem = 4,
+                        idOSItem = 1,
+                        idPlantItem = 2,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    ),
+                )
+            )
+            val result = datasource.listByIdOSAndIdPlant(
+                idOS = 1,
+                idPlant = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                2
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1.idItem,
+                1
+            )
+            assertEquals(
+                model1.seqItem,
+                1
+            )
+            assertEquals(
+                model1.idOSItem,
+                1
+            )
+            assertEquals(
+                model1.idPlantItem,
+                1
+            )
+            assertEquals(
+                model1.idComponentItem,
+                1
+            )
+            assertEquals(
+                model1.idServiceItem,
+                1
+            )
+            val model2 = list[1]
+            assertEquals(
+                model2.idItem,
+                3
+            )
+            assertEquals(
+                model2.seqItem,
+                3
+            )
+            assertEquals(
+                model2.idOSItem,
+                1
+            )
+            assertEquals(
+                model2.idPlantItem,
+                1
+            )
+            assertEquals(
+                model2.idComponentItem,
+                2
+            )
+            assertEquals(
+                model2.idServiceItem,
+                2
+            )
+        }
 }

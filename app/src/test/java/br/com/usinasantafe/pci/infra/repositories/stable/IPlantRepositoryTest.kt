@@ -298,7 +298,7 @@ class IPlantRepositoryTest {
         runTest {
             val ids = listOf(1, 2, 3)
             whenever(
-                plantRoomDatasource.listByIdList(ids)
+                plantRoomDatasource.listByIds(ids)
             ).thenReturn(
                 resultFailure(
                     "IPlantRoomDatasource.listByIdList",
@@ -306,7 +306,7 @@ class IPlantRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.listByIdList(ids)
+            val result = repository.listByIds(ids)
             assertEquals(
                 result.isFailure,
                 true
@@ -342,11 +342,11 @@ class IPlantRepositoryTest {
             )
             val ids = listOf(1, 2, 3)
             whenever(
-                plantRoomDatasource.listByIdList(ids)
+                plantRoomDatasource.listByIds(ids)
             ).thenReturn(
                 Result.success(modelList)
             )
-            val result = repository.listByIdList(ids)
+            val result = repository.listByIds(ids)
             assertEquals(
                 result.isSuccess,
                 true

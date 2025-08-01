@@ -28,7 +28,7 @@ class IListPlantNote @Inject constructor(
             }
             val entityList = result.getOrNull()!!
             val idPlantList = entityList.map { it.idPlantItem }.distinct()
-            val resultPlantList = plantRepository.listByIdList(
+            val resultPlantList = plantRepository.listByIds(
                 ids = idPlantList
             )
             if(resultPlantList.isFailure){

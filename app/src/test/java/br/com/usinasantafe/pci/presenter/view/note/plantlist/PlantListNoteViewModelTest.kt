@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Rule
-import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.Test
 
 @ExperimentalCoroutinesApi
 class PlantListNoteViewModelTest {
@@ -237,6 +237,10 @@ class PlantListNoteViewModelTest {
             assertEquals(
                 item2.desc,
                 "Plant 2"
+            )
+            assertEquals(
+                viewModel.uiState.value.flagProgress,
+                false
             )
         }
 }

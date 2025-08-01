@@ -133,7 +133,7 @@ class IUpdateTableComponentTest {
                     listOf(
                         Component(
                             idComponent = 1,
-                            codComponent = 1,
+                            codComponent = "1",
                             descComponent = "Component"
                         )
                     )
@@ -193,7 +193,7 @@ class IUpdateTableComponentTest {
             val entityList = listOf(
                 Component(
                     idComponent = 1,
-                    codComponent = 1,
+                    codComponent = "1",
                     descComponent = "Component"
                 )
             )
@@ -277,7 +277,7 @@ class IUpdateTableComponentTest {
             val entityList = listOf(
                 Component(
                     idComponent = 1,
-                    codComponent = 1,
+                    codComponent = "1",
                     descComponent = "Component"
                 )
             )

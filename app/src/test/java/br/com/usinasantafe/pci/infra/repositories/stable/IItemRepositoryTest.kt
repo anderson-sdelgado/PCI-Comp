@@ -300,4 +300,82 @@ class IItemRepositoryTest {
             )
         }
 
+    @Test
+    fun `listByIdOSAndIdPlant - Check return failure if have error in ItemRoomDatasource listByIdOSAndIdPlant`() =
+        runTest {
+            whenever(
+                itemRoomDatasource.listByIdOSAndIdPlant(
+                    idOS = 1,
+                    idPlant = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IItemRoomDatasource.listByIdOSAndIdPlant",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdOSAndIdPlant(
+                idOS = 1,
+                idPlant = 1
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemRepository.listByIdOSAndIdPlant -> IItemRoomDatasource.listByIdOSAndIdPlant"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdOSAndIdPlant - Check return correct if function execute successfully`() =
+        runTest {
+            val modelList = listOf(
+                ItemRoomModel(
+                    idItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
+                    idPlantItem = 1,
+                    idComponentItem = 1,
+                    idServiceItem = 1
+                )
+            )
+            val entityList = listOf(
+                Item(
+                    idItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
+                    idPlantItem = 1,
+                    idComponentItem = 1,
+                    idServiceItem = 1
+                )
+            )
+            whenever(
+                itemRoomDatasource.listByIdOSAndIdPlant(
+                    idOS = 1,
+                    idPlant = 1
+                )
+            ).thenReturn(
+                Result.success(modelList)
+            )
+            val result = repository.listByIdOSAndIdPlant(
+                idOS = 1,
+                idPlant = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
+
 }

@@ -1,10 +1,12 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
+import br.com.usinasantafe.pci.domain.entities.stable.Component
 import br.com.usinasantafe.pci.domain.entities.stable.Service
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.ServiceRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ServiceRoomDatasource
 import br.com.usinasantafe.pci.infra.models.retrofit.stable.ServiceRetrofitModel
+import br.com.usinasantafe.pci.infra.models.room.stable.ComponentRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ServiceRoomModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -213,4 +215,75 @@ class IServiceRepositoryTest {
             )
         }
 
+    @Test
+    fun `listByIdList - Check return failure if have error in ServiceRoomDatasource listByIdList`() =
+        runTest {
+            val ids = listOf(1, 2)
+            whenever(
+                serviceRoomDatasource.listByIds(ids)
+            ).thenReturn(
+                resultFailure(
+                    "IServiceRoomDatasource.listByIds",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIds(ids)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IServiceRepository.listByIds -> IServiceRoomDatasource.listByIds"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return correct if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                ServiceRoomModel(
+                    idService = 1,
+                    codService = 1,
+                    descService = "Service 1"
+                ),
+                ServiceRoomModel(
+                    idService = 2,
+                    codService = 2,
+                    descService = "Service 2"
+                )
+            )
+            val entityList = listOf(
+                Service(
+                    idService = 1,
+                    codService = 1,
+                    descService = "Service 1"
+                ),
+                Service(
+                    idService = 2,
+                    codService = 2,
+                    descService = "Service 2"
+                )
+            )
+            val ids = listOf(1, 2)
+            whenever(
+                serviceRoomDatasource.listByIds(ids)
+            ).thenReturn(
+                Result.success(roomModelList)
+            )
+            val result = repository.listByIds(ids)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
 }

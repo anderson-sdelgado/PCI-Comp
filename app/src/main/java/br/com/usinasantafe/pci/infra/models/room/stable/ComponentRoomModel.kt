@@ -9,7 +9,7 @@ import br.com.usinasantafe.pci.utils.TB_COMPONENT
 data class ComponentRoomModel(
     @PrimaryKey
     val idComponent: Int,
-    val codComponent: Int,
+    val codComponent: String,
     val descComponent: String,
 )
 

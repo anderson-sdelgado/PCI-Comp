@@ -4,7 +4,7 @@ import br.com.usinasantafe.pci.domain.entities.stable.Component
 
 data class ComponentRetrofitModel(
     val idComponent: Int,
-    val codComponent: Int,
+    val codComponent: String,
     val descComponent: String,
 )
 

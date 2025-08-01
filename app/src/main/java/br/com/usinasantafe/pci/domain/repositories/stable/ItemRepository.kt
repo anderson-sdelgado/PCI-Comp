@@ -10,4 +10,8 @@ interface ItemRepository {
         idOS: Int
     ): Result<List<Item>>
     suspend fun listAll(): Result<List<Item>>
+    suspend fun listByIdOSAndIdPlant(
+        idOS: Int,
+        idPlant: Int
+    ): Result<List<Item>>
 }

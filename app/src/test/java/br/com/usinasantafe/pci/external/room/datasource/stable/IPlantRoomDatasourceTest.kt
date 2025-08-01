@@ -305,7 +305,7 @@ class IPlantRoomDatasourceTest {
                 )
             )
             val ids = listOf(5, 6, 7)
-            val result = datasource.listByIdList(ids)
+            val result = datasource.listByIds(ids)
             assertEquals(
                 result.isSuccess,
                 true
@@ -349,7 +349,7 @@ class IPlantRoomDatasourceTest {
                 )
             )
             val ids = listOf(1, 2, 3)
-            val result = datasource.listByIdList(ids)
+            val result = datasource.listByIds(ids)
             assertEquals(
                 result.isSuccess,
                 true

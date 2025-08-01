@@ -47,4 +47,18 @@ class IItemRoomDatasource @Inject constructor(
 
     }
 
+    override suspend fun listByIdOSAndIdPlant(
+        idOS: Int,
+        idPlant: Int
+    ): Result<List<ItemRoomModel>> {
+        return try {
+            Result.success(itemDao.listByIdOSAndIdPlant(idOS, idPlant))
+        } catch (e: Exception) {
+            resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

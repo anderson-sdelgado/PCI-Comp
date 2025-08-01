@@ -34,7 +34,6 @@ import kotlin.time.Duration.Companion.minutes
 @HiltAndroidTest
 class OSListHeaderScreenTest {
 
-
     private val resultOSListIncorrect = """
         [
             {"idOS":1,"nroOS":1,"idPlantOS":1,"qtdDayOS":1,"descPeriodOS":"DIARIO","idFactorySectionOS":1},
@@ -99,7 +98,7 @@ class OSListHeaderScreenTest {
         }
 
     @Test
-    fun check_open_screen_and_have_header_shared_preferences() =
+    fun check_open_screen_and_not_have_header_shared_preferences() =
         runTest {
 
             hiltRule.inject()

@@ -6,6 +6,6 @@ interface PlantRoomDatasource {
     suspend fun addAll(list: List<PlantRoomModel>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listByIdFactorySection(idFactorySection: Int): Result<List<PlantRoomModel>>
-    suspend fun listByIdList(ids: List<Int>): Result<List<PlantRoomModel>>
+    suspend fun listByIds(ids: List<Int>): Result<List<PlantRoomModel>>
 
 }

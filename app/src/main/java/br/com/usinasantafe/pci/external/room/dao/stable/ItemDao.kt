@@ -18,4 +18,10 @@ interface ItemDao {
     @Query("SELECT * FROM $TB_ITEM")
     suspend fun all(): List<ItemRoomModel>
 
+    @Query("SELECT * FROM $TB_ITEM WHERE idOSItem = :idOS AND idPlantItem = :idPlant")
+    suspend fun listByIdOSAndIdPlant(
+        idOS: Int,
+        idPlant: Int
+    ): List<ItemRoomModel>
+
 }

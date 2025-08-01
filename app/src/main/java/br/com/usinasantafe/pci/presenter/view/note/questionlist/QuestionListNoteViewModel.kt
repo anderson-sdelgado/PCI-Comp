@@ -29,7 +29,6 @@ data class QuestionListNoteState(
     val idPlant: Int = 0,
     val itemList: List<ItemScreenModel> = listOf(),
     val flagProgress: Boolean = true,
-    val flagMsgUpdate: Boolean = false,
     val flagDialog: Boolean = false,
     val failure: String = "",
     val currentProgress: Float = 0.0f,
@@ -91,7 +90,6 @@ class QuestionListNoteViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 flagProgress = true,
-                flagMsgUpdate = false,
                 levelUpdate = LevelUpdate.CHECK,
             )
         }

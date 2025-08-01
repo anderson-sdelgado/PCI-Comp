@@ -177,4 +177,92 @@ class IServiceRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `listByIdList - Check execution correct`() =
+        runTest {
+            serviceDao.insertAll(
+                listOf(
+                    ServiceRoomModel(
+                        idService = 1,
+                        codService = 1,
+                        descService = "TESTE 1",
+                    ),
+                    ServiceRoomModel(
+                        idService = 2,
+                        codService = 2,
+                        descService = "TESTE 2",
+                    ),
+                    ServiceRoomModel(
+                        idService = 3,
+                        codService = 3,
+                        descService = "TESTE 3",
+                    ),
+                    ServiceRoomModel(
+                        idService = 4,
+                        codService = 4,
+                        descService = "TESTE 4",
+                    ),
+                    ServiceRoomModel(
+                        idService = 5,
+                        codService = 5,
+                        descService = "TESTE 5",
+                    )
+                )
+            )
+            val qtdBefore = serviceDao.all().size
+            assertEquals(
+                qtdBefore,
+                5
+            )
+            val result = datasource.listByIds(listOf(2, 3, 4))
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                3
+            )
+            val entity1 = list[0]
+            assertEquals(
+                entity1.idService,
+                2
+            )
+            assertEquals(
+                entity1.codService,
+                2
+            )
+            assertEquals(
+                entity1.descService,
+                "TESTE 2"
+            )
+            val entity2 = list[1]
+            assertEquals(
+                entity2.idService,
+                3
+            )
+            assertEquals(
+                entity2.codService,
+                3
+            )
+            assertEquals(
+                entity2.descService,
+                "TESTE 3"
+            )
+            val entity3 = list[2]
+            assertEquals(
+                entity3.idService,
+                4
+            )
+            assertEquals(
+                entity3.codService,
+                4
+            )
+            assertEquals(
+                entity3.descService,
+                "TESTE 4"
+            )
+        }
+
 }

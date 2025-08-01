@@ -35,4 +35,16 @@ class IComponentRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun listByIds(ids: List<Int>): Result<List<ComponentRoomModel>> {
+        try {
+            val list = componentDao.listByIds(ids)
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

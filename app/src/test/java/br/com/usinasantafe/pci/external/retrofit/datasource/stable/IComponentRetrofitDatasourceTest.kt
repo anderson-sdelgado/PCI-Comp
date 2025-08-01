@@ -13,8 +13,8 @@ class IComponentRetrofitDatasourceTest {
 
     private val resultComponentList = """
         [
-          {"idComponent":1,"codComponent":1,"descComponent":"Teste 1"},
-          {"idComponent":2,"codComponent":2,"descComponent":"Teste 2"}
+          {"idComponent":1,"codComponent":"1","descComponent":"Teste 1"},
+          {"idComponent":2,"codComponent":"2","descComponent":"Teste 2"}
         ]
     """.trimIndent()
 
@@ -103,12 +103,12 @@ class IComponentRetrofitDatasourceTest {
                     listOf(
                         ComponentRetrofitModel(
                             idComponent = 1,
-                            codComponent = 1,
+                            codComponent = "1",
                             descComponent = "Teste 1"
                         ),
                         ComponentRetrofitModel(
                             idComponent = 2,
-                            codComponent = 2,
+                            codComponent = "2",
                             descComponent = "Teste 2"
                         )
                     )

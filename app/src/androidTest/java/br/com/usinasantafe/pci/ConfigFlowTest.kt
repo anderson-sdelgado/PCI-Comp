@@ -54,7 +54,7 @@ class ConfigFlowTest {
             val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
 
             val resultComponentRetrofit = """
-                [{"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"}]
+                [{"idComponent":1,"codComponent":"1","descComponent":"TESTE 1"}]
             """.trimIndent()
 
             val resultServiceRetrofit = """

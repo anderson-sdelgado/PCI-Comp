@@ -91,9 +91,9 @@ class IPlantRepository @Inject constructor(
         }
     }
 
-    override suspend fun listByIdList(ids: List<Int>): Result<List<Plant>> {
+    override suspend fun listByIds(ids: List<Int>): Result<List<Plant>> {
         try {
-            val result = plantRoomDatasource.listByIdList(ids)
+            val result = plantRoomDatasource.listByIds(ids)
             if(result.isFailure){
                 return resultFailureMiddle(
                     context = getClassAndMethod(),

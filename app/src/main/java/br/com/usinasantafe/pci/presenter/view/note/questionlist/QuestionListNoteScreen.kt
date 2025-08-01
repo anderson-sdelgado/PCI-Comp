@@ -51,7 +51,6 @@ fun QuestionListNoteScreen(
             QuestionListNoteContent(
                 itemList = uiState.itemList,
                 recoverList = viewModel::recoverList,
-                flagMsgUpdate = uiState.flagMsgUpdate,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagProgress = uiState.flagProgress,
                 flagDialog = uiState.flagDialog,
@@ -71,7 +70,6 @@ fun QuestionListNoteScreen(
 fun QuestionListNoteContent(
     itemList: List<ItemScreenModel>,
     recoverList: () -> Unit,
-    flagMsgUpdate: Boolean,
     setCloseDialog: () -> Unit,
     flagProgress: Boolean,
     flagDialog: Boolean,
@@ -145,11 +143,12 @@ fun QuestionListNoteContent(
                     ItemListItemDesign(
                         id = item.id,
                         pos = item.pos,
-                        desc = item.desc,
+                        descService = item.descService,
+                        descComponent = item.descComponent,
                         status = item.status,
                         setActionItem = {  },
                         font = 24,
-                        padding = 6
+                        padding = 4
                     )
                 }
             }
@@ -184,6 +183,12 @@ fun QuestionListNoteContent(
         }
 
     }
+
+    LaunchedEffect(levelUpdate) {
+        if(levelUpdate == LevelUpdate.FINISH_UPDATE_COMPLETED){
+            recoverList()
+        }
+    }
 }
 
 @Preview(showBackground = true)
@@ -194,7 +199,6 @@ fun QuestionListNotePagePreview() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
-                flagMsgUpdate = false,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = false,
@@ -203,6 +207,136 @@ fun QuestionListNotePagePreview() {
                 tableUpdate = "",
                 currentProgress = 0.0f,
                 errors = Errors.FIELD_EMPTY,
+                onNavPlantList = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionListNotePagePreviewFinishUpdate() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionListNoteContent(
+                itemList = listOf(),
+                recoverList = {},
+                setCloseDialog = {},
+                flagProgress = true,
+                flagDialog = false,
+                failure = "",
+                levelUpdate = LevelUpdate.CLEAN,
+                tableUpdate = "tb_item",
+                currentProgress = 0.25555f,
+                errors = Errors.FIELD_EMPTY,
+                onNavPlantList = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionListNotePagePreviewDataUpdate() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionListNoteContent(
+                itemList = listOf(),
+                recoverList = {},
+                setCloseDialog = {},
+                flagProgress = true,
+                flagDialog = false,
+                failure = "",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "tb_plant",
+                currentProgress = 1f,
+                errors = Errors.FIELD_EMPTY,
+                onNavPlantList = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionListNotePagePreviewFailureUpdate() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionListNoteContent(
+                itemList = listOf(),
+                recoverList = {},
+                setCloseDialog = {},
+                flagProgress = true,
+                flagDialog = true,
+                failure = "Failure",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "tb_os",
+                currentProgress = 1f,
+                errors = Errors.UPDATE,
+                onNavPlantList = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionListNotePagePreviewUpdate() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionListNoteContent(
+                itemList = listOf(),
+                recoverList = {},
+                setCloseDialog = {},
+                flagProgress = false,
+                flagDialog = true,
+                failure = "Failure",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "tb_os",
+                currentProgress = 1f,
+                errors = Errors.UPDATE,
+                onNavPlantList = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionListNotePagePreviewData() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionListNoteContent(
+                itemList = listOf(
+                    ItemScreenModel(
+                        id = 1,
+                        pos = "Questão 1",
+                        descService = "Service 1",
+                        descComponent = "Component 1",
+                        status = ""
+                    ),
+                    ItemScreenModel(
+                        id = 2,
+                        pos = "Questão 2",
+                        descService = "Service 2",
+                        descComponent = "Component 2",
+                        status = ""
+                    )
+                ),
+                recoverList = {},
+                setCloseDialog = {},
+                flagProgress = false,
+                flagDialog = false,
+                failure = "Failure",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "tb_os",
+                currentProgress = 1f,
+                errors = Errors.UPDATE,
                 onNavPlantList = {},
                 modifier = Modifier.padding(innerPadding)
             )

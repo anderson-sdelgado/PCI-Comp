@@ -6,4 +6,8 @@ interface ItemRoomDatasource {
     suspend fun addAll(list: List<ItemRoomModel>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listAll(): Result<List<ItemRoomModel>>
+    suspend fun listByIdOSAndIdPlant(
+        idOS: Int,
+        idPlant: Int
+    ): Result<List<ItemRoomModel>>
 }

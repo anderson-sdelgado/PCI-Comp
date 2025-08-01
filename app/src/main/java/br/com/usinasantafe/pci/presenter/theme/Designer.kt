@@ -133,7 +133,8 @@ fun ItemListPlantDesign(
 fun ItemListItemDesign(
     id: Int = 0,
     pos: String,
-    desc: String,
+    descService: String,
+    descComponent: String,
     status: String,
     font: Int = 22,
     padding: Int = 8,
@@ -156,7 +157,14 @@ fun ItemListItemDesign(
         )
         Text(
             textAlign = TextAlign.Left,
-            text = desc,
+            text = descService,
+            fontSize = font.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Text(
+            textAlign = TextAlign.Left,
+            text = descComponent,
             fontSize = font.sp,
             modifier = Modifier
                 .fillMaxWidth()

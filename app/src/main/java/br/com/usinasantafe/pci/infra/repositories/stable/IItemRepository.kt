@@ -91,4 +91,29 @@ class IItemRepository @Inject constructor(
         }
     }
 
+    override suspend fun listByIdOSAndIdPlant(
+        idOS: Int,
+        idPlant: Int
+    ): Result<List<Item>> {
+        try {
+            val result = itemRoomDatasource.listByIdOSAndIdPlant(
+                idOS = idOS,
+                idPlant = idPlant
+            )
+            if(result.isFailure){
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception){
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

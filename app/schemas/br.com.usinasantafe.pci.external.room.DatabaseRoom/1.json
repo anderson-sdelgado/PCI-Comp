@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "33be01305050726b009ddb25a859de84",
+    "identityHash": "d5c0d222ab5efcbfe2f662538775c021",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "tb_component",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idComponent` INTEGER NOT NULL, `codComponent` INTEGER NOT NULL, `descComponent` TEXT NOT NULL, PRIMARY KEY(`idComponent`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idComponent` INTEGER NOT NULL, `codComponent` TEXT NOT NULL, `descComponent` TEXT NOT NULL, PRIMARY KEY(`idComponent`))",
         "fields": [
           {
             "fieldPath": "idComponent",
@@ -55,7 +55,7 @@
           {
             "fieldPath": "codComponent",
             "columnName": "codComponent",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -304,7 +304,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '33be01305050726b009ddb25a859de84')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd5c0d222ab5efcbfe2f662538775c021')"
     ]
   }
 }

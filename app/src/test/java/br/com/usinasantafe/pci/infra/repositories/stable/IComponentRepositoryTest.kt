@@ -27,14 +27,14 @@ class IComponentRepositoryTest {
             val roomModelList = listOf(
                 ComponentRoomModel(
                     idComponent = 1,
-                    codComponent = 1,
+                    codComponent = "1",
                     descComponent = "Component 1"
                 )
             )
             val entityList = listOf(
                 Component(
                     idComponent = 1,
-                    codComponent = 1,
+                    codComponent = "1",
                     descComponent = "Component 1"
                 )
             )
@@ -68,14 +68,14 @@ class IComponentRepositoryTest {
             val roomModelList = listOf(
                 ComponentRoomModel(
                     idComponent = 1,
-                    codComponent = 1,
+                    codComponent = "1",
                     descComponent = "Component 1"
                 )
             )
             val entityList = listOf(
                 Component(
                     idComponent = 1,
-                    codComponent = 1,
+                    codComponent = "1",
                     descComponent = "Component 1"
                 )
             )
@@ -174,24 +174,24 @@ class IComponentRepositoryTest {
             val retrofitModelList = listOf(
                 ComponentRetrofitModel(
                     idComponent = 1,
-                    codComponent = 1,
+                    codComponent = "1",
                     descComponent = "Component 1"
                 ),
                 ComponentRetrofitModel(
                     idComponent = 2,
-                    codComponent = 2,
+                    codComponent = "2",
                     descComponent = "Component 2"
                 )
             )
             val entityList = listOf(
                 Component(
                     idComponent = 1,
-                    codComponent = 1,
+                    codComponent = "1",
                     descComponent = "Component 1"
                 ),
                 Component(
                     idComponent = 2,
-                    codComponent = 2,
+                    codComponent = "2",
                     descComponent = "Component 2"
                 )
             )
@@ -203,6 +203,78 @@ class IComponentRepositoryTest {
                 )
             )
             val result = repository.listAll("token")
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return failure if have error in ComponentRoomDatasource listByIdList`() =
+        runTest {
+            val ids = listOf(1, 2)
+            whenever(
+                componentRoomDatasource.listByIds(ids)
+            ).thenReturn(
+                resultFailure(
+                    "IComponentRoomDatasource.listByIds",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIds(ids)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IComponentRepository.listByIds -> IComponentRoomDatasource.listByIds"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return correct if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                ComponentRoomModel(
+                    idComponent = 1,
+                    codComponent = "1",
+                    descComponent = "Component 1"
+                ),
+                ComponentRoomModel(
+                    idComponent = 2,
+                    codComponent = "2",
+                    descComponent = "Component 2"
+                )
+            )
+            val entityList = listOf(
+                Component(
+                    idComponent = 1,
+                    codComponent = "1",
+                    descComponent = "Component 1"
+                ),
+                Component(
+                    idComponent = 2,
+                    codComponent = "2",
+                    descComponent = "Component 2"
+                )
+            )
+            val ids = listOf(1, 2)
+            whenever(
+                componentRoomDatasource.listByIds(ids)
+            ).thenReturn(
+                Result.success(roomModelList)
+            )
+            val result = repository.listByIds(ids)
             assertEquals(
                 result.isSuccess,
                 true
