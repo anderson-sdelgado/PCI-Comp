@@ -386,7 +386,7 @@ class ConfigScreenTest {
             )
             assertEquals(
                 entityComponent.codComponent,
-                1
+                "1"
             )
             assertEquals(
                 entityComponent.descComponent,
@@ -441,7 +441,7 @@ class ConfigScreenTest {
             )
             assertEquals(
                 entityComponent.codComponent,
-                1
+            "1"
             )
             assertEquals(
                 entityComponent.descComponent,
@@ -514,7 +514,7 @@ class ConfigScreenTest {
             )
             assertEquals(
                 entityComponent.codComponent,
-                1
+                "1"
             )
             assertEquals(
                 entityComponent.descComponent,

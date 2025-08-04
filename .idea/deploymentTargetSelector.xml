@@ -5,16 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_list_if_process_execute_successfully()">
+      <SelectionState runConfigName="check_open_screen_and_msg_if_web_service_return_data_service_duplicate()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_list_empty_if_plant_room_is_empty()">
+      <SelectionState runConfigName="check_open_screen_and_msg_if_web_service_return_data_component_and_service_incomplete()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_return_list_if_plant_room_is_not_empty()">
+      <SelectionState runConfigName="check_open_screen_and_msg_if_not_have_data_in_header_table()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen() (1)">
+      <SelectionState runConfigName="check_open_screen()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="check_open_screen_and_return_list_correct_with_update()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

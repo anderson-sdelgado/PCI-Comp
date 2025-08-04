@@ -51,10 +51,11 @@ class IItemRoomDatasource @Inject constructor(
         idOS: Int,
         idPlant: Int
     ): Result<List<ItemRoomModel>> {
-        return try {
-            Result.success(itemDao.listByIdOSAndIdPlant(idOS, idPlant))
+        try {
+            val list = itemDao.listByIdOSAndIdPlant(idOS, idPlant)
+            return Result.success(list)
         } catch (e: Exception) {
-            resultFailureFinish(
+            return resultFailureFinish(
                 context = getClassAndMethod(),
                 cause = e
             )

@@ -1,6 +1,7 @@
 package br.com.usinasantafe.pci.presenter
 
 import androidx.navigation.NavHostController
+import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.presenter.Screens.COLAB_HEADER_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.CONFIG_SCREEN
@@ -30,6 +31,7 @@ object Screens {
 
 object Args {
     const val ID_PLANT_ARG = "idPlant"
+    const val ID_ITEM_ARG = "idItem"
 }
 
 object Routes {
@@ -43,7 +45,7 @@ object Routes {
     const val QUESTION_LIST_NOTE_ROUTE = QUESTION_LIST_NOTE_SCREEN
     const val QUESTION_DESC_NOTE_ROUTE = QUESTION_DESC_NOTE_SCREEN
     const val QUESTION_OBS_NOTE_ROUTE = QUESTION_OBS_NOTE_SCREEN
-    const val QUESTION_RESP_NOTE_ROUTE = QUESTION_RESP_NOTE_SCREEN
+    const val QUESTION_RESP_NOTE_ROUTE = "$QUESTION_RESP_NOTE_SCREEN/{$ID_PLANT_ARG}/{$ID_ITEM_ARG}"
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -96,16 +98,25 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate("${QUESTION_LIST_NOTE_SCREEN}/${idPlant}")
     }
 
-    fun navigateToQuestionDescNote() {
-        navController.navigate(QUESTION_DESC_NOTE_SCREEN)
+    fun navigateToQuestionDescNote(
+        idPlant: Int,
+        idItem: Int
+    ) {
+        navController.navigate("${QUESTION_DESC_NOTE_SCREEN}/${idPlant}/${idItem}")
     }
 
-    fun navigateToQuestionObsNote() {
-        navController.navigate(QUESTION_OBS_NOTE_SCREEN)
+    fun navigateToQuestionObsNote(
+        idPlant: Int,
+        idItem: Int
+    ) {
+        navController.navigate("${QUESTION_OBS_NOTE_SCREEN}/${idPlant}/${idItem}")
     }
 
-    fun navigateToQuestionRespNote() {
-        navController.navigate(QUESTION_RESP_NOTE_SCREEN)
+    fun navigateToQuestionRespNote(
+        idPlant: Int,
+        idItem: Int
+    ) {
+        navController.navigate("${QUESTION_RESP_NOTE_SCREEN}/${idPlant}/${idItem}")
     }
 
     ////////////////////////////////////////////////////////////////////

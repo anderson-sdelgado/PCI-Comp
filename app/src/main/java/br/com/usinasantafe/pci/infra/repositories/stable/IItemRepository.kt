@@ -116,4 +116,8 @@ class IItemRepository @Inject constructor(
         }
     }
 
+    override suspend fun getById(id: Int): Result<Item> {
+        TODO("Not yet implemented")
+    }
+
 }

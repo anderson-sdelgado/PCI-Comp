@@ -43,6 +43,7 @@ class IUpdateTableService @Inject constructor(
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -61,6 +62,7 @@ class IUpdateTableService @Inject constructor(
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -86,6 +88,7 @@ class IUpdateTableService @Inject constructor(
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -112,6 +115,7 @@ class IUpdateTableService @Inject constructor(
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,

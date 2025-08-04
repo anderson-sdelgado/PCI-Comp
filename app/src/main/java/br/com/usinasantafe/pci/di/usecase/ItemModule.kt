@@ -23,4 +23,12 @@ interface ItemModule {
     @Singleton
     fun bindListItemNote(usecase: IListItemNote): ListItemNote
 
+    @Binds
+    @Singleton
+    fun bindGetItem(usecase: IGetItem): GetItem
+
+    @Binds
+    @Singleton
+    fun bindSetRespItem(usecase: ISetRespItem): SetRespItem
+
 }

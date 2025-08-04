@@ -73,7 +73,7 @@ fun ItemListOSDesign(
         )
         Text(
             textAlign = TextAlign.Left,
-            text = os.toString(),
+            text = os,
             fontSize = font.sp,
             modifier = Modifier
                 .fillMaxWidth()

@@ -14,4 +14,7 @@ interface ItemRepository {
         idOS: Int,
         idPlant: Int
     ): Result<List<Item>>
+    suspend fun getById(
+        id: Int
+    ): Result<Item>
 }

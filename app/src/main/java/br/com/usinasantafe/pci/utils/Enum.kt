@@ -14,7 +14,7 @@ enum class TypeItemMenu { ITEM_NORMAL, BUTTON_FINISH_HEADER }
 enum class TypeView { ITEM, BUTTON }
 enum class TypeEquip { NORMAL, FERT }
 enum class LevelUpdate { RECOVERY, CLEAN, SAVE, GET_TOKEN, SAVE_TOKEN, FINISH_UPDATE_INITIAL, FINISH_UPDATE_COMPLETED, CHECK }
-enum class OptionResp { ACCORDING, NONCONFORMING }
+enum class OptionResp { ACCORDING, NON_CONFORMING }
 
 enum class FlowMenu { INVALID, WORK, STOP, FINISH }
 enum class FlowApp { HEADER_INITIAL, NOTE_WORK, NOTE_STOP, HEADER_FINISH, CHECK_LIST }

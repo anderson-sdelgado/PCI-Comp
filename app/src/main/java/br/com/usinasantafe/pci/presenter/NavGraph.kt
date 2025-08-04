@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.presenter.Routes.COLAB_HEADER_ROUTE
 import br.com.usinasantafe.pci.presenter.Routes.CONFIG_ROUTE
@@ -26,7 +27,10 @@ import br.com.usinasantafe.pci.presenter.view.configuration.password.PasswordScr
 import br.com.usinasantafe.pci.presenter.view.header.colab.ColabHeaderScreen
 import br.com.usinasantafe.pci.presenter.view.header.oslist.OSListHeaderScreen
 import br.com.usinasantafe.pci.presenter.view.note.plantlist.PlantListNoteScreen
+import br.com.usinasantafe.pci.presenter.view.note.questiondesc.QuestionDescNoteScreen
 import br.com.usinasantafe.pci.presenter.view.note.questionlist.QuestionListNoteScreen
+import br.com.usinasantafe.pci.presenter.view.note.questionobs.QuestionObsNoteScreen
+import br.com.usinasantafe.pci.presenter.view.note.questionresp.QuestionRespNoteScreen
 import br.com.usinasantafe.pci.presenter.view.splash.SplashScreen
 
 
@@ -137,22 +141,90 @@ fun NavigationGraph(
                     type = NavType.IntType
                 }
             )
-        ) {
+        ) { entry ->
             QuestionListNoteScreen(
-                onNavPlantList = {}
+                onNavPlantList = {
+                    navActions.navigateToPlantListNote()
+                },
+                onNavQuestionResp = {
+                    navActions.navigateToQuestionRespNote(
+                        idItem = it,
+                        idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
+                    )
+                },
+                onNavQuestionDesc = {
+                    navActions.navigateToQuestionDescNote(
+                        idItem = it,
+                        idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
+                    )
+                }
             )
         }
 
-        composable(QUESTION_DESC_NOTE_ROUTE) {
-
+        composable(
+            QUESTION_DESC_NOTE_ROUTE,
+            arguments = listOf(
+                navArgument(ID_ITEM_ARG) { type = NavType.IntType },
+                navArgument(ID_PLANT_ARG) { type = NavType.IntType }
+            )
+        ) { entry ->
+            QuestionDescNoteScreen(
+                onNavQuestionList = {
+                    navActions.navigateToQuestionListNote(
+                        idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
+                    )
+                },
+                onNavQuestionResp = {
+                    navActions.navigateToQuestionRespNote(
+                        idItem = entry.arguments?.getInt(ID_ITEM_ARG)!!,
+                        idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
+                    )
+                }
+            )
         }
 
-        composable(QUESTION_OBS_NOTE_ROUTE) {
-
+        composable(
+            QUESTION_OBS_NOTE_ROUTE,
+            arguments = listOf(
+                navArgument(ID_ITEM_ARG) { type = NavType.IntType },
+                navArgument(ID_PLANT_ARG) { type = NavType.IntType }
+            )
+        ) { entry ->
+            QuestionObsNoteScreen(
+                onNavQuestionList = {
+                    navActions.navigateToQuestionListNote(
+                        idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
+                    )
+                },
+                onNavQuestionResp = {
+                    navActions.navigateToQuestionRespNote(
+                        idItem = entry.arguments?.getInt(ID_ITEM_ARG)!!,
+                        idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
+                    )
+                }
+            )
         }
 
-        composable(QUESTION_RESP_NOTE_ROUTE) {
-
+        composable(
+            QUESTION_RESP_NOTE_ROUTE,
+            arguments = listOf(
+                navArgument(ID_ITEM_ARG) { type = NavType.IntType },
+                navArgument(ID_PLANT_ARG) { type = NavType.IntType }
+            )
+        ) { entry ->
+            QuestionRespNoteScreen(
+                onNavQuestionList = {
+                    navActions.navigateToQuestionListNote(
+                        idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
+                    )
+                },
+                onNavQuestionObs = {
+                    navActions.navigateToQuestionObsNote(
+                        idItem = entry.arguments?.getInt(ID_ITEM_ARG)!!,
+                        idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
+                    )
+                }
+            )
         }
 
 

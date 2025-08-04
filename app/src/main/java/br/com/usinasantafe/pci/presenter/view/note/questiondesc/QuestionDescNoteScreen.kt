@@ -12,7 +12,10 @@ import br.com.usinasantafe.pci.presenter.theme.TitleDesign
 import br.com.usinasantafe.pci.presenter.theme.PCITheme
 
 @Composable
-fun QuestionDescNoteScreen() {
+fun QuestionDescNoteScreen(
+    onNavQuestionList: () -> Unit,
+    onNavQuestionResp: () -> Unit
+) {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             QuestionDescNoteContent(

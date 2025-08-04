@@ -39,6 +39,8 @@ import br.com.usinasantafe.pci.utils.LevelUpdate
 fun QuestionListNoteScreen(
     viewModel: QuestionListNoteViewModel = hiltViewModel(),
     onNavPlantList: () -> Unit,
+    onNavQuestionResp: (Int) -> Unit,
+    onNavQuestionDesc: (Int) -> Unit
 ) {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -60,6 +62,7 @@ fun QuestionListNoteScreen(
                 tableUpdate = uiState.tableUpdate,
                 errors = uiState.errors,
                 onNavPlantList = onNavPlantList,
+                onNavQuestionResp = onNavQuestionResp,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -79,6 +82,7 @@ fun QuestionListNoteContent(
     tableUpdate: String,
     errors: Errors,
     onNavPlantList: () -> Unit,
+    onNavQuestionResp: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -146,9 +150,9 @@ fun QuestionListNoteContent(
                         descService = item.descService,
                         descComponent = item.descComponent,
                         status = item.status,
-                        setActionItem = {  },
+                        setActionItem = { onNavQuestionResp(item.id) },
                         font = 24,
-                        padding = 4
+                        padding = 0
                     )
                 }
             }
@@ -208,6 +212,7 @@ fun QuestionListNotePagePreview() {
                 currentProgress = 0.0f,
                 errors = Errors.FIELD_EMPTY,
                 onNavPlantList = {},
+                onNavQuestionResp = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -231,6 +236,7 @@ fun QuestionListNotePagePreviewFinishUpdate() {
                 currentProgress = 0.25555f,
                 errors = Errors.FIELD_EMPTY,
                 onNavPlantList = {},
+                onNavQuestionResp = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -254,6 +260,7 @@ fun QuestionListNotePagePreviewDataUpdate() {
                 currentProgress = 1f,
                 errors = Errors.FIELD_EMPTY,
                 onNavPlantList = {},
+                onNavQuestionResp = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -277,6 +284,7 @@ fun QuestionListNotePagePreviewFailureUpdate() {
                 currentProgress = 1f,
                 errors = Errors.UPDATE,
                 onNavPlantList = {},
+                onNavQuestionResp = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -300,6 +308,7 @@ fun QuestionListNotePagePreviewUpdate() {
                 currentProgress = 1f,
                 errors = Errors.UPDATE,
                 onNavPlantList = {},
+                onNavQuestionResp = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -338,6 +347,7 @@ fun QuestionListNotePagePreviewData() {
                 currentProgress = 1f,
                 errors = Errors.UPDATE,
                 onNavPlantList = {},
+                onNavQuestionResp = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

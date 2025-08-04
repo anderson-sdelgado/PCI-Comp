@@ -26,7 +26,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 data class QuestionListNoteState(
-    val idPlant: Int = 0,
     val itemList: List<ItemScreenModel> = listOf(),
     val flagProgress: Boolean = true,
     val flagDialog: Boolean = false,
@@ -71,14 +70,6 @@ class QuestionListNoteViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(QuestionListNoteState())
     val uiState = _uiState.asStateFlow()
-
-    init {
-        _uiState.update {
-            it.copy(
-                idPlant = idPlant
-            )
-        }
-    }
 
     fun setCloseDialog() {
         _uiState.update {
@@ -152,7 +143,6 @@ class QuestionListNoteViewModel @Inject constructor(
         if (state.flagFailure) return@flow
         emit(
             QuestionListNoteState(
-                flagDialog = true,
                 flagProgress = true,
                 flagFailure = false,
                 levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
@@ -162,7 +152,7 @@ class QuestionListNoteViewModel @Inject constructor(
     }
 
     fun recoverList() = viewModelScope.launch {
-        val result = listItemNote(uiState.value.idPlant)
+        val result = listItemNote(idPlant)
         if (result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =

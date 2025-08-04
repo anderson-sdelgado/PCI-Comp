@@ -11,6 +11,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 data class QuestionObsNoteState(
+    val obs: String? = null,
     val flagAccess: Boolean = false,
     val flagDialog: Boolean = false,
     val failure: String = "",
@@ -26,6 +27,12 @@ class QuestionObsNoteViewModel @Inject constructor(
     fun setCloseDialog() {
         _uiState.update {
             it.copy(flagDialog = false)
+        }
+    }
+
+    fun onObsChanged(obs: String) {
+        _uiState.update {
+            it.copy(obs = obs)
         }
     }
 
