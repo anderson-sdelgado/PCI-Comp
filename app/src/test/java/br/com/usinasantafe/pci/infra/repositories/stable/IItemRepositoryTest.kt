@@ -378,4 +378,66 @@ class IItemRepositoryTest {
             )
         }
 
+    @Test
+    fun `getById - Check return failure if have error in ItemRoomDatasource getById`() =
+        runTest {
+            whenever(
+                itemRoomDatasource.getById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IItemRoomDatasource.getById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemRepository.getById -> IItemRoomDatasource.getById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                itemRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(
+                    ItemRoomModel(
+                        idItem = 1,
+                        seqItem = 1,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    )
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Item(
+                    idItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
+                    idPlantItem = 1,
+                    idComponentItem = 1,
+                    idServiceItem = 1
+                )
+            )
+        }
+
 }

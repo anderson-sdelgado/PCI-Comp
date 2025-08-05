@@ -286,4 +286,60 @@ class IServiceRepositoryTest {
                 entityList
             )
         }
+
+    @Test
+    fun `getById - Check return failure if have error in ServiceRoomDatasource getById`() =
+        runTest {
+            whenever(
+                serviceRoomDatasource.getById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IServiceRoomDatasource.getById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IServiceRepository.getById -> IServiceRoomDatasource.getById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                serviceRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(
+                    ServiceRoomModel(
+                        idService = 1,
+                        codService = 1,
+                        descService = "Service 1"
+                    )
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Service(
+                    idService = 1,
+                    codService = 1,
+                    descService = "Service 1"
+                )
+            )
+        }
 }

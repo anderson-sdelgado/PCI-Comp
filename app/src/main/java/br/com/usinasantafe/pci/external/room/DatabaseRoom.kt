@@ -20,6 +20,7 @@ import java.util.Date
         PlantRoomModel::class,
         ServiceRoomModel::class,
         HeaderRoomModel::class,
+        RespRoomModel::class,
     ],
     version = VERSION_DB, exportSchema = true,
 )
@@ -32,6 +33,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun plantDao(): PlantDao
     abstract fun serviceDao(): ServiceDao
     abstract fun headerDao(): HeaderDao
+    abstract fun respDao(): RespDao
 }
 
 class Converters {

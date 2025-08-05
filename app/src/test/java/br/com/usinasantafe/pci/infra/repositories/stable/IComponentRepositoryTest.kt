@@ -285,4 +285,60 @@ class IComponentRepositoryTest {
             )
         }
 
+    @Test
+    fun `getById - Check return failure if have error in ComponentDatasource getById`() =
+        runTest {
+            whenever(
+                componentRoomDatasource.getById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IComponentDatasource.getById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IComponentRepository.getById -> IComponentDatasource.getById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                componentRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(
+                    ComponentRoomModel(
+                        idComponent = 1,
+                        codComponent = "1",
+                        descComponent = "Component 1"
+                    )
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Component(
+                    idComponent = 1,
+                    codComponent = "1",
+                    descComponent = "Component 1"
+                )
+            )
+        }
+
 }

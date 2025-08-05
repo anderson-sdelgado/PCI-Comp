@@ -108,39 +108,40 @@ fun ColabHeaderContent(
         BackHandler {
             onNavInitialMenu()
         }
+    }
 
-        if(flagDialog) {
-            val text = when (errors) {
-                Errors.FIELD_EMPTY -> stringResource(
-                    id = R.string.text_field_empty,
-                    stringResource(id = R.string.text_title_colab)
-                )
-                Errors.UPDATE,
-                Errors.TOKEN,
-                Errors.EXCEPTION -> stringResource(
-                    id = R.string.text_failure,
-                    failure
-                )
-                Errors.INVALID -> stringResource(
-                    id = R.string.text_input_data_non_existent,
-                    stringResource(id = R.string.text_title_colab)
-                )
-                else -> ""
-            }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
+    if(flagDialog) {
+        val text = when (errors) {
+            Errors.FIELD_EMPTY -> stringResource(
+                id = R.string.text_field_empty,
+                stringResource(id = R.string.text_title_colab)
+            )
+            Errors.EXCEPTION -> stringResource(
+                id = R.string.text_failure,
+                failure
+            )
+            Errors.INVALID -> stringResource(
+                id = R.string.text_input_data_non_existent,
+                stringResource(id = R.string.text_title_colab)
+            )
+            else -> stringResource(
+                id = R.string.text_failure,
+                failure
             )
         }
+        AlertDialogSimpleDesign(
+            text = text,
+            setCloseDialog = setCloseDialog,
+        )
+    }
 
-        if (flagProgress) {
-            AlertDialogProgressIndeterminateDesign(
-                msgProgress = stringResource(
-                    id = R.string.text_check_data,
-                    stringResource(id = R.string.text_title_colab)
-                )
+    if (flagProgress) {
+        AlertDialogProgressIndeterminateDesign(
+            msgProgress = stringResource(
+                id = R.string.text_check_data,
+                stringResource(id = R.string.text_title_colab)
             )
-        }
+        )
     }
 
     LaunchedEffect(flagAccess) {

@@ -416,4 +416,37 @@ class IItemRoomDatasourceTest {
                 2
             )
         }
+
+    @Test
+    fun `getById - Check return failure if table is empty`() =
+        runTest {
+            itemDao.insertAll(
+                listOf(
+                    ItemRoomModel(
+                        idItem = 1,
+                        seqItem = 1,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    )
+                )
+            )
+            val result = datasource.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                ItemRoomModel(
+                    idItem = 1,
+                    seqItem = 1,
+                    idOSItem = 1,
+                    idPlantItem = 1,
+                    idComponentItem = 1,
+                    idServiceItem = 1
+                )
+            )
+        }
 }

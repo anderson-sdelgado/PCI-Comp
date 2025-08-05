@@ -1,9 +1,8 @@
-package br.com.usinasantafe.pci.presenter.view.note.questionresp
+package br.com.usinasantafe.pci.presenter.view.note.questionobs
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.domain.usecases.note.GetItem
 import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
@@ -17,69 +16,38 @@ import org.mockito.kotlin.whenever
 import kotlin.test.Test
 
 @ExperimentalCoroutinesApi
-class QuestionRespNoteViewModelTest {
+class QuestionObsNoteViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val getItem = mock<GetItem>()
     private val setRespItem = mock<SetRespItem>()
     private fun createViewModel(
         idPlant: Int = 1,
         idItem: Int = 1
-    ) = QuestionRespNoteViewModel(
+    ) = QuestionObsNoteViewModel(
         SavedStateHandle(
             mapOf(
                 ID_PLANT_ARG to idPlant,
                 ID_ITEM_ARG to idItem
             )
         ),
-        getItem = getItem,
         setRespItem = setRespItem
     )
 
     @Test
-    fun `recover - Check return failure if have error in GetItem`() =
+    fun `setResp - Check return failure if field is empty`() =
         runTest {
-            whenever(
-                getItem(2)
-            ).thenReturn(
-                resultFailure(
-                    context = "GetItem",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val viewModel = createViewModel(
-                idItem = 2
-            )
-            viewModel.recover()
+            val viewModel = createViewModel()
+            viewModel.setResp()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "QuestionRespNoteViewModel.recover -> GetItem -> java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `recover - Check return true if GetItem execute successfully`() =
-        runTest {
-            whenever(
-                getItem(1)
-            ).thenReturn(
-                Result.success(
-                    "Test"
-                )
-            )
-            val viewModel = createViewModel()
-            viewModel.recover()
-            assertEquals(
-                viewModel.uiState.value.desc,
-                "Test"
+                "QuestionObsNoteViewModel.setResp -> Field Empty!"
             )
         }
 
@@ -88,8 +56,9 @@ class QuestionRespNoteViewModelTest {
         runTest {
             whenever(
                 setRespItem(
-                    id = 1,
-                    option = OptionResp.ACCORDING,
+                    id = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "Test"
                 )
             ).thenReturn(
                 resultFailure(
@@ -98,47 +67,42 @@ class QuestionRespNoteViewModelTest {
                     cause = Exception()
                 )
             )
-            val viewModel = createViewModel()
-            viewModel.setResp(
-                option = OptionResp.ACCORDING
+            val viewModel = createViewModel(
+                idItem = 2
             )
+            viewModel.onObsChanged("Test")
+            viewModel.setResp()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "QuestionRespNoteViewModel.setResp -> SetRespItem -> java.lang.Exception"
+                "QuestionObsNoteViewModel.setResp -> SetRespItem -> java.lang.Exception"
             )
         }
 
     @Test
-    fun `setResp - Check return true if SetRespItem execute successfully and option is ACCORDING`() =
+    fun `setResp - Check return true if SetRespItem execute successfully`() =
         runTest {
             whenever(
                 setRespItem(
-                    id = 1,
-                    option = OptionResp.ACCORDING,
+                    id = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "Test"
                 )
             ).thenReturn(
                 Result.success(true)
             )
-            val viewModel = createViewModel()
-            viewModel.setResp(OptionResp.ACCORDING)
+            val viewModel = createViewModel(
+                idItem = 2
+            )
+            viewModel.onObsChanged("Test")
+            viewModel.setResp()
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true
             )
         }
 
-    @Test
-    fun `setResp - Check return FALSE if SetRespItem execute successfully and option is NON CONFORMING`() =
-        runTest {
-            val viewModel = createViewModel()
-            viewModel.setResp(OptionResp.NON_CONFORMING)
-            assertEquals(
-                viewModel.uiState.value.flagAccess,
-                false
-            )
-        }
 }

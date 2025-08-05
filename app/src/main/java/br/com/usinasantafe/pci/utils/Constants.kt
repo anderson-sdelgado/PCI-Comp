@@ -15,6 +15,7 @@ const val TB_PLANT = "tb_plant"
 const val TB_SERVICE = "tb_service"
 
 const val TB_HEADER = "tb_header"
+const val TB_RESP = "tb_resp"
 
 const val WEB_ALL_COLAB = "colab.php"
 const val WEB_ALL_COMPONENT = "component.php"

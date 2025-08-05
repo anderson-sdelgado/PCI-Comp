@@ -6,4 +6,5 @@ interface ServiceRoomDatasource {
     suspend fun addAll(list: List<ServiceRoomModel>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listByIds(ids: List<Int>): Result<List<ServiceRoomModel>>
+    suspend fun getById(id: Int): Result<ServiceRoomModel>
 }

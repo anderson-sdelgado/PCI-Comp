@@ -7,4 +7,5 @@ interface ComponentRepository {
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listAll(token: String): Result<List<Component>>
     suspend fun listByIds(ids: List<Int>): Result<List<Component>>
+    suspend fun getById(id: Int): Result<Component>
 }

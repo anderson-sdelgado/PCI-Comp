@@ -475,7 +475,9 @@ class QuestionListNoteScreenTest {
                     updateTableService = updateTableService,
                     listItemNote = listItemNote
                 ),
-                onNavPlantList = {}
+                onNavPlantList = {},
+                onNavQuestionResp = {},
+                onNavQuestionDesc = {}
             )
         }
     }

@@ -24,4 +24,9 @@ interface ItemDao {
         idPlant: Int
     ): List<ItemRoomModel>
 
+    @Query("SELECT * FROM $TB_ITEM WHERE idItem = :id")
+    suspend fun getById(
+        id: Int
+    ): ItemRoomModel
+
 }

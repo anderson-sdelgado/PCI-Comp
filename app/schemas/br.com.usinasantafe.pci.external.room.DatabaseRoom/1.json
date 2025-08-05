@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d5c0d222ab5efcbfe2f662538775c021",
+    "identityHash": "dc0f8d1c57de15f7db542a3ed2074040",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -299,12 +299,56 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tb_resp",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `option` TEXT NOT NULL, `obs` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idHeader",
+            "columnName": "idHeader",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idItem",
+            "columnName": "idItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "option",
+            "columnName": "option",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obs",
+            "columnName": "obs",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd5c0d222ab5efcbfe2f662538775c021')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dc0f8d1c57de15f7db542a3ed2074040')"
     ]
   }
 }

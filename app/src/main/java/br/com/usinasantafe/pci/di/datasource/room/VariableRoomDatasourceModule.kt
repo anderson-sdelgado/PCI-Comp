@@ -16,4 +16,9 @@ interface VariableRoomDatasourceModule {
     @Singleton
     fun bindHeaderRoomDatasource(datasource: IHeaderRoomDatasource): HeaderRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindRespRoomDatasource(datasource: IRespRoomDatasource): RespRoomDatasource
+
+
 }

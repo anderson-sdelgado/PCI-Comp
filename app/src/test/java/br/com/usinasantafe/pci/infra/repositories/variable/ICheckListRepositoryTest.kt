@@ -1,10 +1,14 @@
 package br.com.usinasantafe.pci.infra.repositories.variable
 
+import br.com.usinasantafe.pci.domain.entities.variable.Resp
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.infra.datasource.room.variable.HeaderRoomDatasource
+import br.com.usinasantafe.pci.infra.datasource.room.variable.RespRoomDatasource
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
+import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
+import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -18,9 +22,11 @@ class ICheckListRepositoryTest {
 
     private val headerSharedPreferencesDatasource = mock<HeaderSharedPreferencesDatasource>()
     private val headerRoomDatasource = mock<HeaderRoomDatasource>()
+    private val respRoomDatasource = mock<RespRoomDatasource>()
     private val repository = ICheckListRepository(
         headerSharedPreferencesDatasource = headerSharedPreferencesDatasource,
-        headerRoomDatasource = headerRoomDatasource
+        headerRoomDatasource = headerRoomDatasource,
+        respRoomDatasource = respRoomDatasource
     )
 
     @Test
@@ -357,6 +363,38 @@ class ICheckListRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 1
+            )
+        }
+
+    @Test
+    fun `saveResp - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatus(Status.OPEN)
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.getByStatus",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveResp(
+                Resp(
+                    idItem = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.saveResp -> IHeaderRoomDatasource.getByStatus"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 

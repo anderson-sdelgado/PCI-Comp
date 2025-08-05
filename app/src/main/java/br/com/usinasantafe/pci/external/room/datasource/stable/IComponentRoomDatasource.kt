@@ -47,4 +47,16 @@ class IComponentRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getById(id: Int): Result<ComponentRoomModel> {
+        try {
+            val model = componentDao.getById(id)
+            return Result.success(model)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

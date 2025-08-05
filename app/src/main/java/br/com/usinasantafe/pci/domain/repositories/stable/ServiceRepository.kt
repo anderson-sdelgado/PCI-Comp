@@ -7,4 +7,5 @@ interface ServiceRepository {
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listAll(token: String): Result<List<Service>>
     suspend fun listByIds(ids: List<Int>): Result<List<Service>>
+    suspend fun getById(id: Int): Result<Service>
 }

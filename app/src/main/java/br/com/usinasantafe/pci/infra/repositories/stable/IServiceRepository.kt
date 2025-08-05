@@ -85,4 +85,23 @@ class IServiceRepository @Inject constructor(
         }
     }
 
+    override suspend fun getById(id: Int): Result<Service> {
+        try {
+            val result = serviceRoomDatasource.getById(id)
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entity = result.getOrNull()!!.roomModelToEntity()
+            return Result.success(entity)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

@@ -21,4 +21,7 @@ interface ComponentDao {
     @Query("SELECT * FROM $TB_COMPONENT WHERE idComponent IN (:ids)")
     suspend fun listByIds(ids: List<Int>): List<ComponentRoomModel>
 
+    @Query("SELECT * FROM $TB_COMPONENT WHERE idComponent = :id")
+    suspend fun getById(id: Int): ComponentRoomModel
+
 }

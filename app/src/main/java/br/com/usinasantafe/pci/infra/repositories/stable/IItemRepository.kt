@@ -117,7 +117,22 @@ class IItemRepository @Inject constructor(
     }
 
     override suspend fun getById(id: Int): Result<Item> {
-        TODO("Not yet implemented")
+        try {
+            val result = itemRoomDatasource.getById(id)
+            if(result.isFailure){
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entity = result.getOrNull()!!.roomModelToEntity()
+            return Result.success(entity)
+        } catch (e: Exception){
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

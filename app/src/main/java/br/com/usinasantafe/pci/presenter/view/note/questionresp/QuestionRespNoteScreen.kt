@@ -127,26 +127,25 @@ fun QuestionRespNoteContent(
         }
         BackHandler {
         }
+    }
 
+    if(flagDialog) {
+        AlertDialogSimpleDesign(
+            text = stringResource(id = R.string.text_failure, failure),
+            setCloseDialog = setCloseDialog
+        )
+    }
 
-        if(flagDialog) {
-            AlertDialogSimpleDesign(
-                text = stringResource(id = R.string.text_failure, failure),
-                setCloseDialog = setCloseDialog
-            )
-        }
-
-        LaunchedEffect(flagAccess) {
-            flagAccess?.let {
-                if(flagAccess){
-                    onNavQuestionList()
-                } else {
-                    onNavQuestionObs()
-                }
+    LaunchedEffect(flagAccess) {
+        flagAccess?.let {
+            if(flagAccess){
+                onNavQuestionList()
+            } else {
+                onNavQuestionObs()
             }
         }
-
     }
+
 }
 
 @Preview(showBackground = true)
@@ -161,6 +160,26 @@ fun QuestionRespNotePagePreview() {
                 flagAccess = false,
                 flagDialog = false,
                 failure = "",
+                onNavQuestionList = {},
+                onNavQuestionObs = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionRespNotePagePreviewFailure() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionRespNoteContent(
+                desc = "Item 1",
+                setResp = {},
+                setCloseDialog = {},
+                flagAccess = false,
+                flagDialog = true,
+                failure = "Failure",
                 onNavQuestionList = {},
                 onNavQuestionObs = {},
                 modifier = Modifier.padding(innerPadding)

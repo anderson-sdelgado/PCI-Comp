@@ -25,9 +25,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.pci.R
+import br.com.usinasantafe.pci.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.pci.presenter.theme.TitleDesign
 import br.com.usinasantafe.pci.presenter.theme.PCITheme
 import br.com.usinasantafe.pci.presenter.theme.TextButtonDesign
+import br.com.usinasantafe.pci.utils.Errors
+import br.com.usinasantafe.pci.utils.OptionResp
 
 const val TAG_OBS_TEXT_FIELD = "tag_obs_text_field"
 
@@ -41,9 +44,14 @@ fun QuestionObsNoteScreen(
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             QuestionObsNoteContent(
-                obs = "",
+                obs = uiState.obs,
+                setResp = viewModel::setResp,
                 onObsChanged = viewModel::onObsChanged,
+                setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
+                flagDialog = uiState.flagDialog,
+                failure = uiState.failure,
+                errors = uiState.errors,
                 onNavQuestionList = onNavQuestionList,
                 onNavQuestionResp = onNavQuestionResp,
                 modifier = Modifier.padding(innerPadding)
@@ -54,9 +62,14 @@ fun QuestionObsNoteScreen(
 
 @Composable
 fun QuestionObsNoteContent(
-    obs: String?,
+    obs: String,
+    setResp: () -> Unit,
     onObsChanged: (String) -> Unit,
+    setCloseDialog: () -> Unit,
     flagAccess: Boolean,
+    flagDialog: Boolean,
+    failure: String,
+    errors: Errors,
     onNavQuestionList: () -> Unit,
     onNavQuestionResp: () -> Unit,
     modifier: Modifier = Modifier
@@ -72,7 +85,7 @@ fun QuestionObsNoteContent(
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         OutlinedTextField(
-            value = if(obs.isNullOrEmpty()) "" else obs,
+            value = obs,
             onValueChange = onObsChanged,
             modifier = Modifier
                 .fillMaxWidth()
@@ -100,7 +113,7 @@ fun QuestionObsNoteContent(
                 )
             }
             Button(
-                onClick = {},
+                onClick = setResp,
                 modifier = Modifier.weight(1f),
             ) {
                 TextButtonDesign(
@@ -113,11 +126,33 @@ fun QuestionObsNoteContent(
         BackHandler {}
     }
 
+    if(flagDialog) {
+        val text = when (errors) {
+            Errors.FIELD_EMPTY -> stringResource(
+                id = R.string.text_field_empty,
+                stringResource(id = R.string.text_title_colab)
+            )
+            Errors.EXCEPTION -> stringResource(
+                id = R.string.text_failure,
+                failure
+            )
+            else -> stringResource(
+                id = R.string.text_failure,
+                failure
+            )
+        }
+        AlertDialogSimpleDesign(
+            text = text,
+            setCloseDialog = setCloseDialog
+        )
+    }
+
     LaunchedEffect(flagAccess) {
         if(flagAccess){
             onNavQuestionList()
         }
     }
+
 }
 
 @Preview(showBackground = true)
@@ -126,9 +161,59 @@ fun QuestionObsNotePagePreview() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             QuestionObsNoteContent(
-                obs = "",
+                obs = "Teste",
+                setResp = {},
                 onObsChanged = {},
+                setCloseDialog = {},
                 flagAccess = false,
+                flagDialog = false,
+                failure = "",
+                errors = Errors.FIELD_EMPTY,
+                onNavQuestionList = {},
+                onNavQuestionResp = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionObsNotePagePreviewFailureFieldEmpty() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionObsNoteContent(
+                obs = "Teste",
+                setResp = {},
+                onObsChanged = {},
+                setCloseDialog = {},
+                flagAccess = false,
+                flagDialog = true,
+                failure = "Failure",
+                errors = Errors.FIELD_EMPTY,
+                onNavQuestionList = {},
+                onNavQuestionResp = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionObsNotePagePreviewFailure() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionObsNoteContent(
+                obs = "Teste",
+                setResp = {},
+                onObsChanged = {},
+                setCloseDialog = {},
+                flagAccess = false,
+                flagDialog = true,
+                failure = "Failure",
+                errors = Errors.EXCEPTION,
                 onNavQuestionList = {},
                 onNavQuestionResp = {},
                 modifier = Modifier.padding(innerPadding)

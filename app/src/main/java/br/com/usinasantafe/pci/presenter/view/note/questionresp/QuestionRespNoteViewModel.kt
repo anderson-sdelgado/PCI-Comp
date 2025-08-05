@@ -65,24 +65,26 @@ class QuestionRespNoteViewModel @Inject constructor(
     }
 
     fun setResp(option: OptionResp) = viewModelScope.launch {
-        val result = setRespItem(
-            id = id,
-            option = option
-        )
-        if(result.isFailure){
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                )
-            }
-            return@launch
-        }
         val flagAccess = option == OptionResp.ACCORDING
+        if(flagAccess) {
+            val result = setRespItem(
+                id = id,
+                option = option
+            )
+            if(result.isFailure){
+                val error = result.exceptionOrNull()!!
+                val failure =
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                Timber.e(failure)
+                _uiState.update {
+                    it.copy(
+                        flagDialog = true,
+                        failure = failure,
+                    )
+                }
+                return@launch
+            }
+        }
         _uiState.update {
             it.copy(
                 flagAccess = flagAccess

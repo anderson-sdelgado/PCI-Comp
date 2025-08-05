@@ -265,4 +265,42 @@ class IServiceRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getById - Check execution correct`() =
+        runTest {
+            serviceDao.insertAll(
+                listOf(
+                    ServiceRoomModel(
+                        idService = 1,
+                        codService = 1,
+                        descService = "TESTE 1",
+                    ),
+                    ServiceRoomModel(
+                        idService = 2,
+                        codService = 2,
+                        descService = "TESTE 2",
+                    ),
+                )
+            )
+            val result = datasource.getById(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val entity = result.getOrNull()!!
+            assertEquals(
+                entity.idService,
+                2
+            )
+            assertEquals(
+                entity.codService,
+                2
+            )
+            assertEquals(
+                entity.descService,
+                "TESTE 2"
+            )
+        }
+
+
 }

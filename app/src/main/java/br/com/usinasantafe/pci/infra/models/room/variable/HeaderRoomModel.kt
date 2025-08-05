@@ -20,7 +20,6 @@ data class HeaderRoomModel(
     var status: Status = Status.OPEN,
 )
 
-
 fun HeaderRoomModel.roomModelToEntity(): Header {
     return with(this) {
         Header(

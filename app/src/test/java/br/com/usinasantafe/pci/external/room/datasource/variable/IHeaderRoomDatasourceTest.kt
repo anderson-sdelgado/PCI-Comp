@@ -87,4 +87,48 @@ class IHeaderRoomDatasourceTest {
                 Status.OPEN
             )
         }
+
+
+    @Test
+    fun `getByStatus - Check data save is correct`() =
+        runTest {
+            headerDao.save(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE
+                )
+            )
+            headerDao.save(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 2,
+                    idOS = 2,
+                    status = Status.OPEN
+                )
+            )
+            val result = datasource.getByStatus(Status.OPEN)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val model = result.getOrNull()!!
+            assertEquals(
+                model.id,
+                2
+            )
+            assertEquals(
+                model.idColab,
+                2
+            )
+            assertEquals(
+                model.idFactorySection,
+                2
+            )
+            assertEquals(
+                model.idOS,
+                2
+            )
+        }
 }

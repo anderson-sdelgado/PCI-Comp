@@ -62,4 +62,16 @@ class IItemRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getById(id: Int): Result<ItemRoomModel> {
+        try {
+            val item = itemDao.getById(id)
+            return Result.success(item)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

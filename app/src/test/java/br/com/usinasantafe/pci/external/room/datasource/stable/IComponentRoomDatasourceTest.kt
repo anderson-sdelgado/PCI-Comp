@@ -123,7 +123,7 @@ class IComponentRoomDatasourceTest {
             )
             assertEquals(
                 entity1.codComponent,
-                1
+                "1"
             )
             assertEquals(
                 entity1.descComponent,
@@ -136,7 +136,7 @@ class IComponentRoomDatasourceTest {
             )
             assertEquals(
                 entity2.codComponent,
-                2
+                "2"
             )
             assertEquals(
                 entity2.descComponent,
@@ -231,7 +231,7 @@ class IComponentRoomDatasourceTest {
             )
             assertEquals(
                 entity1.codComponent,
-                2
+                "2"
             )
             assertEquals(
                 entity1.descComponent,
@@ -244,7 +244,7 @@ class IComponentRoomDatasourceTest {
             )
             assertEquals(
                 entity2.codComponent,
-                3
+                "3"
             )
             assertEquals(
                 entity2.descComponent,
@@ -257,7 +257,7 @@ class IComponentRoomDatasourceTest {
             )
             assertEquals(
                 entity3.codComponent,
-                4
+                "4"
             )
             assertEquals(
                 entity3.descComponent,
@@ -265,5 +265,41 @@ class IComponentRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getById - Check execution correct`() =
+        runTest {
+            componentDao.insertAll(
+                listOf(
+                    ComponentRoomModel(
+                        idComponent = 1,
+                        codComponent = "1",
+                        descComponent = "TESTE 1",
+                    ),
+                    ComponentRoomModel(
+                        idComponent = 2,
+                        codComponent = "2",
+                        descComponent = "TESTE 2",
+                    ),
+                )
+            )
+            val result = datasource.getById(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val entity = result.getOrNull()!!
+            assertEquals(
+                entity.idComponent,
+                2
+            )
+            assertEquals(
+                entity.codComponent,
+                "2"
+            )
+            assertEquals(
+                entity.descComponent,
+                "TESTE 2"
+            )
+        }
 
 }

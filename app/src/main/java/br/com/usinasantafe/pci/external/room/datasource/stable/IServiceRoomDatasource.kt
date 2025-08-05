@@ -47,4 +47,16 @@ class IServiceRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getById(id: Int): Result<ServiceRoomModel> {
+        try {
+            val service = serviceDao.getById(id)
+            return Result.success(service)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }
