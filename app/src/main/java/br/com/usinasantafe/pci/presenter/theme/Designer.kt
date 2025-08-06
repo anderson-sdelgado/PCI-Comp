@@ -16,12 +16,17 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import br.com.usinasantafe.pci.R
+import br.com.usinasantafe.pci.utils.OptionResp
 
 @Composable
 fun ItemListDesign(
@@ -132,14 +137,24 @@ fun ItemListPlantDesign(
 @Composable
 fun ItemListItemDesign(
     id: Int = 0,
-    pos: String,
+    pos: Int,
     descService: String,
     descComponent: String,
-    status: String,
+    option: OptionResp?,
     font: Int = 22,
     padding: Int = 8,
     setActionItem: () -> Unit
 ) {
+    val text = when(option){
+        OptionResp.ACCORDING -> stringResource(R.string.text_button_according)
+        OptionResp.NON_CONFORMING -> stringResource(R.string.text_button_non_compliant)
+        null -> ""
+    }
+    val color = when(option){
+        OptionResp.ACCORDING -> Color.Blue
+        OptionResp.NON_CONFORMING -> Color.Red
+        null -> Color.Black
+    }
     return  Column(
         modifier = Modifier
             .testTag("item_list_$id")
@@ -150,29 +165,45 @@ fun ItemListItemDesign(
     ) {
         Text(
             textAlign = TextAlign.Left,
-            text = pos,
-            fontSize = font.sp,
+            text = stringResource(
+                id = R.string.text_question_pos,
+                pos
+            ),
+            style = TextStyle(
+                fontSize = font.sp,
+                fontWeight = FontWeight.Bold,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
         Text(
             textAlign = TextAlign.Left,
             text = descService,
-            fontSize = font.sp,
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
         Text(
             textAlign = TextAlign.Left,
             text = descComponent,
-            fontSize = font.sp,
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
         Text(
             textAlign = TextAlign.Left,
-            text = status,
-            fontSize = font.sp,
+            text = text,
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )

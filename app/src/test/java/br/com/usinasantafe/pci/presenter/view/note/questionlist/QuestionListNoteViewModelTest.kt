@@ -300,24 +300,24 @@ class QuestionListNoteViewModelTest {
                     listOf(
                         ItemScreenModel(
                             id = 1,
-                            pos = "Question 1",
+                            pos = 1,
                             descService = "Teste 1",
                             descComponent = "Teste 1",
-                            status = ""
+                            option = null
                         ),
                         ItemScreenModel(
                             id = 2,
-                            pos = "Question 2",
+                            pos = 2,
                             descComponent = "Teste 2",
                             descService = "Teste 2",
-                            status = ""
+                            option = null
                         ),
                         ItemScreenModel(
                             id = 3,
-                            pos = "Question 3",
+                            pos = 3,
                             descComponent = "Teste 3",
                             descService = "Teste 3",
-                            status = ""
+                            option = null
                         ),
                     )
                 )
@@ -342,7 +342,7 @@ class QuestionListNoteViewModelTest {
             )
             assertEquals(
                 item1.pos,
-                "Question 1"
+                1
             )
             assertEquals(
                 item1.descService,
@@ -353,8 +353,8 @@ class QuestionListNoteViewModelTest {
                 "Teste 1"
             )
             assertEquals(
-                item1.status,
-                ""
+                item1.option,
+                null
             )
             val item2 = list[1]
             assertEquals(
@@ -363,7 +363,7 @@ class QuestionListNoteViewModelTest {
             )
             assertEquals(
                 item2.pos,
-                "Question 2"
+                2
             )
             assertEquals(
                 item2.descService,
@@ -374,8 +374,8 @@ class QuestionListNoteViewModelTest {
                 "Teste 2"
             )
             assertEquals(
-                item2.status,
-                ""
+                item2.option,
+                null
             )
             val item3 = list[2]
             assertEquals(
@@ -384,7 +384,7 @@ class QuestionListNoteViewModelTest {
             )
             assertEquals(
                 item3.pos,
-                "Question 3"
+                3
             )
             assertEquals(
                 item3.descService,
@@ -395,8 +395,8 @@ class QuestionListNoteViewModelTest {
                 "Teste 3"
             )
             assertEquals(
-                item3.status,
-                ""
+                item3.option,
+                null
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,

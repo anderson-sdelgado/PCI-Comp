@@ -79,15 +79,10 @@ class IHeaderRoomDatasourceTest {
                 1
             )
             assertEquals(
-                list[0].statusSend,
-                StatusSend.SEND
-            )
-            assertEquals(
                 list[0].status,
                 Status.OPEN
             )
         }
-
 
     @Test
     fun `getByStatus - Check data save is correct`() =

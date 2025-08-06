@@ -5,10 +5,13 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_not_have_data_in_table_component()">
+      <SelectionState runConfigName="flow_header()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_desc_if_process_execute_successfully()">
+      <SelectionState runConfigName="check_return_list_if_process_execute_successfully()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="check_return_list_if_process_execute_successfully_with_resp()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

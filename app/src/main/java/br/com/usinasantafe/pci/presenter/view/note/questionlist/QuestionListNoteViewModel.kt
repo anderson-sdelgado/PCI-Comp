@@ -10,7 +10,6 @@ import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.presenter.model.ItemScreenModel
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.pci.presenter.view.note.plantlist.PlantListNoteState
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
 import br.com.usinasantafe.pci.utils.getClassAndMethod

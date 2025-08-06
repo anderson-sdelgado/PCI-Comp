@@ -16,7 +16,6 @@ data class HeaderRoomModel(
     val idFactorySection: Int,
     val idOS: Int,
     val dateHour: Date = Date(),
-    var statusSend: StatusSend = StatusSend.SEND,
     var status: Status = Status.OPEN,
 )
 

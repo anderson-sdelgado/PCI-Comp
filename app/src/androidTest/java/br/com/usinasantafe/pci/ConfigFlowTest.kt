@@ -9,7 +9,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
-import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -19,7 +18,6 @@ import br.com.usinasantafe.pci.presenter.view.configuration.config.TAG_NUMBER_TE
 import br.com.usinasantafe.pci.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.StatusSend
-import br.com.usinasantafe.pci.utils.WEB_ALL_COLAB
 import br.com.usinasantafe.pci.utils.WEB_ALL_COMPONENT
 import br.com.usinasantafe.pci.utils.WEB_ALL_SERVICE
 import br.com.usinasantafe.pci.utils.WEB_SAVE_TOKEN

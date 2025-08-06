@@ -16,9 +16,6 @@ interface HeaderDao {
     @Query("SELECT * FROM TB_HEADER")
     suspend fun all(): List<HeaderRoomModel>
 
-    @Query("SELECT * FROM TB_HEADER WHERE statusSend = :statusSend")
-    suspend fun listByStatusSend(statusSend: StatusSend): List<HeaderRoomModel>
-
     @Query("SELECT * FROM TB_HEADER WHERE status = :status")
     suspend fun getByStatus(status: Status): HeaderRoomModel
 

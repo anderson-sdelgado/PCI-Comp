@@ -8,6 +8,7 @@ import br.com.usinasantafe.pci.infra.datasource.room.variable.HeaderRoomDatasour
 import br.com.usinasantafe.pci.infra.datasource.room.variable.RespRoomDatasource
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
+import br.com.usinasantafe.pci.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.sharedPreferencesModelToRoomModel
 import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.getClassAndMethod
@@ -105,7 +106,32 @@ class ICheckListRepository @Inject constructor(
                     obs = resp.obs
                 )
             )
+            if (resultSaveResp.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSaveResp.exceptionOrNull()!!
+                )
+            }
             return resultSaveResp
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIdItems(idItemList: List<Int>): Result<List<Resp>> {
+        try {
+            val result = respRoomDatasource.listByIdItems(idItemList)
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val list = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(list)
         } catch (e: Exception) {
             return resultFailureFinish(
                 context = getClassAndMethod(),

@@ -1,9 +1,9 @@
-package br.com.usinasantafe.pci.domain.usecases.header
+package br.com.usinasantafe.pci.domain.usecases.note
 
 import br.com.usinasantafe.pci.external.room.dao.variable.HeaderDao
-import br.com.usinasantafe.pci.external.sharedpreferences.datasource.IHeaderSharedPreferencesDatasource
-import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
-import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
+import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
+import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
+import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.StatusSend
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -16,19 +16,19 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class ISetIdOSHeaderTest {
+class ISetRespItemTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: ISetIdOSHeader
-
-    @Inject
-    lateinit var headerSharedPreferencesDatasource: IHeaderSharedPreferencesDatasource
+    lateinit var usecase: ISetRespItem
 
     @Inject
     lateinit var headerDao: HeaderDao
+
+    @Inject
+    lateinit var respDao: RespDao
 
     @Before
     fun setup() {
@@ -36,16 +36,20 @@ class ISetIdOSHeaderTest {
     }
 
     @Test
-    fun check_return_failure_if_not_have_data_header_shared_preferences() =
+    fun check_return_failure_if_not_have_data_header_table() =
         runTest {
-            val result = usecase(1)
+            val result = usecase(
+                id = 1,
+                option = OptionResp.NON_CONFORMING,
+                obs = "obs"
+            )
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdOSHeader -> ICheckListRepository.setIdOSHeader"
+                "ISetRespItem -> ICheckListRepository.saveResp"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -54,16 +58,27 @@ class ISetIdOSHeaderTest {
         }
 
     @Test
-    fun check_return_data_if_process_execute_successfully() =
+    fun check_data_insert_if_process_execute_successfully() =
         runTest {
-            headerSharedPreferencesDatasource.save(
-                HeaderSharedPreferencesModel(
+            headerDao.save(
+                model = HeaderRoomModel(
+                    id = 1,
                     idColab = 1,
                     idFactorySection = 1,
-                    idOS = 1
+                    idOS = 1,
+                    status = Status.OPEN,
                 )
             )
-            val result = usecase(2)
+            val qtdBefore = respDao.all().size
+            assertEquals(
+                qtdBefore,
+                0
+            )
+            val result = usecase(
+                id = 1,
+                option = OptionResp.NON_CONFORMING,
+                obs = "obs"
+            )
             assertEquals(
                 result.isSuccess,
                 true
@@ -72,26 +87,28 @@ class ISetIdOSHeaderTest {
                 result.getOrNull()!!,
                 true
             )
-            val list = headerDao.all()
+            val qtdAfter = respDao.all().size
             assertEquals(
-                list.size,
+                qtdAfter,
+                1
+            )
+            val list = respDao.all()
+            val model = list[0]
+            assertEquals(
+                model.idHeader,
                 1
             )
             assertEquals(
-                list[0].idColab,
+                model.idItem,
                 1
             )
             assertEquals(
-                list[0].idFactorySection,
-                1
+                model.option,
+                OptionResp.NON_CONFORMING
             )
             assertEquals(
-                list[0].idOS,
-                2
-            )
-            assertEquals(
-                list[0].status,
-                Status.OPEN
+                model.obs,
+                "obs"
             )
         }
 

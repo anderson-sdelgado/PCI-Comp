@@ -1,7 +1,7 @@
 package br.com.usinasantafe.pci.domain.usecases.note
 
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.getClassAndMethod
@@ -31,6 +31,12 @@ class ISetRespItem @Inject constructor(
                 obs = obs
             )
         )
+        if(result.isFailure){
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
         return result
     }
 

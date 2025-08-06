@@ -18,7 +18,7 @@ class IListItemNote @Inject constructor(
     private val itemRepository: ItemRepository,
     private val checkListRepository: CheckListRepository,
     private val componentRepository: ComponentRepository,
-    private val serviceRepository: ServiceRepository
+    private val serviceRepository: ServiceRepository,
 ): ListItemNote {
 
     override suspend fun invoke(idPlant: Int): Result<List<ItemScreenModel>> {
@@ -53,7 +53,7 @@ class IListItemNote @Inject constructor(
                 )
             }
             val componentList = resultComponentList.getOrNull()!!
-            val idServiceList = entityList.map { it.idServiceItem }.distinct().filter { it != 0 }
+            val idServiceList = entityList.map { it.idServiceItem }.distinct()
             val resultServiceList = serviceRepository.listByIds(
                 ids = idServiceList
             )
@@ -64,6 +64,17 @@ class IListItemNote @Inject constructor(
                 )
             }
             val serviceList = resultServiceList.getOrNull()!!
+            val idItemList = entityList.map { it.idItem }.distinct()
+            val resultRespList = checkListRepository.listByIdItems(
+                idItemList = idItemList
+            )
+            if(resultRespList.isFailure){
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultRespList.exceptionOrNull()!!
+                )
+            }
+            val respList = resultRespList.getOrNull()!!
             val list = entityList.map { item ->
                 val descService = serviceList.first { s -> s.idService == item.idServiceItem }.descService
                 var descComponent = ""
@@ -71,15 +82,19 @@ class IListItemNote @Inject constructor(
                     val component = componentList.first { c -> c.idComponent == item.idComponentItem }
                     descComponent = "${component.codComponent} - ${component.descComponent}"
                 }
+                val option = respList.firstOrNull { r -> r.idItem == item.idItem }?.option
                 ItemScreenModel(
                     id = item.idItem,
-                    pos = "Questão ${item.seqItem}",
+                    pos = item.seqItem,
                     descService = descService,
                     descComponent = descComponent,
-                    status = ""
+                    option = option
                 )
             }
-            return Result.success(list)
+            val listOrder = list.sortedWith(
+                compareBy({ it.option != null }, { it.pos })
+            )
+            return Result.success(listOrder)
         } catch (e: Exception) {
             return resultFailureFinish(
                 context = getClassAndMethod(),

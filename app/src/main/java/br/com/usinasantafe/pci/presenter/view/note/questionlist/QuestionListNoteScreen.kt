@@ -34,6 +34,7 @@ import br.com.usinasantafe.pci.presenter.theme.PCITheme
 import br.com.usinasantafe.pci.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
+import br.com.usinasantafe.pci.utils.OptionResp
 
 @Composable
 fun QuestionListNoteScreen(
@@ -149,7 +150,7 @@ fun QuestionListNoteContent(
                         pos = item.pos,
                         descService = item.descService,
                         descComponent = item.descComponent,
-                        status = item.status,
+                        option = item.option,
                         setActionItem = { onNavQuestionResp(item.id) },
                         font = 24,
                         padding = 0
@@ -168,24 +169,24 @@ fun QuestionListNoteContent(
         }
         BackHandler {}
 
-        if (flagDialog) {
-            val text =
-                when(errors) {
-                    Errors.UPDATE -> stringResource(
-                        id = R.string.text_update_failure,
-                        failure
-                    )
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
-        }
+    }
 
+    if (flagDialog) {
+        val text =
+            when(errors) {
+                Errors.UPDATE -> stringResource(
+                    id = R.string.text_update_failure,
+                    failure
+                )
+                else -> stringResource(
+                    id = R.string.text_failure,
+                    failure
+                )
+            }
+        AlertDialogSimpleDesign(
+            text = text,
+            setCloseDialog = setCloseDialog,
+        )
     }
 
     LaunchedEffect(levelUpdate) {
@@ -324,17 +325,31 @@ fun QuestionListNotePagePreviewData() {
                 itemList = listOf(
                     ItemScreenModel(
                         id = 1,
-                        pos = "Questão 1",
+                        pos = 1,
                         descService = "Service 1",
                         descComponent = "Component 1",
-                        status = ""
+                        option = null
                     ),
                     ItemScreenModel(
                         id = 2,
-                        pos = "Questão 2",
+                        pos = 2,
                         descService = "Service 2",
                         descComponent = "Component 2",
-                        status = ""
+                        option = null
+                    ),
+                    ItemScreenModel(
+                        id = 3,
+                        pos = 3,
+                        descService = "Service 3",
+                        descComponent = "Component 3",
+                        option = OptionResp.ACCORDING
+                    ),
+                    ItemScreenModel(
+                        id = 4,
+                        pos = 4,
+                        descService = "Service 4",
+                        descComponent = "Component 4",
+                        option = OptionResp.NON_CONFORMING
                     )
                 ),
                 recoverList = {},

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "dc0f8d1c57de15f7db542a3ed2074040",
+    "identityHash": "b47f8879a2e1b562efd2a52e4bcb82cd",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -246,7 +246,7 @@
       },
       {
         "tableName": "tb_header",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idColab` INTEGER NOT NULL, `idFactorySection` INTEGER NOT NULL, `idOS` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idColab` INTEGER NOT NULL, `idFactorySection` INTEGER NOT NULL, `idOS` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `status` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -276,12 +276,6 @@
             "fieldPath": "dateHour",
             "columnName": "dateHour",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "statusSend",
-            "columnName": "statusSend",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -348,7 +342,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dc0f8d1c57de15f7db542a3ed2074040')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b47f8879a2e1b562efd2a52e4bcb82cd')"
     ]
   }
 }

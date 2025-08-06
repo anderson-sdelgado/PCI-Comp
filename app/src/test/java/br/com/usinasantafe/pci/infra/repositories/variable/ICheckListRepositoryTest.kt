@@ -254,10 +254,6 @@ class ICheckListRepositoryTest {
                 model.status,
                 Status.OPEN
             )
-            assertEquals(
-                model.statusSend,
-                StatusSend.SEND
-            )
         }
 
     @Test
@@ -313,10 +309,6 @@ class ICheckListRepositoryTest {
             assertEquals(
                 model.status,
                 Status.OPEN
-            )
-            assertEquals(
-                model.statusSend,
-                StatusSend.SEND
             )
         }
 
@@ -398,4 +390,178 @@ class ICheckListRepositoryTest {
             )
         }
 
+    @Test
+    fun `saveResp - Check return failure if have error in RespRoomDatasource save`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatus(Status.OPEN)
+            ).thenReturn(
+                Result.success(
+                    HeaderRoomModel(
+                        id = 1,
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.OPEN,
+                    )
+                )
+            )
+            whenever(
+                respRoomDatasource.save(
+                    RespRoomModel(
+                        idHeader = 1,
+                        idItem = 1,
+                        option = OptionResp.ACCORDING
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.save",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveResp(
+                Resp(
+                    idItem = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.saveResp -> IRespRoomDatasource.save"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveResp - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatus(Status.OPEN)
+            ).thenReturn(
+                Result.success(
+                    HeaderRoomModel(
+                        id = 1,
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.OPEN,
+                    )
+                )
+            )
+            whenever(
+                respRoomDatasource.save(
+                    RespRoomModel(
+                        idHeader = 1,
+                        idItem = 1,
+                        option = OptionResp.ACCORDING
+                    )
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.saveResp(
+                Resp(
+                    idItem = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `listByIdItems - Check return failure if have error in RespRoomDatasource listByIdItems`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listByIdItems(listOf(1, 2, 3))
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.listByIdItems",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdItems(listOf(1, 2, 3))
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.listByIdItems -> IRespRoomDatasource.listByIdItems"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdItems - Check return correct if function execute successfully and list empty`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listByIdItems(listOf(1, 2, 3))
+            ).thenReturn(
+                Result.success(listOf())
+            )
+            val result = repository.listByIdItems(listOf(1, 2, 3))
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf<Resp>()
+            )
+        }
+
+    @Test
+    fun `listByIdItems - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listByIdItems(listOf(1, 2, 3))
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        RespRoomModel(
+                            id = 1,
+                            idHeader = 1,
+                            idItem = 1,
+                            option = OptionResp.ACCORDING
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdItems(listOf(1, 2, 3))
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    Resp(
+                        id = 1,
+                        idHeader = 1,
+                        idItem = 1,
+                        option = OptionResp.ACCORDING
+                    )
+                )
+            )
+        }
 }

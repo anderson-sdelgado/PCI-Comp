@@ -77,13 +77,13 @@ class QuestionListNoteScreenTest {
     lateinit var headerSharedPreferencesDatasource: IHeaderSharedPreferencesDatasource
 
     private val resultComponentRetrofit = """
-        [{"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"}]
+        [{"idComponent":1,"codComponent":"1","descComponent":"TESTE 1"}]
     """.trimIndent()
 
     private val resultComponentRetrofitFailure = """
         [
-            {"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"},
-            {"idComponent":1,"codComponent":1,"descComponent":"TESTE 1"}
+            {"idComponent":1,"codComponent":"1","descComponent":"TESTE 1"},
+            {"idComponent":1,"codComponent":"1","descComponent":"TESTE 1"}
         ]
     """.trimIndent()
 
@@ -597,33 +597,33 @@ class QuestionListNoteScreenTest {
             listOf(
                 ComponentRoomModel(
                     idComponent = 1,
-                    codComponent = "1",
-                    descComponent = "TESTE 1"
+                    codComponent = "01",
+                    descComponent = "COMPONENT 1"
                 ),
                 ComponentRoomModel(
                     idComponent = 2,
-                    codComponent = "2",
-                    descComponent = "TESTE 2"
+                    codComponent = "02",
+                    descComponent = "COMPONENT 2"
                 ),
                 ComponentRoomModel(
                     idComponent = 3,
-                    codComponent = "3",
-                    descComponent = "TESTE 3"
+                    codComponent = "03",
+                    descComponent = "COMPONENT 3"
                 ),
                 ComponentRoomModel(
                     idComponent = 4,
-                    codComponent = "4",
-                    descComponent = "TESTE 4"
+                    codComponent = "04",
+                    descComponent = "COMPONENT 4"
                 ),
                 ComponentRoomModel(
                     idComponent = 5,
-                    codComponent = "5",
-                    descComponent = "TESTE 5"
+                    codComponent = "05",
+                    descComponent = "COMPONENT 5"
                 ),
                 ComponentRoomModel(
                     idComponent = 6,
-                    codComponent = "6",
-                    descComponent = "TESTE 6"
+                    codComponent = "06",
+                    descComponent = "COMPONENT 6"
                 )
             )
         )
@@ -633,27 +633,27 @@ class QuestionListNoteScreenTest {
                 ServiceRoomModel(
                     idService = 1,
                     codService = 1,
-                    descService = "TESTE 1"
+                    descService = "SERVICE 1"
                 ),
                 ServiceRoomModel(
                     idService = 2,
                     codService = 2,
-                    descService = "TESTE 2"
+                    descService = "SERVICE 2"
                 ),
                 ServiceRoomModel(
                     idService = 3,
                     codService = 3,
-                    descService = "TESTE 3"
+                    descService = "SERVICE 3"
                 ),
                 ServiceRoomModel(
                     idService = 4,
                     codService = 4,
-                    descService = "TESTE 4"
+                    descService = "SERVICE 4"
                 ),
                 ServiceRoomModel(
                     idService = 5,
                     codService = 5,
-                    descService = "TESTE 5"
+                    descService = "SERVICE 5"
                 )
             )
         )

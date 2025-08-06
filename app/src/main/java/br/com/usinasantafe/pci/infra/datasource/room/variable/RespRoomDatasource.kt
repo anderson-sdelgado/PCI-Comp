@@ -4,4 +4,5 @@ import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 
 interface RespRoomDatasource {
     suspend fun save(model: RespRoomModel): Result<Boolean>
+    suspend fun listByIdItems(idItemList: List<Int>): Result<List<RespRoomModel>>
 }

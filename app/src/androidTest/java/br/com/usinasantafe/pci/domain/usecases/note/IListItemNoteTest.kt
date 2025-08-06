@@ -3,12 +3,15 @@ package br.com.usinasantafe.pci.domain.usecases.note
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ItemDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao
+import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
 import br.com.usinasantafe.pci.external.sharedpreferences.datasource.IHeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.room.stable.ComponentRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ItemRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ServiceRoomModel
+import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.pci.presenter.model.ItemScreenModel
+import br.com.usinasantafe.pci.utils.OptionResp
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -38,6 +41,9 @@ class IListItemNoteTest {
 
     @Inject
     lateinit var serviceDao: ServiceDao
+
+    @Inject
+    lateinit var respDao: RespDao
 
     private val itemRoomList = listOf(
         ItemRoomModel(
@@ -256,10 +262,10 @@ class IListItemNoteTest {
                 item1,
                 ItemScreenModel(
                     id = 1,
-                    pos = "Questão 1",
+                    pos = 1,
                     descService = "Service 1",
                     descComponent = "",
-                    status = ""
+                    option = null
                 )
             )
             val item2 = list[1]
@@ -267,10 +273,10 @@ class IListItemNoteTest {
                 item2,
                 ItemScreenModel(
                     id = 2,
-                    pos = "Questão 2",
+                    pos = 2,
                     descService = "Service 1",
                     descComponent = "01 - Component 1",
-                    status = ""
+                    option = null
                 )
             )
             val item3 = list[2]
@@ -278,10 +284,10 @@ class IListItemNoteTest {
                 item3,
                 ItemScreenModel(
                     id = 3,
-                    pos = "Questão 3",
+                    pos = 3,
                     descService = "Service 2",
                     descComponent = "02 - Component 2",
-                    status = ""
+                    option = null
                 )
             )
             val item4 = list[3]
@@ -289,10 +295,10 @@ class IListItemNoteTest {
                 item4,
                 ItemScreenModel(
                     id = 4,
-                    pos = "Questão 4",
+                    pos = 4,
                     descService = "Service 3",
                     descComponent = "03 - Component 3",
-                    status = ""
+                    option = null
                 )
             )
             val item5 = list[4]
@@ -300,13 +306,107 @@ class IListItemNoteTest {
                 item5,
                 ItemScreenModel(
                     id = 5,
-                    pos = "Questão 5",
+                    pos = 5,
                     descService = "Service 4",
                     descComponent = "03 - Component 3",
-                    status = ""
+                    option = null
                 )
             )
         }
+
+    @Test
+    fun check_return_list_if_process_execute_successfully_with_resp() =
+        runTest {
+            headerSharedPreferencesDatasource.save(
+                HeaderSharedPreferencesModel(
+                    idOS = 1
+                )
+            )
+            itemDao.insertAll(itemRoomList)
+            componentDao.insertAll(componentRoomModelList)
+            serviceDao.insertAll(serviceRoomModelList)
+            respDao.save(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            respDao.save(
+                RespRoomModel(
+                    idHeader = 2,
+                    idItem = 3,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "OBS"
+                )
+            )
+            val result = usecase(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                5
+            )
+            val item2 = list[0]
+            assertEquals(
+                item2,
+                ItemScreenModel(
+                    id = 2,
+                    pos = 2,
+                    descService = "Service 1",
+                    descComponent = "01 - Component 1",
+                    option = null
+                )
+            )
+            val item4 = list[1]
+            assertEquals(
+                item4,
+                ItemScreenModel(
+                    id = 4,
+                    pos = 4,
+                    descService = "Service 3",
+                    descComponent = "03 - Component 3",
+                    option = null
+                )
+            )
+            val item5 = list[2]
+            assertEquals(
+                item5,
+                ItemScreenModel(
+                    id = 5,
+                    pos = 5,
+                    descService = "Service 4",
+                    descComponent = "03 - Component 3",
+                    option = null
+                )
+            )
+            val item1 = list[3]
+            assertEquals(
+                item1,
+                ItemScreenModel(
+                    id = 1,
+                    pos = 1,
+                    descService = "Service 1",
+                    descComponent = "",
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val item3 = list[4]
+            assertEquals(
+                item3,
+                ItemScreenModel(
+                    id = 3,
+                    pos = 3,
+                    descService = "Service 2",
+                    descComponent = "02 - Component 2",
+                    option = OptionResp.NON_CONFORMING,
+                )
+            )
+        }
+
 
 
 }

@@ -11,4 +11,5 @@ interface CheckListRepository {
     suspend fun setIdOSHeader(idOS: Int): Result<Boolean>
     suspend fun getIdOSHeaderOpen(): Result<Int>
     suspend fun saveResp(resp: Resp): Result<Boolean>
+    suspend fun listByIdItems(idItemList: List<Int>): Result<List<Resp>>
 }
