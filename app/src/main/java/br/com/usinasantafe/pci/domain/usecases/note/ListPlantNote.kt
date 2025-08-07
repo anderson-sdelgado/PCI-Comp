@@ -4,6 +4,7 @@ import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
 import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
+import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.presenter.model.PlantScreenModel
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
@@ -14,7 +15,8 @@ interface ListPlantNote {
 
 class IListPlantNote @Inject constructor(
     private val itemRepository: ItemRepository,
-    private val plantRepository: PlantRepository
+    private val plantRepository: PlantRepository,
+    private val checkListRepository: CheckListRepository,
 ): ListPlantNote {
 
     override suspend fun invoke(): Result<List<PlantScreenModel>> {
@@ -26,8 +28,8 @@ class IListPlantNote @Inject constructor(
                     cause = result.exceptionOrNull()!!
                 )
             }
-            val entityList = result.getOrNull()!!
-            val idPlantList = entityList.map { it.idPlantItem }.distinct()
+            val itemList = result.getOrNull()!!
+            val idPlantList = itemList.map { it.idPlantItem }.distinct()
             val resultPlantList = plantRepository.listByIds(
                 ids = idPlantList
             )
@@ -38,14 +40,34 @@ class IListPlantNote @Inject constructor(
                 )
             }
             val plantList = resultPlantList.getOrNull()!!
-            val plantScreenModelList = plantList.map { it ->
+            val idItemList = itemList.map { it.idItem }.distinct()
+            val resultRespList = checkListRepository.listRespByIdItems(
+                idItemList = idItemList
+            )
+            if(resultRespList.isFailure){
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultRespList.exceptionOrNull()!!
+                )
+            }
+            val respList = resultRespList.getOrNull()!!
+            val itemListResp = respList.map { resp ->
+                itemList.first { i -> i.idItem == resp.idItem }
+            }
+            val idPlantListResp = itemListResp.map { it.idPlantItem }.distinct()
+            val list = plantList.map { it ->
+                val status = idPlantListResp.contains(it.idPlant)
                 PlantScreenModel(
                     id = it.idPlant,
                     cod = it.codPlant,
-                    desc = it.descPlant
+                    desc = it.descPlant,
+                    status = status
                 )
             }
-            return Result.success(plantScreenModelList)
+            val listOrder = list.sortedWith(
+                compareBy( { it.status }, { it.id } )
+            )
+            return Result.success(listOrder)
         } catch (e: Exception){
             return resultFailureFinish(
                 context = getClassAndMethod(),

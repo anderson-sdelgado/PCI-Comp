@@ -130,7 +130,7 @@ fun QuestionObsNoteContent(
         val text = when (errors) {
             Errors.FIELD_EMPTY -> stringResource(
                 id = R.string.text_field_empty,
-                stringResource(id = R.string.text_title_colab)
+                stringResource(id = R.string.text_title_question_obs)
             )
             Errors.EXCEPTION -> stringResource(
                 id = R.string.text_failure,

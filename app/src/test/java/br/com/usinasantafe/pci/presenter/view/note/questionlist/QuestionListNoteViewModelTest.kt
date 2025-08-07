@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
+import br.com.usinasantafe.pci.domain.usecases.note.CheckRespItemNote
 import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
@@ -34,6 +35,7 @@ class QuestionListNoteViewModelTest {
     private val updateTableComponent = mock<UpdateTableComponent>()
     private val updateTableService = mock<UpdateTableService>()
     private val listItemNote = mock<ListItemNote>()
+    private val checkRespItemNote = mock<CheckRespItemNote>()
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
@@ -45,7 +47,8 @@ class QuestionListNoteViewModelTest {
         checkItemNote = checkItemNote,
         updateTableComponent = updateTableComponent,
         updateTableService = updateTableService,
-        listItemNote = listItemNote
+        listItemNote = listItemNote,
+        checkRespItemNote = checkRespItemNote
     )
 
     private val qtdTable = 2f
@@ -526,6 +529,55 @@ class QuestionListNoteViewModelTest {
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )
+        }
+
+    @Test
+    fun `checkRespItem - Check return failure if have error in CheckRespItemNote`() =
+        runTest {
+            whenever(
+                checkRespItemNote(1)
+            ).thenReturn(
+                resultFailure(
+                    context = "CheckRespItemNote",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val viewModel = createViewModel()
+            viewModel.checkRespItem(1)
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "QuestionListNoteViewModel.checkRespItem -> CheckRespItemNote -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.EXCEPTION
+            )
+        }
+
+    @Test
+    fun `checkRespItem - Check return true if CheckRespItemNote execute successfully`() =
+        runTest {
+            whenever(
+                checkRespItemNote(1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val viewModel = createViewModel()
+            viewModel.checkRespItem(1)
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.idSelection,
+                1
+            )
+
         }
 
 }

@@ -10,7 +10,6 @@ import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.Status
-import br.com.usinasantafe.pci.utils.StatusSend
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.mockito.Mockito.mock
@@ -496,7 +495,7 @@ class ICheckListRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.listByIdItems(listOf(1, 2, 3))
+            val result = repository.listRespByIdItems(listOf(1, 2, 3))
             assertEquals(
                 result.isFailure,
                 true
@@ -519,7 +518,7 @@ class ICheckListRepositoryTest {
             ).thenReturn(
                 Result.success(listOf())
             )
-            val result = repository.listByIdItems(listOf(1, 2, 3))
+            val result = repository.listRespByIdItems(listOf(1, 2, 3))
             assertEquals(
                 result.isSuccess,
                 true
@@ -547,7 +546,7 @@ class ICheckListRepositoryTest {
                     )
                 )
             )
-            val result = repository.listByIdItems(listOf(1, 2, 3))
+            val result = repository.listRespByIdItems(listOf(1, 2, 3))
             assertEquals(
                 result.isSuccess,
                 true

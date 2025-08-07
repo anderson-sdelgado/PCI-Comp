@@ -305,7 +305,7 @@ class IListItemNoteTest {
                 )
             )
             whenever(
-                checkListRepository.listByIdItems(listOf(1, 2, 3, 4, 5))
+                checkListRepository.listRespByIdItems(listOf(1, 2, 3, 4, 5))
             ).thenReturn(
                 resultFailure(
                     "ICheckListRepository.listByIdItems",
@@ -396,7 +396,7 @@ class IListItemNoteTest {
                 )
             )
             whenever(
-                checkListRepository.listByIdItems(listOf(1, 2, 3, 4, 5))
+                checkListRepository.listRespByIdItems(listOf(1, 2, 3, 4, 5))
             ).thenReturn(
                 Result.success(listOf())
             )
@@ -586,7 +586,7 @@ class IListItemNoteTest {
                 )
             )
             whenever(
-                checkListRepository.listByIdItems(listOf(1, 2, 3, 4, 5))
+                checkListRepository.listRespByIdItems(listOf(1, 2, 3, 4, 5))
             ).thenReturn(
                 Result.success(
                     listOf(

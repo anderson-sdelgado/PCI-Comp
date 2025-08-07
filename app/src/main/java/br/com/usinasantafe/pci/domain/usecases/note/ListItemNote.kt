@@ -41,8 +41,8 @@ class IListItemNote @Inject constructor(
                     cause = resulListItem.exceptionOrNull()!!
                 )
             }
-            val entityList = resulListItem.getOrNull()!!
-            val idComponentList = entityList.map { it.idComponentItem }.distinct().filter { it != 0 }
+            val itemList = resulListItem.getOrNull()!!
+            val idComponentList = itemList.map { it.idComponentItem }.distinct().filter { it != 0 }
             val resultComponentList = componentRepository.listByIds(
                 ids = idComponentList
             )
@@ -53,7 +53,7 @@ class IListItemNote @Inject constructor(
                 )
             }
             val componentList = resultComponentList.getOrNull()!!
-            val idServiceList = entityList.map { it.idServiceItem }.distinct()
+            val idServiceList = itemList.map { it.idServiceItem }.distinct()
             val resultServiceList = serviceRepository.listByIds(
                 ids = idServiceList
             )
@@ -64,8 +64,8 @@ class IListItemNote @Inject constructor(
                 )
             }
             val serviceList = resultServiceList.getOrNull()!!
-            val idItemList = entityList.map { it.idItem }.distinct()
-            val resultRespList = checkListRepository.listByIdItems(
+            val idItemList = itemList.map { it.idItem }.distinct()
+            val resultRespList = checkListRepository.listRespByIdItems(
                 idItemList = idItemList
             )
             if(resultRespList.isFailure){
@@ -75,7 +75,7 @@ class IListItemNote @Inject constructor(
                 )
             }
             val respList = resultRespList.getOrNull()!!
-            val list = entityList.map { item ->
+            val list = itemList.map { item ->
                 val descService = serviceList.first { s -> s.idService == item.idServiceItem }.descService
                 var descComponent = ""
                 if(item.idComponentItem > 0){

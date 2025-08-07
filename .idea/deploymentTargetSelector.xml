@@ -8,12 +8,6 @@
       <SelectionState runConfigName="flow_header()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_list_if_process_execute_successfully()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_list_if_process_execute_successfully_with_resp()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
     </selectionStates>
   </component>
 </project>

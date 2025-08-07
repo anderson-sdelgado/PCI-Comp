@@ -105,10 +105,12 @@ fun ItemListPlantDesign(
     id: Int = 0,
     cod: String,
     desc: String,
+    status: Boolean,
     font: Int = 22,
     padding: Int = 8,
     setActionItem: () -> Unit
 ) {
+    val color = if(!status) Color.Black else Color.Red
     return  Column(
         modifier = Modifier
             .testTag("item_list_$id")
@@ -120,14 +122,20 @@ fun ItemListPlantDesign(
         Text(
             textAlign = TextAlign.Left,
             text = cod,
-            fontSize = font.sp,
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
         Text(
             textAlign = TextAlign.Left,
             text = desc,
-            fontSize = font.sp,
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )

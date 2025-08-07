@@ -26,6 +26,8 @@ import javax.inject.Inject
 
 data class QuestionListNoteState(
     val itemList: List<ItemScreenModel> = listOf(),
+    val idSelection: Int = 0,
+    val flagAccess: Boolean? = null,
     val flagProgress: Boolean = true,
     val flagDialog: Boolean = false,
     val failure: String = "",
@@ -62,7 +64,7 @@ class QuestionListNoteViewModel @Inject constructor(
     private val checkItemNote: CheckItemNote,
     private val updateTableComponent: UpdateTableComponent,
     private val updateTableService: UpdateTableService,
-    private val listItemNote: ListItemNote
+    private val listItemNote: ListItemNote,
 ) : ViewModel() {
 
     private val idPlant: Int = saveStateHandle[ID_PLANT_ARG]!!

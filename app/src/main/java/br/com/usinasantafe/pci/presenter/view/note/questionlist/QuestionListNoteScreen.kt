@@ -64,6 +64,7 @@ fun QuestionListNoteScreen(
                 errors = uiState.errors,
                 onNavPlantList = onNavPlantList,
                 onNavQuestionResp = onNavQuestionResp,
+                onNavQuestionDesc = onNavQuestionDesc,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -84,6 +85,7 @@ fun QuestionListNoteContent(
     errors: Errors,
     onNavPlantList: () -> Unit,
     onNavQuestionResp: (Int) -> Unit,
+    onNavQuestionDesc: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -151,9 +153,11 @@ fun QuestionListNoteContent(
                         descService = item.descService,
                         descComponent = item.descComponent,
                         option = item.option,
-                        setActionItem = { onNavQuestionResp(item.id) },
+                        setActionItem = {
+                            if(item.option == null) onNavQuestionResp(item.id) else onNavQuestionDesc(item.id)
+                        },
                         font = 24,
-                        padding = 0
+                        padding = 6
                     )
                 }
             }
@@ -194,6 +198,8 @@ fun QuestionListNoteContent(
             recoverList()
         }
     }
+
+
 }
 
 @Preview(showBackground = true)
@@ -214,6 +220,7 @@ fun QuestionListNotePagePreview() {
                 errors = Errors.FIELD_EMPTY,
                 onNavPlantList = {},
                 onNavQuestionResp = {},
+                onNavQuestionDesc = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -238,6 +245,7 @@ fun QuestionListNotePagePreviewFinishUpdate() {
                 errors = Errors.FIELD_EMPTY,
                 onNavPlantList = {},
                 onNavQuestionResp = {},
+                onNavQuestionDesc = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -262,6 +270,7 @@ fun QuestionListNotePagePreviewDataUpdate() {
                 errors = Errors.FIELD_EMPTY,
                 onNavPlantList = {},
                 onNavQuestionResp = {},
+                onNavQuestionDesc = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -286,6 +295,7 @@ fun QuestionListNotePagePreviewFailureUpdate() {
                 errors = Errors.UPDATE,
                 onNavPlantList = {},
                 onNavQuestionResp = {},
+                onNavQuestionDesc = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -310,6 +320,7 @@ fun QuestionListNotePagePreviewUpdate() {
                 errors = Errors.UPDATE,
                 onNavPlantList = {},
                 onNavQuestionResp = {},
+                onNavQuestionDesc = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -363,6 +374,7 @@ fun QuestionListNotePagePreviewData() {
                 errors = Errors.UPDATE,
                 onNavPlantList = {},
                 onNavQuestionResp = {},
+                onNavQuestionDesc = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

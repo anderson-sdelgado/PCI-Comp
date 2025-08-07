@@ -152,6 +152,7 @@ fun PlantListContent(
                         id = plant.id,
                         cod = plant.cod,
                         desc = plant.desc,
+                        status = plant.status,
                         setActionItem = { onNavQuestionList(plant.id) },
                         font = 24,
                         padding = 6
@@ -357,12 +358,14 @@ fun PlantListPagePreviewList() {
                     PlantScreenModel(
                         id = 1,
                         cod = "1",
-                        desc = "Plant 1"
+                        desc = "Plant 1",
+                        status = true
                     ),
                     PlantScreenModel(
                         id = 2,
                         cod = "2",
-                        desc = "Plant 2"
+                        desc = "Plant 2",
+                        status = false
                     )
                 ),
                 recoverList = {},

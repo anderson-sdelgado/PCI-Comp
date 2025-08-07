@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.pci.external.room.dao.variable.HeaderDao
@@ -14,6 +15,8 @@ import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.presenter.MainActivity
+import br.com.usinasantafe.pci.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
+import br.com.usinasantafe.pci.presenter.view.note.questionobs.TAG_OBS_TEXT_FIELD
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.WEB_ALL_COMPONENT
@@ -64,7 +67,8 @@ class HeaderFlowTest {
             val resultPlantList = """
                 [
                     {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
-                    {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02","idFactorySectionPlant":1}
+                    {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02","idFactorySectionPlant":1},
+                    {"idPlant":3,"codPlant":"03","descPlant":"PLANTA 03","idFactorySectionPlant":1}
                 ]
             """.trimIndent()
 
@@ -79,7 +83,10 @@ class HeaderFlowTest {
                     {"idItem":7,"seqItem":7,"idOSItem":1,"idPlantItem":2,"idComponentItem":5,"idServiceItem":4},
                     {"idItem":8,"seqItem":8,"idOSItem":1,"idPlantItem":2,"idComponentItem":5,"idServiceItem":5},
                     {"idItem":9,"seqItem":9,"idOSItem":1,"idPlantItem":2,"idComponentItem":6,"idServiceItem":5},
-                    {"idItem":10,"seqItem":10,"idOSItem":1,"idPlantItem":2,"idComponentItem":6,"idServiceItem":5}
+                    {"idItem":10,"seqItem":10,"idOSItem":1,"idPlantItem":2,"idComponentItem":6,"idServiceItem":5},
+                    {"idItem":11,"seqItem":11,"idOSItem":1,"idPlantItem":3,"idComponentItem":7,"idServiceItem":5},
+                    {"idItem":12,"seqItem":12,"idOSItem":1,"idPlantItem":3,"idComponentItem":8,"idServiceItem":5},
+                    {"idItem":13,"seqItem":13,"idOSItem":1,"idPlantItem":3,"idComponentItem":0,"idServiceItem":6}
                 ]
             """.trimIndent()
 
@@ -89,7 +96,8 @@ class HeaderFlowTest {
                     {"idService":2,"codService":2,"descService":"SERVICE 2"},
                     {"idService":3,"codService":3,"descService":"SERVICE 3"},
                     {"idService":4,"codService":4,"descService":"SERVICE 4"},
-                    {"idService":5,"codService":5,"descService":"SERVICE 5"}
+                    {"idService":5,"codService":5,"descService":"SERVICE 5"},
+                    {"idService":6,"codService":6,"descService":"SERVICE 6"}
                 ]
             """.trimIndent()
 
@@ -100,7 +108,9 @@ class HeaderFlowTest {
                     {"idComponent":3,"codComponent":"03","descComponent":"COMPONENT 3"},
                     {"idComponent":4,"codComponent":"04","descComponent":"COMPONENT 4"},
                     {"idComponent":5,"codComponent":"05","descComponent":"COMPONENT 5"},
-                    {"idComponent":6,"codComponent":"06","descComponent":"COMPONENT 6"}
+                    {"idComponent":6,"codComponent":"06","descComponent":"COMPONENT 6"},
+                    {"idComponent":7,"codComponent":"07","descComponent":"COMPONENT 7"},
+                    {"idComponent":8,"codComponent":"08","descComponent":"COMPONENT 8"}
                 ]
             """.trimIndent()
 
@@ -409,6 +419,122 @@ class HeaderFlowTest {
         )
 
         Log.d("TestDebug", "Position 18")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("RETORNAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 19")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag("item_list_1")
+            .performClick()
+
+        Log.d("TestDebug", "Position 20")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag("item_list_2")
+            .performClick()
+
+        Log.d("TestDebug", "Position 21")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("NÃO CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 22")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("CANCELAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 23")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("NÃO CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 24")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 25")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
+            .performClick()
+
+        Log.d("TestDebug", "Position 25")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag(TAG_OBS_TEXT_FIELD)
+            .performTextInput("Test obs")
+
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 26")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        val respRoomModelListTest2 = respDao.all()
+        assertEquals(
+            respRoomModelListTest2.size,
+            2
+        )
+        val respRoomModel1Test2 = respRoomModelListTest2[0]
+        assertEquals(
+            respRoomModel1Test2.id,
+            1
+        )
+        assertEquals(
+            respRoomModel1Test2.idHeader,
+            1
+        )
+        assertEquals(
+            respRoomModel1Test2.idItem,
+            1
+        )
+        assertEquals(
+            respRoomModel1Test2.option,
+            OptionResp.ACCORDING
+        )
+        assertEquals(
+            respRoomModel1Test2.obs,
+            null
+        )
+        val respRoomModel2Test2 = respRoomModelListTest2[1]
+        assertEquals(
+            respRoomModel2Test2.id,
+            2
+        )
+        assertEquals(
+            respRoomModel.idHeader,
+            1
+        )
+        assertEquals(
+            respRoomModel2Test2.idItem,
+            2
+        )
+        assertEquals(
+            respRoomModel2Test2.option,
+            OptionResp.NON_CONFORMING
+        )
+        assertEquals(
+            respRoomModel2Test2.obs,
+            "Test obs"
+        )
 
         composeTestRule.waitUntilTimeout(10_000)
 

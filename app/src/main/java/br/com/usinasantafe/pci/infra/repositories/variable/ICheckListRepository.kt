@@ -121,7 +121,7 @@ class ICheckListRepository @Inject constructor(
         }
     }
 
-    override suspend fun listByIdItems(idItemList: List<Int>): Result<List<Resp>> {
+    override suspend fun listRespByIdItems(idItemList: List<Int>): Result<List<Resp>> {
         try {
             val result = respRoomDatasource.listByIdItems(idItemList)
             if (result.isFailure) {
