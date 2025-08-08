@@ -25,10 +25,14 @@ interface ItemModule {
 
     @Binds
     @Singleton
-    fun bindGetItem(usecase: IGetItem): GetItem
+    fun bindGetItem(usecase: IGetDescItem): GetDescItem
 
     @Binds
     @Singleton
     fun bindSetRespItem(usecase: ISetRespItem): SetRespItem
+
+    @Binds
+    @Singleton
+    fun bindGetResp(usecase: IGetResp): GetResp
 
 }

@@ -140,4 +140,23 @@ class ICheckListRepository @Inject constructor(
         }
     }
 
+    override suspend fun getRespByIdItem(idItem: Int): Result<Resp> {
+        try {
+            val result = respRoomDatasource.getByIdItem(idItem)
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entity = result.getOrNull()!!.roomModelToEntity()
+            return Result.success(entity)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

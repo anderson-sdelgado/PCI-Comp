@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
 import br.com.usinasantafe.pci.utils.OptionResp
+import br.com.usinasantafe.pci.utils.Status
+import br.com.usinasantafe.pci.utils.StatusSend
 import br.com.usinasantafe.pci.utils.TB_RESP
 
 @Entity(tableName = TB_RESP)
@@ -12,8 +14,10 @@ data class RespRoomModel(
     val id: Int? = null,
     val idHeader: Int,
     val idItem: Int,
-    val option: OptionResp,
-    val obs: String? = null,
+    var option: OptionResp,
+    var obs: String? = null,
+    val status: Status = Status.OPEN,
+    var statusSend: StatusSend = StatusSend.SEND
 )
 
 fun RespRoomModel.roomModelToEntity(): Resp {

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b47f8879a2e1b562efd2a52e4bcb82cd",
+    "identityHash": "ee6f138b9995dba173698c2026254643",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -296,7 +296,7 @@
       },
       {
         "tableName": "tb_resp",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `option` TEXT NOT NULL, `obs` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `option` TEXT NOT NULL, `obs` TEXT, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -327,6 +327,18 @@
             "columnName": "obs",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -342,7 +354,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b47f8879a2e1b562efd2a52e4bcb82cd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ee6f138b9995dba173698c2026254643')"
     ]
   }
 }

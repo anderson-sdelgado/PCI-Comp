@@ -2,6 +2,7 @@ package br.com.usinasantafe.pci
 
 import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -384,14 +385,14 @@ class HeaderFlowTest {
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
-        Log.d("TestDebug", "Position 16")
+        Log.d("TestDebug", "Position 18")
 
         composeTestRule.waitUntilTimeout(3_000)
 
         composeTestRule.onNodeWithText("CONFORME")
             .performClick()
 
-        Log.d("TestDebug", "Position 17")
+        Log.d("TestDebug", "Position 19")
 
         composeTestRule.waitUntilTimeout(3_000)
 
@@ -418,39 +419,25 @@ class HeaderFlowTest {
             OptionResp.ACCORDING
         )
 
-        Log.d("TestDebug", "Position 18")
+        Log.d("TestDebug", "Position 20")
 
         composeTestRule.waitUntilTimeout(3_000)
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
-        Log.d("TestDebug", "Position 19")
+        Log.d("TestDebug", "Position 21")
 
         composeTestRule.waitUntilTimeout(3_000)
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
-        Log.d("TestDebug", "Position 20")
-
-        composeTestRule.waitUntilTimeout(3_000)
-
-        composeTestRule.onNodeWithTag("item_list_2")
-            .performClick()
-
-        Log.d("TestDebug", "Position 21")
-
-        composeTestRule.waitUntilTimeout(3_000)
-
-        composeTestRule.onNodeWithText("NÃO CONFORME")
-            .performClick()
-
         Log.d("TestDebug", "Position 22")
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        composeTestRule.onNodeWithText("CANCELAR")
+        composeTestRule.onNodeWithTag("item_list_2")
             .performClick()
 
         Log.d("TestDebug", "Position 23")
@@ -464,17 +451,31 @@ class HeaderFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        composeTestRule.onNodeWithText("OK")
+        composeTestRule.onNodeWithText("CANCELAR")
             .performClick()
 
         Log.d("TestDebug", "Position 25")
 
         composeTestRule.waitUntilTimeout(3_000)
 
+        composeTestRule.onNodeWithText("NÃO CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 26")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 27")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
         composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
             .performClick()
 
-        Log.d("TestDebug", "Position 25")
+        Log.d("TestDebug", "Position 28")
 
         composeTestRule.waitUntilTimeout(3_000)
 
@@ -484,7 +485,7 @@ class HeaderFlowTest {
         composeTestRule.onNodeWithText("OK")
             .performClick()
 
-        Log.d("TestDebug", "Position 26")
+        Log.d("TestDebug", "Position 29")
 
         composeTestRule.waitUntilTimeout(3_000)
 

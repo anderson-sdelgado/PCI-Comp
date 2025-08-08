@@ -1,23 +1,23 @@
-package br.com.usinasantafe.pci.presenter.view.note.questionresp
+package br.com.usinasantafe.pci.presenter.view.note.questiondesc
 
 import android.annotation.SuppressLint
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.HiltTestActivity
-import br.com.usinasantafe.pci.domain.usecases.note.GetDescItem
-import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
+import br.com.usinasantafe.pci.domain.usecases.note.GetResp
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ItemDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao
+import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
 import br.com.usinasantafe.pci.infra.models.room.stable.ComponentRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ItemRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ServiceRoomModel
+import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
+import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -27,7 +27,7 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class QuestionRespNoteScreenTest {
+class QuestionDescNoteScreenTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
@@ -36,10 +36,7 @@ class QuestionRespNoteScreenTest {
     val composeTestRule = createAndroidComposeRule<HiltTestActivity>()
 
     @Inject
-    lateinit var getDescItem: GetDescItem
-
-    @Inject
-    lateinit var setRespItem: SetRespItem
+    lateinit var getResp: GetResp
 
     @Inject
     lateinit var itemDao: ItemDao
@@ -50,8 +47,11 @@ class QuestionRespNoteScreenTest {
     @Inject
     lateinit var componentDao: ComponentDao
 
+    @Inject
+    lateinit var respDao : RespDao
+
     @Test
-    fun check_open_screen_and_item_table_is_empty() =
+    fun check_open_screen_and_msg_if_item_table_is_empty() =
         runTest {
 
             hiltRule.inject()
@@ -61,33 +61,67 @@ class QuestionRespNoteScreenTest {
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionRespNoteViewModel.recover -> IGetItem -> IItemRepository.getById -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionDescNoteViewModel.recover -> IGetResp -> IItemRepository.getById -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
     @Test
-    fun check_open_screen_and_service_table_is_empty() =
+    fun check_open_screen_and_msg_if_service_table_is_empty() =
         runTest {
 
             hiltRule.inject()
 
             initialRegister(1)
 
-            setContent(2)
+            setContent()
 
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionRespNoteViewModel.recover -> IGetItem -> IServiceRepository.getById -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionDescNoteViewModel.recover -> IGetResp -> IServiceRepository.getById -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
     @Test
-    fun check_open_screen_and_component_table_is_empty() =
+    fun check_open_screen_and_msg_if_resp_table_is_empty_and_id_component_is_0() =
+        runTest {
+
+            hiltRule.inject()
+
+            initialRegister(2)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionDescNoteViewModel.recover -> IGetResp -> ICheckListRepository.getRespByIdItem -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun check_open_screen_and_success_execute_successfully_and_id_component_is_0() =
+        runTest {
+
+            hiltRule.inject()
+
+            initialRegister(4)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_component_table_is_empty_and_id_component_is_not_0() =
         runTest {
 
             hiltRule.inject()
@@ -99,14 +133,14 @@ class QuestionRespNoteScreenTest {
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionRespNoteViewModel.recover -> IGetItem -> IComponentRepository.getById -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionDescNoteViewModel.recover -> IGetResp -> IComponentRepository.getById -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
     @Test
-    fun check_open_screen_success_if_all_tables_have_data() =
+    fun check_open_screen_and_msg_if_resp_table_is_empty_and_id_component_is_not_0() =
         runTest {
 
             hiltRule.inject()
@@ -114,69 +148,49 @@ class QuestionRespNoteScreenTest {
             initialRegister(3)
 
             setContent(2)
-
-            composeTestRule.waitUntilTimeout(10_000)
-
-        }
-
-    @Test
-    fun check_open_screen_success_if_all_tables_have_data_and_without_component() =
-        runTest {
-
-            hiltRule.inject()
-
-            initialRegister(3)
-
-            setContent(1)
-
-            composeTestRule.waitUntilTimeout(10_000)
-
-        }
-
-    @Test
-    fun check_open_screen_and_msg_if_not_have_data_header() =
-        runTest {
-
-            hiltRule.inject()
-
-            initialRegister(3)
-
-            setContent(2)
-
-            composeTestRule.waitUntilTimeout(3_000)
-
-                    composeTestRule.onNodeWithText("CONFORME")
-                .performClick()
 
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionRespNoteViewModel.setResp -> ISetRespItem -> ICheckListRepository.saveResp -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionDescNoteViewModel.recover -> IGetResp -> ICheckListRepository.getRespByIdItem -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
+    @Test
+    fun check_open_screen_and_success_execute_successfully_and_id_component_is_not_0() =
+        runTest {
+
+            hiltRule.inject()
+
+            initialRegister(4)
+
+            setContent(2)
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+        }
+
     @SuppressLint("ViewModelConstructorInComposable")
-    private fun setContent(idItem: Int = 1) {
+    private fun setContent(idItem: Int = 1){
         composeTestRule.setContent {
-            QuestionRespNoteScreen(
-                viewModel = QuestionRespNoteViewModel(
+            QuestionDescNoteScreen(
+                viewModel = QuestionDescNoteViewModel(
                     saveStateHandle = SavedStateHandle(
                         mapOf(
                             ID_ITEM_ARG to idItem
                         )
                     ),
-                    getDescItem = getDescItem,
-                    setRespItem = setRespItem
+                    getResp = getResp
                 ),
                 onNavQuestionList = {},
-                onNavQuestionObs = {}
+                onNavQuestionResp = {}
             )
         }
     }
 
-    private fun initialRegister(level: Int) {
+    private suspend fun initialRegister(level: Int) {
 
         itemDao.insertAll(
             listOf(
@@ -333,6 +347,24 @@ class QuestionRespNoteScreenTest {
         )
 
         if (level == 3) return
+
+        respDao.insert(
+            RespRoomModel(
+                idHeader = 1,
+                idItem = 1,
+                option = OptionResp.ACCORDING
+            )
+        )
+        respDao.insert(
+            RespRoomModel(
+                idHeader = 1,
+                idItem = 2,
+                option = OptionResp.NON_CONFORMING,
+                obs = "OBS TEST"
+            )
+        )
+
+        if (level == 4) return
 
     }
 

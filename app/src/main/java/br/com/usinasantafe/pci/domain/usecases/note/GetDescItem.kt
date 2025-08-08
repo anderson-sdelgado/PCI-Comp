@@ -8,15 +8,15 @@ import br.com.usinasantafe.pci.domain.repositories.stable.ServiceRepository
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface GetItem {
+interface GetDescItem {
     suspend operator fun invoke(id: Int): Result<String>
 }
 
-class IGetItem @Inject constructor(
+class IGetDescItem @Inject constructor(
     private val itemRepository: ItemRepository,
     private val serviceRepository: ServiceRepository,
     private val componentRepository: ComponentRepository
-): GetItem {
+): GetDescItem {
 
     override suspend fun invoke(id: Int): Result<String> {
         try {

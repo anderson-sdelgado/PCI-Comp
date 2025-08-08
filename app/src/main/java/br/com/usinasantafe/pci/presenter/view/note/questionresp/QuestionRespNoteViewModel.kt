@@ -3,7 +3,7 @@ package br.com.usinasantafe.pci.presenter.view.note.questionresp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.pci.domain.usecases.note.GetItem
+import br.com.usinasantafe.pci.domain.usecases.note.GetDescItem
 import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.utils.OptionResp
@@ -26,7 +26,7 @@ data class QuestionRespNoteState(
 @HiltViewModel
 class QuestionRespNoteViewModel @Inject constructor(
     saveStateHandle: SavedStateHandle,
-    private val getItem: GetItem,
+    private val getDescItem: GetDescItem,
     private val setRespItem: SetRespItem
 ) : ViewModel() {
 
@@ -42,7 +42,7 @@ class QuestionRespNoteViewModel @Inject constructor(
     }
 
     fun recover() = viewModelScope.launch {
-        val result = getItem(id)
+        val result = getDescItem(id)
         if(result.isFailure){
             val error = result.exceptionOrNull()!!
             val failure =

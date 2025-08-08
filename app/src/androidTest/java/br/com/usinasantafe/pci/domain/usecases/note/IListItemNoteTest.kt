@@ -325,14 +325,14 @@ class IListItemNoteTest {
             itemDao.insertAll(itemRoomList)
             componentDao.insertAll(componentRoomModelList)
             serviceDao.insertAll(serviceRoomModelList)
-            respDao.save(
+            respDao.insert(
                 RespRoomModel(
                     idHeader = 1,
                     idItem = 1,
                     option = OptionResp.ACCORDING
                 )
             )
-            respDao.save(
+            respDao.insert(
                 RespRoomModel(
                     idHeader = 2,
                     idItem = 3,

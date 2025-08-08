@@ -5,7 +5,6 @@ import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
 import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
 import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.Status
-import br.com.usinasantafe.pci.utils.StatusSend
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest

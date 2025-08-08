@@ -5,6 +5,12 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="check_open_screen_and_msg_if_resp_table_is_empty_and_id_component_is_not_0()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="check_open_screen_and_success_execute_successfully_and_id_component_is_not_0()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
       <SelectionState runConfigName="flow_header()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

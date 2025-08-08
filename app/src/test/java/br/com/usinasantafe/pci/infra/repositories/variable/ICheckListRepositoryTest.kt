@@ -563,4 +563,62 @@ class ICheckListRepositoryTest {
                 )
             )
         }
+
+    @Test
+    fun `getRespByIdItem - Check return failure if have error in RespRoomDatasource getByIdItem`() =
+        runTest {
+            whenever(
+                respRoomDatasource.getByIdItem(1)
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.getByIdItem",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getRespByIdItem(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.getRespByIdItem -> IRespRoomDatasource.getByIdItem"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getRespByIdItem - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                respRoomDatasource.getByIdItem(1)
+            ).thenReturn(
+                Result.success(
+                    RespRoomModel(
+                        id = 1,
+                        idHeader = 1,
+                        idItem = 1,
+                        option = OptionResp.ACCORDING
+                    )
+                )
+            )
+            val result = repository.getRespByIdItem(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Resp(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+        }
 }

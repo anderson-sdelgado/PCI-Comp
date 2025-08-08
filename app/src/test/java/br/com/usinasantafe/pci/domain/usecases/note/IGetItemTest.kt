@@ -18,7 +18,7 @@ class IGetItemTest {
     private val itemRepository = mock<ItemRepository>()
     private val serviceRepository = mock<ServiceRepository>()
     private val componentRepository = mock<ComponentRepository>()
-    private val usecase = IGetItem(
+    private val usecase = IGetDescItem(
         itemRepository = itemRepository,
         serviceRepository = serviceRepository,
         componentRepository = componentRepository

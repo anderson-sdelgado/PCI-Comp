@@ -3,7 +3,7 @@ package br.com.usinasantafe.pci.presenter.view.note.questionresp
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.domain.usecases.note.GetItem
+import br.com.usinasantafe.pci.domain.usecases.note.GetDescItem
 import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
@@ -23,7 +23,7 @@ class QuestionRespNoteViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val getItem = mock<GetItem>()
+    private val getDescItem = mock<GetDescItem>()
     private val setRespItem = mock<SetRespItem>()
     private fun createViewModel(
         idPlant: Int = 1,
@@ -35,7 +35,7 @@ class QuestionRespNoteViewModelTest {
                 ID_ITEM_ARG to idItem
             )
         ),
-        getItem = getItem,
+        getDescItem = getDescItem,
         setRespItem = setRespItem
     )
 
@@ -43,7 +43,7 @@ class QuestionRespNoteViewModelTest {
     fun `recover - Check return failure if have error in GetItem`() =
         runTest {
             whenever(
-                getItem(2)
+                getDescItem(2)
             ).thenReturn(
                 resultFailure(
                     context = "GetItem",
@@ -69,7 +69,7 @@ class QuestionRespNoteViewModelTest {
     fun `recover - Check return true if GetItem execute successfully`() =
         runTest {
             whenever(
-                getItem(1)
+                getDescItem(1)
             ).thenReturn(
                 Result.success(
                     "Test"

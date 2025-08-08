@@ -22,7 +22,7 @@ class IGetItemTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: IGetItem
+    lateinit var usecase: IGetDescItem
 
     @Inject
     lateinit var itemDao: ItemDao

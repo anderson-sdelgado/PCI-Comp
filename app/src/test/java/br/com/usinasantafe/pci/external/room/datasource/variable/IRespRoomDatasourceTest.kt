@@ -6,6 +6,7 @@ import br.com.usinasantafe.pci.external.room.DatabaseRoom
 import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.utils.OptionResp
+import br.com.usinasantafe.pci.utils.StatusSend
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
@@ -33,7 +34,7 @@ class IRespRoomDatasourceTest {
     }
 
     @Test
-    fun `save - Check data save is correct`() =
+    fun `save - Check insert data is correct if not have data`() =
         runTest {
             val qtdBefore = respDao.all().size
             assertEquals(
@@ -56,27 +57,116 @@ class IRespRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = respDao.all().size
-            assertEquals(
-                qtdAfter,
-                1
-            )
             val list = respDao.all()
             assertEquals(
-                list[0].idHeader,
+                list.size,
+                1
+            )
+            val entity = list[0]
+            assertEquals(
+                entity.idHeader,
                 1
             )
             assertEquals(
-                list[0].idItem,
+                entity.idItem,
                 1
             )
             assertEquals(
-                list[0].option,
+                entity.option,
                 OptionResp.NON_CONFORMING
             )
             assertEquals(
-                list[0].obs,
+                entity.obs,
                 "obs"
+            )
+        }
+
+    @Test
+    fun `save - Check update data is correct if have data`() =
+        runTest {
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionResp.ACCORDING,
+                    statusSend = StatusSend.SENT
+                )
+            )
+            val listBefore = respDao.all()
+            assertEquals(
+                listBefore.size,
+                1
+            )
+            val entityBefore = listBefore[0]
+            assertEquals(
+                entityBefore.id,
+                1
+            )
+            assertEquals(
+                entityBefore.idHeader,
+                1
+            )
+            assertEquals(
+                entityBefore.idItem,
+                1
+            )
+            assertEquals(
+                entityBefore.option,
+                OptionResp.ACCORDING
+            )
+            assertEquals(
+                entityBefore.obs,
+                null
+            )
+            assertEquals(
+                entityBefore.statusSend,
+                StatusSend.SENT
+            )
+            val result = datasource.save(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val list = respDao.all()
+            assertEquals(
+                list.size,
+                1
+            )
+            val entity = list[0]
+            assertEquals(
+                entityBefore.id,
+                1
+            )
+            assertEquals(
+                entity.idHeader,
+                1
+            )
+            assertEquals(
+                entity.idItem,
+                1
+            )
+            assertEquals(
+                entity.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                entity.obs,
+                "obs"
+            )
+            assertEquals(
+                entityBefore.statusSend,
+                StatusSend.SEND
             )
         }
 
@@ -101,7 +191,7 @@ class IRespRoomDatasourceTest {
     @Test
     fun `listByIdItems - Check return list correct`() =
         runTest {
-            respDao.save(
+            respDao.insert(
                 RespRoomModel(
                     idHeader = 5,
                     idItem = 1,
@@ -109,7 +199,7 @@ class IRespRoomDatasourceTest {
                     obs = "obs"
                 )
             )
-            respDao.save(
+            respDao.insert(
                 RespRoomModel(
                     idHeader = 4,
                     idItem = 3,
@@ -117,7 +207,7 @@ class IRespRoomDatasourceTest {
                     obs = "obs"
                 )
             )
-            respDao.save(
+            respDao.insert(
                 RespRoomModel(
                     idHeader = 3,
                     idItem = 2,
@@ -164,6 +254,56 @@ class IRespRoomDatasourceTest {
             )
             assertEquals(
                 list[1].obs,
+                null
+            )
+        }
+
+    @Test
+    fun `getByIdItem - Check return list correct`() =
+        runTest {
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 5,
+                    idItem = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 4,
+                    idItem = 3,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 3,
+                    idItem = 2,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val result = datasource.getByIdItem(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val model = result.getOrNull()!!
+            assertEquals(
+                model.idHeader,
+                3
+            )
+            assertEquals(
+                model.idItem,
+                2
+            )
+            assertEquals(
+                model.option,
+                OptionResp.ACCORDING
+            )
+            assertEquals(
+                model.obs,
                 null
             )
         }

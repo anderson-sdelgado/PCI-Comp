@@ -179,7 +179,7 @@ class IListPlantNoteTest {
         runTest {
             itemDao.insertAll(itemRoomModelList)
             plantDao.insertAll(plantRoomModelList)
-            respDao.save(
+            respDao.insert(
                 RespRoomModel(
                     idHeader = 1,
                     idItem = 2,

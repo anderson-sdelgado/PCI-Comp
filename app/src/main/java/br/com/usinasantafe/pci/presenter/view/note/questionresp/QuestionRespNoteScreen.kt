@@ -103,7 +103,7 @@ fun QuestionRespNoteContent(
         ) {
             TextButtonDesign(
                 text = stringResource(
-                    id = R.string.text_button_according
+                    id = R.string.text_option_according
                 )
             )
         }
@@ -114,7 +114,7 @@ fun QuestionRespNoteContent(
         ) {
             TextButtonDesign(
                 text = stringResource(
-                    id = R.string.text_button_non_compliant
+                    id = R.string.text_option_non_compliant
                 )
             )
         }

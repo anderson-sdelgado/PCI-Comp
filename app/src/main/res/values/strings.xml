@@ -50,8 +50,11 @@
     <string name="text_title_list_question">LISTA DE QUESTÃO</string>
     <string name="text_flow_inexistent">FLUXO INEXISTENTE. POR FAVOR ENTRAR EM CONTATO COM A TI.</string>
     <string name="text_title_question">QUESTÃO</string>
-    <string name="text_button_according">CONFORME</string>
-    <string name="text_button_non_compliant">NÃO CONFORME</string>
+    <string name="text_option_according">CONFORME</string>
+    <string name="text_option_non_compliant">NÃO CONFORME</string>
     <string name="text_title_question_obs">OBSERVAÇÃO</string>
     <string name="text_question_pos">QUESTÃO %1$s</string>
+    <string name="text_question_desc">DESCR: %1$s</string>
+    <string name="text_question_obs">OBS: %1$s</string>
+    <string name="text_button_edit">EDITAR</string>
 </resources>

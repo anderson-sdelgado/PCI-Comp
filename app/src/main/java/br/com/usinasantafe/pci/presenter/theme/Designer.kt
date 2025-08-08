@@ -154,8 +154,8 @@ fun ItemListItemDesign(
     setActionItem: () -> Unit
 ) {
     val text = when(option){
-        OptionResp.ACCORDING -> stringResource(R.string.text_button_according)
-        OptionResp.NON_CONFORMING -> stringResource(R.string.text_button_non_compliant)
+        OptionResp.ACCORDING -> stringResource(R.string.text_option_according)
+        OptionResp.NON_CONFORMING -> stringResource(R.string.text_option_non_compliant)
         null -> ""
     }
     val color = when(option){
