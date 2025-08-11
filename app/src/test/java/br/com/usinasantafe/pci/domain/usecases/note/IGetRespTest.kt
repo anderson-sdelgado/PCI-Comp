@@ -185,6 +185,7 @@ class IGetRespTest {
                     Resp(
                         id = 1,
                         idHeader = 1,
+                        idPlant = 1,
                         idItem = 1,
                         option = OptionResp.ACCORDING,
                     )
@@ -367,6 +368,7 @@ class IGetRespTest {
                     Resp(
                         id = 1,
                         idHeader = 1,
+                        idPlant = 1,
                         idItem = 1,
                         option = OptionResp.NON_CONFORMING,
                         obs = "Obs Test"

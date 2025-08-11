@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.note
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ComponentRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.ServiceRepository
@@ -25,7 +24,7 @@ class IListItemNote @Inject constructor(
         try {
             val resultGetIdOS = checkListRepository.getIdOSHeaderOpen()
             if (resultGetIdOS.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdOS.exceptionOrNull()!!
                 )
@@ -36,7 +35,7 @@ class IListItemNote @Inject constructor(
                 idPlant = idPlant
             )
             if (resulListItem.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resulListItem.exceptionOrNull()!!
                 )
@@ -47,7 +46,7 @@ class IListItemNote @Inject constructor(
                 ids = idComponentList
             )
             if(resultComponentList.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultComponentList.exceptionOrNull()!!
                 )
@@ -58,7 +57,7 @@ class IListItemNote @Inject constructor(
                 ids = idServiceList
             )
             if(resultServiceList.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultServiceList.exceptionOrNull()!!
                 )
@@ -69,7 +68,7 @@ class IListItemNote @Inject constructor(
                 idItemList = idItemList
             )
             if(resultRespList.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultRespList.exceptionOrNull()!!
                 )
@@ -96,7 +95,7 @@ class IListItemNote @Inject constructor(
             )
             return Result.success(listOrder)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

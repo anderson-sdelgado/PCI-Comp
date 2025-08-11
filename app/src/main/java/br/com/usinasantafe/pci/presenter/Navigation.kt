@@ -3,6 +3,7 @@ package br.com.usinasantafe.pci.presenter
 import androidx.navigation.NavHostController
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
+import br.com.usinasantafe.pci.presenter.Args.TYPE_FLOW_ARG
 import br.com.usinasantafe.pci.presenter.Screens.COLAB_HEADER_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.CONFIG_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.INITIAL_MENU_SCREEN
@@ -14,6 +15,7 @@ import br.com.usinasantafe.pci.presenter.Screens.QUESTION_LIST_NOTE_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.QUESTION_OBS_NOTE_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.QUESTION_RESP_NOTE_SCREEN
 import br.com.usinasantafe.pci.presenter.Screens.SPLASH_SCREEN
+import br.com.usinasantafe.pci.utils.TypeFlow
 
 object Screens {
     const val SPLASH_SCREEN = "splash"
@@ -32,6 +34,7 @@ object Screens {
 object Args {
     const val ID_PLANT_ARG = "idPlant"
     const val ID_ITEM_ARG = "idItem"
+    const val TYPE_FLOW_ARG = "typeFlow"
 }
 
 object Routes {
@@ -44,8 +47,8 @@ object Routes {
     const val PLANT_LIST_NOTE_ROUTE = PLANT_LIST_NOTE_SCREEN
     const val QUESTION_LIST_NOTE_ROUTE = "$QUESTION_LIST_NOTE_SCREEN/{$ID_PLANT_ARG}"
     const val QUESTION_DESC_NOTE_ROUTE = "$QUESTION_DESC_NOTE_SCREEN/{$ID_PLANT_ARG}/{$ID_ITEM_ARG}"
-    const val QUESTION_OBS_NOTE_ROUTE = "$QUESTION_OBS_NOTE_SCREEN/{$ID_PLANT_ARG}/{$ID_ITEM_ARG}"
-    const val QUESTION_RESP_NOTE_ROUTE = "$QUESTION_RESP_NOTE_SCREEN/{$ID_PLANT_ARG}/{$ID_ITEM_ARG}"
+    const val QUESTION_OBS_NOTE_ROUTE = "$QUESTION_OBS_NOTE_SCREEN/{$ID_PLANT_ARG}/{$ID_ITEM_ARG}/{$TYPE_FLOW_ARG}"
+    const val QUESTION_RESP_NOTE_ROUTE = "$QUESTION_RESP_NOTE_SCREEN/{$ID_PLANT_ARG}/{$ID_ITEM_ARG}/{$TYPE_FLOW_ARG}"
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -107,16 +110,18 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToQuestionObsNote(
         idPlant: Int,
-        idItem: Int
+        idItem: Int,
+        typeFlow: TypeFlow
     ) {
-        navController.navigate("${QUESTION_OBS_NOTE_SCREEN}/${idPlant}/${idItem}")
+        navController.navigate("${QUESTION_OBS_NOTE_SCREEN}/${idPlant}/${idItem}/${typeFlow.ordinal}")
     }
 
     fun navigateToQuestionRespNote(
         idPlant: Int,
-        idItem: Int
+        idItem: Int,
+        typeFlow: TypeFlow
     ) {
-        navController.navigate("${QUESTION_RESP_NOTE_SCREEN}/${idPlant}/${idItem}")
+        navController.navigate("${QUESTION_RESP_NOTE_SCREEN}/${idPlant}/${idItem}/${typeFlow.ordinal}")
     }
 
     ////////////////////////////////////////////////////////////////////

@@ -13,4 +13,6 @@ interface CheckListRepository {
     suspend fun saveResp(resp: Resp): Result<Boolean>
     suspend fun listRespByIdItems(idItemList: List<Int>): Result<List<Resp>>
     suspend fun getRespByIdItem(idItem: Int): Result<Resp>
+    suspend fun closeItems(idPlant: Int): Result<Boolean>
+    suspend fun listRespByIdPlantAndHeaderOpen(idPlant: Int): Result<List<Resp>>
 }

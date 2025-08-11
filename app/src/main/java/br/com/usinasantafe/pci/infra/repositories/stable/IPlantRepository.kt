@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
 import br.com.usinasantafe.pci.domain.entities.stable.Plant
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.PlantRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.stable.PlantRoomDatasource
@@ -22,14 +21,14 @@ class IPlantRepository @Inject constructor(
             val modelList = list.map { it.entityToRoomModel() }
             val result = plantRoomDatasource.addAll(modelList)
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -39,7 +38,7 @@ class IPlantRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = plantRoomDatasource.deleteAll()
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -57,7 +56,7 @@ class IPlantRepository @Inject constructor(
                 idFactorySection = idFactorySection
             )
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -65,7 +64,7 @@ class IPlantRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -76,7 +75,7 @@ class IPlantRepository @Inject constructor(
         try {
             val result = plantRoomDatasource.listByIdFactorySection(idFactorySection)
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -84,7 +83,7 @@ class IPlantRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -95,7 +94,7 @@ class IPlantRepository @Inject constructor(
         try {
             val result = plantRoomDatasource.listByIds(ids)
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -103,7 +102,7 @@ class IPlantRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

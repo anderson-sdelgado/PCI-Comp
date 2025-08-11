@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.common
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.getClassAndMethod
@@ -19,7 +18,7 @@ class ICheckAccessInitial @Inject constructor(
         try {
             val resultCheckHasConfig = configRepository.hasConfig()
             if (resultCheckHasConfig.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultCheckHasConfig.exceptionOrNull()!!
                 )
@@ -29,7 +28,7 @@ class ICheckAccessInitial @Inject constructor(
                 return Result.success(false)
             val resultGetFlagUpdate = configRepository.getFlagUpdate()
             if (resultGetFlagUpdate.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetFlagUpdate.exceptionOrNull()!!
                 )
@@ -38,7 +37,7 @@ class ICheckAccessInitial @Inject constructor(
             val check = flagUpdate == FlagUpdate.UPDATED
             return Result.success(check)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

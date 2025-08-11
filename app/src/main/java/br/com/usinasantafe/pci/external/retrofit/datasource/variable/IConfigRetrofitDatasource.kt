@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.retrofit.datasource.variable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.retrofit.api.variable.ConfigApi
 import br.com.usinasantafe.pci.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.pci.infra.models.retrofit.variable.ConfigRetrofitModelInput
@@ -19,7 +19,7 @@ class IConfigRetrofitDatasource @Inject constructor(
             )
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

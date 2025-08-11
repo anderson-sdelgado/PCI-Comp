@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.common
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import br.com.usinasantafe.pci.utils.token
@@ -19,7 +18,7 @@ class IGetToken @Inject constructor(
         try {
             val resultGet = configRepository.get()
             if (resultGet.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGet.exceptionOrNull()!!
                 )
@@ -32,7 +31,7 @@ class IGetToken @Inject constructor(
             )
             return Result.success(token)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

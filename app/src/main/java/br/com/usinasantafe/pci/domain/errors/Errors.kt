@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.domain.errors
 
-fun resultFailureMiddle(
+fun resultFailure(
     context: String,
     cause: Throwable
 ): Result<Nothing>  {
@@ -11,7 +11,7 @@ fun resultFailureMiddle(
     )
 }
 
-fun resultFailureFinish(
+fun resultFailure(
     context: String,
     cause: Exception
 ): Result<Nothing>  {

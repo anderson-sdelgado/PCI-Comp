@@ -537,6 +537,159 @@ class HeaderFlowTest {
             "Test obs"
         )
 
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag("item_list_1")
+            .performClick()
+
+        Log.d("TestDebug", "Position 30")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("CANCELAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 31")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag("item_list_1")
+            .performClick()
+
+        Log.d("TestDebug", "Position 32")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("EDITAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 33")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("NÃO CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 34")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag(TAG_OBS_TEXT_FIELD)
+            .performTextInput("Test obs 2")
+
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 35")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        val respRoomModelListTestAlter = respDao.all()
+        assertEquals(
+            respRoomModelListTestAlter.size,
+            2
+        )
+        val respRoomModel1TestAlter = respRoomModelListTestAlter[0]
+        assertEquals(
+            respRoomModel1TestAlter.id,
+            1
+        )
+        assertEquals(
+            respRoomModel1TestAlter.idHeader,
+            1
+        )
+        assertEquals(
+            respRoomModel1TestAlter.idItem,
+            1
+        )
+        assertEquals(
+            respRoomModel1TestAlter.option,
+            OptionResp.NON_CONFORMING
+        )
+        assertEquals(
+            respRoomModel1TestAlter.obs,
+            "Test obs 2"
+        )
+        val respRoomModel2TestAlter = respRoomModelListTestAlter[1]
+        assertEquals(
+            respRoomModel2TestAlter.id,
+            2
+        )
+        assertEquals(
+            respRoomModel2TestAlter.idHeader,
+            1
+        )
+        assertEquals(
+            respRoomModel2TestAlter.idItem,
+            2
+        )
+        assertEquals(
+            respRoomModel2TestAlter.option,
+            OptionResp.NON_CONFORMING
+        )
+        assertEquals(
+            respRoomModel2TestAlter.obs,
+            "Test obs"
+        )
+
+        Log.d("TestDebug", "Position 36")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag("item_list_1")
+            .performClick()
+
+        Log.d("TestDebug", "Position 37")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("EDITAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 38")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("RETORNAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 39")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("EDITAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 40")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("NÃO CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 41")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("CANCELAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 42")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("RETORNAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 43")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("CANCELAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 44")
+
         composeTestRule.waitUntilTimeout(10_000)
 
     }

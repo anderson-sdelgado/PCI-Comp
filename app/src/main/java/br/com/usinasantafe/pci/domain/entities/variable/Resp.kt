@@ -6,6 +6,7 @@ data class Resp(
     val id: Int? = null,
     val idHeader: Int? = null,
     val idItem: Int,
+    val idPlant: Int,
     val option: OptionResp,
     val obs: String? = null,
 )

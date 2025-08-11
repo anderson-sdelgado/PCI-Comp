@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.room.datasource.stable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ComponentRoomDatasource
 import br.com.usinasantafe.pci.infra.models.room.stable.ComponentRoomModel
@@ -16,7 +16,7 @@ class IComponentRoomDatasource @Inject constructor(
             componentDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -28,7 +28,7 @@ class IComponentRoomDatasource @Inject constructor(
             componentDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -40,7 +40,7 @@ class IComponentRoomDatasource @Inject constructor(
             val list = componentDao.listByIds(ids)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -52,7 +52,7 @@ class IComponentRoomDatasource @Inject constructor(
             val model = componentDao.getById(id)
             return Result.success(model)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

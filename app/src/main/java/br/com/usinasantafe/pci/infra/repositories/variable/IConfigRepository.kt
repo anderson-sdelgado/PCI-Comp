@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.infra.repositories.variable
 
 import br.com.usinasantafe.pci.domain.entities.variable.Config
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.pci.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -23,7 +22,7 @@ class IConfigRepository @Inject constructor(
     override suspend fun hasConfig(): Result<Boolean> {
         val result = configSharedPreferencesDatasource.has()
         if (result.isFailure)
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -33,7 +32,7 @@ class IConfigRepository @Inject constructor(
     override suspend fun getPassword(): Result<String> {
         val result = configSharedPreferencesDatasource.getPassword()
         if (result.isFailure)
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -44,7 +43,7 @@ class IConfigRepository @Inject constructor(
         try {
             val result = configSharedPreferencesDatasource.get()
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -52,7 +51,7 @@ class IConfigRepository @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.sharedPreferencesModelToEntity())
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -64,14 +63,14 @@ class IConfigRepository @Inject constructor(
             val sharedPreferencesModel = entity.entityToSharedPreferencesModel()
             val result = configSharedPreferencesDatasource.save(sharedPreferencesModel)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -84,7 +83,7 @@ class IConfigRepository @Inject constructor(
                 entity.entityToRetrofitModel()
             )
             if(result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -93,7 +92,7 @@ class IConfigRepository @Inject constructor(
             val entity = configRetrofitModel.retrofitToEntity()
             return Result.success(entity)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -103,7 +102,7 @@ class IConfigRepository @Inject constructor(
     override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean> {
         val result = configSharedPreferencesDatasource.setFlagUpdate(flagUpdate)
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -114,7 +113,7 @@ class IConfigRepository @Inject constructor(
     override suspend fun getFlagUpdate(): Result<FlagUpdate> {
         val result = configSharedPreferencesDatasource.getFlagUpdate()
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )

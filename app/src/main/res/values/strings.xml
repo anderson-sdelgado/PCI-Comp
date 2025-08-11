@@ -57,4 +57,6 @@
     <string name="text_question_desc">DESCR: %1$s</string>
     <string name="text_question_obs">OBS: %1$s</string>
     <string name="text_button_edit">EDITAR</string>
+    <string name="text_button_close">FECHAR ITEN(S) APONTADO(S)</string>
+    <string name="text_question_close_item">DESEJA REALMENTE FECHAR TODO(S) O(S) ITEM(S) APONTADO(S)?</string>
 </resources>

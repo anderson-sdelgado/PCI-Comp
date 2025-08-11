@@ -2,8 +2,7 @@ package br.com.usinasantafe.pci.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.pci.utils.BASE_SHARE_PREFERENCES_TABLE_HEADER
@@ -32,7 +31,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
                 )
             )
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -49,7 +48,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -63,7 +62,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
         try {
             val resultConfig = get()
             if (resultConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultConfig.exceptionOrNull()!!
                 )
@@ -73,14 +72,14 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             model.idFactorySection = idFactorySection
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -91,7 +90,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -99,7 +98,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             val model = result.getOrNull()!!
             return Result.success(model.idFactorySection!!)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -110,7 +109,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
         try {
             val resultConfig = get()
             if (resultConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultConfig.exceptionOrNull()!!
                 )
@@ -119,14 +118,14 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             model.idOS = idOS
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -137,7 +136,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -145,7 +144,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             val model = result.getOrNull()!!
             return Result.success(model.idOS!!)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

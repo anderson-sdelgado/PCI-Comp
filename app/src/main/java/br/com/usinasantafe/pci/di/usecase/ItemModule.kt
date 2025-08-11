@@ -35,4 +35,7 @@ interface ItemModule {
     @Singleton
     fun bindGetResp(usecase: IGetResp): GetResp
 
+    @Binds
+    @Singleton
+    fun bindCloseItemNote(usecase: ICloseItemsNote): CloseItemsNote
 }

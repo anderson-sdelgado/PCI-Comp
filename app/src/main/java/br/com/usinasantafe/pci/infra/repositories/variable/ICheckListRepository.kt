@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.infra.repositories.variable
 
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.infra.datasource.room.variable.HeaderRoomDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.variable.RespRoomDatasource
@@ -29,7 +28,7 @@ class ICheckListRepository @Inject constructor(
             idFactorySection = idFactorySection
         )
         if (result.isFailure)
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -39,7 +38,7 @@ class ICheckListRepository @Inject constructor(
     override suspend fun getIdFactorySectionHeaderOpen(): Result<Int> {
         val result = headerSharedPreferencesDatasource.getIdFactorySection()
         if (result.isFailure)
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -50,13 +49,13 @@ class ICheckListRepository @Inject constructor(
         try {
             val resultSetId = headerSharedPreferencesDatasource.setIdOS(idOS)
             if (resultSetId.isFailure)
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSetId.exceptionOrNull()!!
                 )
             val resultGet = headerSharedPreferencesDatasource.get()
             if (resultGet.isFailure)
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGet.exceptionOrNull()!!
                 )
@@ -65,13 +64,13 @@ class ICheckListRepository @Inject constructor(
                 model = modelSharedPreferences.sharedPreferencesModelToRoomModel()
             )
             if (resultSave.isFailure)
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
             return resultSave
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -81,7 +80,7 @@ class ICheckListRepository @Inject constructor(
     override suspend fun getIdOSHeaderOpen(): Result<Int> {
         val result = headerSharedPreferencesDatasource.getIdOS()
         if (result.isFailure)
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -92,7 +91,7 @@ class ICheckListRepository @Inject constructor(
         try {
             val resultGetOpen = headerRoomDatasource.getByStatus(Status.OPEN)
             if (resultGetOpen.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetOpen.exceptionOrNull()!!
                 )
@@ -101,20 +100,21 @@ class ICheckListRepository @Inject constructor(
             val resultSaveResp = respRoomDatasource.save(
                 RespRoomModel(
                     idHeader = headerModel.id!!,
+                    idPlant = resp.idPlant,
                     idItem = resp.idItem,
                     option = resp.option,
                     obs = resp.obs
                 )
             )
             if (resultSaveResp.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSaveResp.exceptionOrNull()!!
                 )
             }
             return resultSaveResp
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -125,7 +125,7 @@ class ICheckListRepository @Inject constructor(
         try {
             val result = respRoomDatasource.listByIdItems(idItemList)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -133,7 +133,7 @@ class ICheckListRepository @Inject constructor(
             val list = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -144,7 +144,7 @@ class ICheckListRepository @Inject constructor(
         try {
             val result = respRoomDatasource.getByIdItem(idItem)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -152,11 +152,44 @@ class ICheckListRepository @Inject constructor(
             val entity = result.getOrNull()!!.roomModelToEntity()
             return Result.success(entity)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
         }
+    }
+
+    override suspend fun closeItems(idPlant: Int): Result<Boolean> {
+        try {
+            val resultGetOpen = headerRoomDatasource.getByStatus(Status.OPEN)
+            if (resultGetOpen.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultGetOpen.exceptionOrNull()!!
+                )
+            }
+            val headerModel = resultGetOpen.getOrNull()!!
+            val resultClose = respRoomDatasource.closeItems(
+                idHeader = headerModel.id!!,
+                idPlant = idPlant
+            )
+            if (resultClose.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultClose.exceptionOrNull()!!
+                )
+            }
+            return resultClose
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listRespByIdPlantAndHeaderOpen(idPlant: Int): Result<List<Resp>> {
+        TODO("Not yet implemented")
     }
 
 }

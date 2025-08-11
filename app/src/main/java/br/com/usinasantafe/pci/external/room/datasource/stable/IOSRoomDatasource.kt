@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.room.datasource.stable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.room.dao.stable.OSDao
 import br.com.usinasantafe.pci.infra.datasource.room.stable.OSRoomDatasource
 import br.com.usinasantafe.pci.infra.models.room.stable.OSRoomModel
@@ -16,7 +16,7 @@ class IOSRoomDatasource @Inject constructor(
             osDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -28,7 +28,7 @@ class IOSRoomDatasource @Inject constructor(
             osDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -40,7 +40,7 @@ class IOSRoomDatasource @Inject constructor(
             val list = osDao.listByIdFactorySection(idFactorySection)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

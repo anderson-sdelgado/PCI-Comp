@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.pci.domain.usecases.note.GetDescItem
 import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
+import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +32,7 @@ class QuestionRespNoteViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val id: Int = saveStateHandle[ID_ITEM_ARG]!!
+    private val idPlant: Int = saveStateHandle[ID_PLANT_ARG]!!
 
     private val _uiState = MutableStateFlow(QuestionRespNoteState())
     val uiState = _uiState.asStateFlow()
@@ -69,6 +71,7 @@ class QuestionRespNoteViewModel @Inject constructor(
         if(flagAccess) {
             val result = setRespItem(
                 id = id,
+                idPlant = idPlant,
                 option = option
             )
             if(result.isFailure){

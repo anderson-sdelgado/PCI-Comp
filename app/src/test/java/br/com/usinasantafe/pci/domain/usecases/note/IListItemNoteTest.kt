@@ -593,6 +593,7 @@ class IListItemNoteTest {
                         Resp(
                             id = 1,
                             idHeader = 1,
+                            idPlant = 1,
                             idItem = 1,
                             option = OptionResp.ACCORDING
                         ),
@@ -600,6 +601,7 @@ class IListItemNoteTest {
                         Resp(
                             id = 2,
                             idHeader = 2,
+                            idPlant = 1,
                             idItem = 3,
                             option = OptionResp.NON_CONFORMING,
                             obs = "OBS"

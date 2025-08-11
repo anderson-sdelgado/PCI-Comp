@@ -43,7 +43,7 @@ class IGetItemTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetItem -> IItemRepository.getById"
+                "IGetDescItem -> IItemRepository.getById"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -84,7 +84,7 @@ class IGetItemTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetItem -> IServiceRepository.getById"
+                "IGetDescItem -> IServiceRepository.getById"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -175,7 +175,7 @@ class IGetItemTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetItem -> IComponentRepository.getById"
+                "IGetDescItem -> IComponentRepository.getById"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.note
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ComponentRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.ServiceRepository
@@ -22,7 +21,7 @@ class ICheckItemNote @Inject constructor(
         try {
             val result = itemRepository.listAll()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -33,7 +32,7 @@ class ICheckItemNote @Inject constructor(
                 ids = idComponentList
             )
             if(resultComponentList.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultComponentList.exceptionOrNull()!!
                 )
@@ -45,7 +44,7 @@ class ICheckItemNote @Inject constructor(
                 ids = idServiceList
             )
             if(resultServiceList.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultServiceList.exceptionOrNull()!!
                 )
@@ -54,7 +53,7 @@ class ICheckItemNote @Inject constructor(
             if(idServiceList.size != serviceList.size) return Result.success(false)
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

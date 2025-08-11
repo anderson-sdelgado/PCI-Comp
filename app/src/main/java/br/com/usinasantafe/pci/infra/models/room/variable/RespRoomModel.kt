@@ -14,6 +14,7 @@ data class RespRoomModel(
     val id: Int? = null,
     val idHeader: Int,
     val idItem: Int,
+    val idPlant: Int,
     var option: OptionResp,
     var obs: String? = null,
     val status: Status = Status.OPEN,
@@ -26,6 +27,7 @@ fun RespRoomModel.roomModelToEntity(): Resp {
             id = id,
             idHeader = idHeader,
             idItem = idItem,
+            idPlant = idPlant,
             option = option,
             obs = obs,
         )
@@ -38,6 +40,7 @@ fun Resp.entityToRoomModel(): RespRoomModel {
             id = id,
             idHeader = idHeader!!,
             idItem = idItem,
+            idPlant = idPlant,
             option = option,
             obs = obs,
         )

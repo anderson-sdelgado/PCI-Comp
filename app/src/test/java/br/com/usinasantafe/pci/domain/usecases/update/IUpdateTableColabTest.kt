@@ -61,7 +61,7 @@ class IUpdateTableColabTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> GetToken -> java.lang.Exception",
+                    failure = "IUpdateTableColabReg -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -108,7 +108,7 @@ class IUpdateTableColabTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> IColabRepository.recoverAll -> java.lang.Exception",
+                    failure = "IUpdateTableColabReg -> IColabRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -179,7 +179,7 @@ class IUpdateTableColabTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> IColabRepository.deleteAll -> java.lang.Exception",
+                    failure = "IUpdateTableColabReg -> IColabRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -264,7 +264,7 @@ class IUpdateTableColabTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> IColabRepository.addAll -> java.lang.Exception",
+                    failure = "IUpdateTableColabReg -> IColabRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

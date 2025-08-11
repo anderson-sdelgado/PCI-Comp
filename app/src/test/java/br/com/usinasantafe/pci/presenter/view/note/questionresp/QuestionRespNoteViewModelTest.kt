@@ -89,6 +89,7 @@ class QuestionRespNoteViewModelTest {
             whenever(
                 setRespItem(
                     id = 1,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING,
                 )
             ).thenReturn(
@@ -118,6 +119,7 @@ class QuestionRespNoteViewModelTest {
             whenever(
                 setRespItem(
                     id = 1,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING,
                 )
             ).thenReturn(

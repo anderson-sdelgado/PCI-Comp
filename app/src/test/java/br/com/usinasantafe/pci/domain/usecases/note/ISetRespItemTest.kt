@@ -3,11 +3,8 @@ package br.com.usinasantafe.pci.domain.usecases.note
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
-import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
 import br.com.usinasantafe.pci.utils.OptionResp
-import hilt_aggregated_deps._dagger_hilt_android_internal_managers_HiltWrapper_SavedStateHandleModule
 import kotlinx.coroutines.test.runTest
-import org.bouncycastle.util.test.SimpleTest.runTest
 import org.junit.Assert.*
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.argumentCaptor
@@ -39,6 +36,7 @@ class ISetRespItemTest {
             }
             val result = usecase(
                 id = 1,
+                idPlant = 1,
                 option = OptionResp.NON_CONFORMING,
                 obs = "obs"
             )
@@ -48,7 +46,7 @@ class ISetRespItemTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.saveResp"
+                "ISetRespItem -> ICheckListRepository.saveResp"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -57,6 +55,10 @@ class ISetRespItemTest {
             val entity = modelCaptor.firstValue
             assertEquals(
                 entity.idItem,
+                1
+            )
+            assertEquals(
+                entity.idPlant,
                 1
             )
             assertEquals(
@@ -83,6 +85,7 @@ class ISetRespItemTest {
             }
             val result = usecase(
                 id = 1,
+                idPlant = 1,
                 option = OptionResp.NON_CONFORMING,
                 obs = "obs"
             )
@@ -97,6 +100,10 @@ class ISetRespItemTest {
             val entity = modelCaptor.firstValue
             assertEquals(
                 entity.idItem,
+                1
+            )
+            assertEquals(
+                entity.idPlant,
                 1
             )
             assertEquals(

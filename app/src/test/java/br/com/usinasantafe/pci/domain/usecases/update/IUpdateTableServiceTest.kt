@@ -58,6 +58,7 @@ class IUpdateTableServiceTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -107,6 +108,7 @@ class IUpdateTableServiceTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -178,6 +180,7 @@ class IUpdateTableServiceTest {
             assertEquals(
                 list[2],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -262,6 +265,7 @@ class IUpdateTableServiceTest {
             assertEquals(
                 list[3],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,

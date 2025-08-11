@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
+import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.getClassAndMethod
@@ -31,6 +32,7 @@ class QuestionObsNoteViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val id: Int = saveStateHandle[ID_ITEM_ARG]!!
+    private val idPlant: Int = saveStateHandle[ID_PLANT_ARG]!!
 
     private val _uiState = MutableStateFlow(QuestionObsNoteState())
     val uiState = _uiState.asStateFlow()
@@ -61,6 +63,7 @@ class QuestionObsNoteViewModel @Inject constructor(
         }
         val result = setRespItem(
             id = id,
+            idPlant = idPlant,
             option = OptionResp.NON_CONFORMING,
             obs = uiState.value.obs
         )

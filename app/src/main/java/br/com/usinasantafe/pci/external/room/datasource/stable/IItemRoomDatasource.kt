@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.room.datasource.stable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.room.dao.stable.ItemDao
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ItemRoomDatasource
 import br.com.usinasantafe.pci.infra.models.room.stable.ItemRoomModel
@@ -16,7 +16,7 @@ class IItemRoomDatasource @Inject constructor(
             itemDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -28,7 +28,7 @@ class IItemRoomDatasource @Inject constructor(
             itemDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -39,7 +39,7 @@ class IItemRoomDatasource @Inject constructor(
         return try {
             Result.success(itemDao.all())
         } catch (e: Exception) {
-            resultFailureFinish(
+            resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -55,7 +55,7 @@ class IItemRoomDatasource @Inject constructor(
             val list = itemDao.listByIdOSAndIdPlant(idOS, idPlant)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -67,7 +67,7 @@ class IItemRoomDatasource @Inject constructor(
             val item = itemDao.getById(id)
             return Result.success(item)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

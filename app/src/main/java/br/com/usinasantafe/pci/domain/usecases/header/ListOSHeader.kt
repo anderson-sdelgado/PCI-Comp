@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.header
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
@@ -23,7 +22,7 @@ class IListOSHeader @Inject constructor(
         try{
             val resultGetIdFactorySection = checkListRepository.getIdFactorySectionHeaderOpen()
             if (resultGetIdFactorySection.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdFactorySection.exceptionOrNull()!!
                 )
@@ -31,7 +30,7 @@ class IListOSHeader @Inject constructor(
             val idFactorySection = resultGetIdFactorySection.getOrNull()!!
             val resultListOS = osRepository.listByIdFactorySection(idFactorySection)
             if(resultListOS.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultListOS.exceptionOrNull()!!
                 )
@@ -39,7 +38,7 @@ class IListOSHeader @Inject constructor(
             val osList = resultListOS.getOrNull()!!
             val resultListPlant = plantRepository.listByIdFactorySection(idFactorySection)
             if(resultListPlant.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultListPlant.exceptionOrNull()!!
                 )
@@ -57,7 +56,7 @@ class IListOSHeader @Inject constructor(
             }
             return Result.success(list)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

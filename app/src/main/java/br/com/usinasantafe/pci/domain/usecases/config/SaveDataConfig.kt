@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.domain.usecases.config
 
 import br.com.usinasantafe.pci.domain.entities.variable.Config
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
@@ -35,14 +34,14 @@ class ISaveDataConfig @Inject constructor(
             )
             val result = configRepository.save(entity)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

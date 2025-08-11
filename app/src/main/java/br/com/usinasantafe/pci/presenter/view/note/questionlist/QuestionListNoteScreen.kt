@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.pci.R
 import br.com.usinasantafe.pci.presenter.model.ItemScreenModel
+import br.com.usinasantafe.pci.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.pci.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.pci.presenter.theme.ItemListItemDesign
 import br.com.usinasantafe.pci.presenter.theme.TitleDesign
@@ -54,6 +55,10 @@ fun QuestionListNoteScreen(
             QuestionListNoteContent(
                 itemList = uiState.itemList,
                 recoverList = viewModel::recoverList,
+                closeItem = viewModel::closeItem,
+                flagDialogCheck = uiState.flagDialogCheck,
+                setDialogCheck = viewModel::setDialogCheck,
+                flagAccess = uiState.flagAccess,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagProgress = uiState.flagProgress,
                 flagDialog = uiState.flagDialog,
@@ -75,6 +80,10 @@ fun QuestionListNoteScreen(
 fun QuestionListNoteContent(
     itemList: List<ItemScreenModel>,
     recoverList: () -> Unit,
+    closeItem: () -> Unit,
+    flagDialogCheck: Boolean,
+    setDialogCheck: (Boolean) -> Unit,
+    flagAccess: Boolean,
     setCloseDialog: () -> Unit,
     flagProgress: Boolean,
     flagDialog: Boolean,
@@ -161,6 +170,15 @@ fun QuestionListNoteContent(
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(4.dp))
+            Button(
+                onClick = { setDialogCheck(true) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TextButtonDesign(
+                    text = stringResource(id = R.string.text_button_close)
+                )
+            }
         }
         Spacer(modifier = Modifier.height(4.dp))
         Button(
@@ -173,6 +191,14 @@ fun QuestionListNoteContent(
         }
         BackHandler {}
 
+    }
+
+    if (flagDialogCheck) {
+        AlertDialogCheckDesign(
+            text = stringResource(id = R.string.text_question_close_item),
+            setCloseDialog = { setDialogCheck(false) },
+            setActionButtonYes = closeItem
+        )
     }
 
     if (flagDialog) {
@@ -199,6 +225,11 @@ fun QuestionListNoteContent(
         }
     }
 
+    LaunchedEffect(flagAccess) {
+        if(flagAccess){
+            onNavPlantList()
+        }
+    }
 
 }
 
@@ -210,6 +241,10 @@ fun QuestionListNotePagePreview() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
+                closeItem = {},
+                flagDialogCheck = false,
+                setDialogCheck = {},
+                flagAccess = false,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = false,
@@ -235,6 +270,10 @@ fun QuestionListNotePagePreviewFinishUpdate() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
+                closeItem = {},
+                flagDialogCheck = false,
+                setDialogCheck = {},
+                flagAccess = false,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = false,
@@ -260,6 +299,10 @@ fun QuestionListNotePagePreviewDataUpdate() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
+                closeItem = {},
+                flagDialogCheck = false,
+                setDialogCheck = {},
+                flagAccess = false,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = false,
@@ -285,6 +328,10 @@ fun QuestionListNotePagePreviewFailureUpdate() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
+                closeItem = {},
+                flagDialogCheck = false,
+                setDialogCheck = {},
+                flagAccess = false,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = true,
@@ -310,6 +357,10 @@ fun QuestionListNotePagePreviewUpdate() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
+                closeItem = {},
+                flagDialogCheck = false,
+                setDialogCheck = {},
+                flagAccess = false,
                 setCloseDialog = {},
                 flagProgress = false,
                 flagDialog = true,
@@ -364,6 +415,69 @@ fun QuestionListNotePagePreviewData() {
                     )
                 ),
                 recoverList = {},
+                closeItem = {},
+                flagDialogCheck = false,
+                setDialogCheck = {},
+                flagAccess = false,
+                setCloseDialog = {},
+                flagProgress = false,
+                flagDialog = false,
+                failure = "Failure",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "tb_os",
+                currentProgress = 1f,
+                errors = Errors.UPDATE,
+                onNavPlantList = {},
+                onNavQuestionResp = {},
+                onNavQuestionDesc = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun QuestionListNotePagePreviewDataMsgClose() {
+    PCITheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            QuestionListNoteContent(
+                itemList = listOf(
+                    ItemScreenModel(
+                        id = 1,
+                        pos = 1,
+                        descService = "Service 1",
+                        descComponent = "Component 1",
+                        option = null
+                    ),
+                    ItemScreenModel(
+                        id = 2,
+                        pos = 2,
+                        descService = "Service 2",
+                        descComponent = "Component 2",
+                        option = null
+                    ),
+                    ItemScreenModel(
+                        id = 3,
+                        pos = 3,
+                        descService = "Service 3",
+                        descComponent = "Component 3",
+                        option = OptionResp.ACCORDING
+                    ),
+                    ItemScreenModel(
+                        id = 4,
+                        pos = 4,
+                        descService = "Service 4",
+                        descComponent = "Component 4",
+                        option = OptionResp.NON_CONFORMING
+                    )
+                ),
+                recoverList = {},
+                closeItem = {},
+                flagDialogCheck = true,
+                setDialogCheck = {},
+                flagAccess = false,
                 setCloseDialog = {},
                 flagProgress = false,
                 flagDialog = false,

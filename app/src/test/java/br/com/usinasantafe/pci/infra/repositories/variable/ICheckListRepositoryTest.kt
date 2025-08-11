@@ -372,6 +372,7 @@ class ICheckListRepositoryTest {
             val result = repository.saveResp(
                 Resp(
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING
                 )
             )
@@ -410,6 +411,7 @@ class ICheckListRepositoryTest {
                     RespRoomModel(
                         idHeader = 1,
                         idItem = 1,
+                        idPlant = 1,
                         option = OptionResp.ACCORDING
                     )
                 )
@@ -423,6 +425,7 @@ class ICheckListRepositoryTest {
             val result = repository.saveResp(
                 Resp(
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING
                 )
             )
@@ -461,6 +464,7 @@ class ICheckListRepositoryTest {
                     RespRoomModel(
                         idHeader = 1,
                         idItem = 1,
+                        idPlant = 1,
                         option = OptionResp.ACCORDING
                     )
                 )
@@ -470,6 +474,7 @@ class ICheckListRepositoryTest {
             val result = repository.saveResp(
                 Resp(
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING
                 )
             )
@@ -541,6 +546,7 @@ class ICheckListRepositoryTest {
                             id = 1,
                             idHeader = 1,
                             idItem = 1,
+                            idPlant = 1,
                             option = OptionResp.ACCORDING
                         )
                     )
@@ -558,6 +564,7 @@ class ICheckListRepositoryTest {
                         id = 1,
                         idHeader = 1,
                         idItem = 1,
+                        idPlant = 1,
                         option = OptionResp.ACCORDING
                     )
                 )
@@ -602,6 +609,7 @@ class ICheckListRepositoryTest {
                         id = 1,
                         idHeader = 1,
                         idItem = 1,
+                        idPlant = 1,
                         option = OptionResp.ACCORDING
                     )
                 )
@@ -617,8 +625,36 @@ class ICheckListRepositoryTest {
                     id = 1,
                     idHeader = 1,
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING
                 )
+            )
+        }
+
+    @Test
+    fun `closeItems - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatus(Status.OPEN)
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.getByStatus",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.closeItems(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.closeItems -> IHeaderRoomDatasource.getByStatus"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 }

@@ -261,12 +261,14 @@ class IListPlantNoteTest {
                         Resp(
                             idHeader = 1,
                             idItem = 5,
+                            idPlant = 1,
                             option = OptionResp.NON_CONFORMING,
                             obs = "obs"
                         ),
                         Resp(
                             idHeader = 1,
                             idItem = 1,
+                            idPlant = 1,
                             option = OptionResp.NON_CONFORMING,
                             obs = "obs"
                         )

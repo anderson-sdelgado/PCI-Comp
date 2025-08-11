@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.config
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.getClassAndMethod
@@ -17,7 +17,7 @@ class ISetFinishUpdateAllTable @Inject constructor(
     override suspend fun invoke(): Result<Boolean> {
         val result = configRepository.setFlagUpdate(FlagUpdate.UPDATED)
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )

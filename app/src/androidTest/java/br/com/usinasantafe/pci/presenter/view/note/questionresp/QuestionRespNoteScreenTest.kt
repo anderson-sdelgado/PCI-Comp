@@ -171,7 +171,8 @@ class QuestionRespNoteScreenTest {
                     setRespItem = setRespItem
                 ),
                 onNavQuestionList = {},
-                onNavQuestionObs = {}
+                onNavQuestionObs = {},
+                onNavQuestionReturn = {}
             )
         }
     }

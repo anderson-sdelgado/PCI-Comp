@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
 import br.com.usinasantafe.pci.domain.entities.stable.OS
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.OSRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.stable.OSRoomDatasource
@@ -22,14 +21,14 @@ class IOSRepository @Inject constructor(
             val modelList = list.map { it.entityToRoomModel() }
             val result = osRoomDatasource.addAll(modelList)
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -39,7 +38,7 @@ class IOSRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = osRoomDatasource.deleteAll()
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -57,7 +56,7 @@ class IOSRepository @Inject constructor(
                 idFactorySection = idFactorySection
             )
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -65,7 +64,7 @@ class IOSRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -76,7 +75,7 @@ class IOSRepository @Inject constructor(
         try {
             val result = osRoomDatasource.listByIdFactorySection(idFactorySection)
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -84,7 +83,7 @@ class IOSRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

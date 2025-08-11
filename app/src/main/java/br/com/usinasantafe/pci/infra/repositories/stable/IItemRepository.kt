@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
 import br.com.usinasantafe.pci.domain.entities.stable.Item
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.ItemRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ItemRoomDatasource
@@ -22,14 +21,14 @@ class IItemRepository @Inject constructor(
             val modelList = list.map { it.entityToRoomModel() }
             val result = itemRoomDatasource.addAll(modelList)
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -39,7 +38,7 @@ class IItemRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = itemRoomDatasource.deleteAll()
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -57,7 +56,7 @@ class IItemRepository @Inject constructor(
                 idOS = idOS
             )
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -65,7 +64,7 @@ class IItemRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -76,7 +75,7 @@ class IItemRepository @Inject constructor(
         try {
             val result = itemRoomDatasource.listAll()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -84,7 +83,7 @@ class IItemRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -101,7 +100,7 @@ class IItemRepository @Inject constructor(
                 idPlant = idPlant
             )
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -109,7 +108,7 @@ class IItemRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -120,7 +119,7 @@ class IItemRepository @Inject constructor(
         try {
             val result = itemRoomDatasource.getById(id)
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -128,7 +127,7 @@ class IItemRepository @Inject constructor(
             val entity = result.getOrNull()!!.roomModelToEntity()
             return Result.success(entity)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

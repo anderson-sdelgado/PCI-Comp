@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.note
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ComponentRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.ServiceRepository
@@ -22,7 +21,7 @@ class IGetDescItem @Inject constructor(
         try {
             val resultGetItem = itemRepository.getById(id)
             if (resultGetItem.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetItem.exceptionOrNull()!!
                 )
@@ -30,7 +29,7 @@ class IGetDescItem @Inject constructor(
             val item = resultGetItem.getOrNull()!!
             val resultGetService = serviceRepository.getById(item.idServiceItem)
             if (resultGetService.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetService.exceptionOrNull()!!
                 )
@@ -39,7 +38,7 @@ class IGetDescItem @Inject constructor(
             if(item.idComponentItem == 0) return Result.success(service.descService)
             val resultGetComponent = componentRepository.getById(item.idComponentItem)
             if (resultGetComponent.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetComponent.exceptionOrNull()!!
                 )
@@ -48,7 +47,7 @@ class IGetDescItem @Inject constructor(
             val desc = "${service.descService}\n${component.codComponent} - ${component.descComponent}"
             return Result.success(desc)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

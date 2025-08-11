@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.header
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.domain.usecases.common.GetToken
@@ -22,7 +21,7 @@ class ICheckAndSetRegColabHeader @Inject constructor(
         try {
             val resultGetToken = getToken()
             if (resultGetToken.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetToken.exceptionOrNull()!!
                 )
@@ -33,7 +32,7 @@ class ICheckAndSetRegColabHeader @Inject constructor(
                 regColab = regColab.toInt()
             )
             if (resultGet.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGet.exceptionOrNull()!!
                 )
@@ -42,14 +41,14 @@ class ICheckAndSetRegColabHeader @Inject constructor(
             if (entity.idColab == 0) return Result.success(false)
             val resultDeleteAll = colabRepository.deleteAll()
             if (resultDeleteAll.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultDeleteAll.exceptionOrNull()!!
                 )
             }
             val resultAdd = colabRepository.add(entity)
             if (resultAdd.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultAdd.exceptionOrNull()!!
                 )
@@ -59,14 +58,14 @@ class ICheckAndSetRegColabHeader @Inject constructor(
                 idFactorySection = entity.idFactorySectionColab
             )
             if (resultSet.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSet.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

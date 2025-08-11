@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.room.datasource.variable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
 import br.com.usinasantafe.pci.infra.datasource.room.variable.RespRoomDatasource
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
@@ -26,7 +26,7 @@ class IRespRoomDatasource  @Inject constructor(
             respDao.update(modelBD)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -38,7 +38,7 @@ class IRespRoomDatasource  @Inject constructor(
             val list = respDao.listByIdItems(idItemList)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -50,11 +50,30 @@ class IRespRoomDatasource  @Inject constructor(
             val model = respDao.getByIdItem(idItem)
             return Result.success(model)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
         }
+    }
+
+    override suspend fun closeItems(
+        idHeader: Int,
+        idPlant: Int
+    ): Result<Boolean> {
+        try {
+            respDao.closeItems(
+                idHeader = idHeader,
+                idPlant = idPlant
+            )
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+
     }
 
 }

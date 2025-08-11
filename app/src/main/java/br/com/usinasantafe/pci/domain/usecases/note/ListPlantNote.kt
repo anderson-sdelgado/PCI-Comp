@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.note
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
@@ -23,7 +22,7 @@ class IListPlantNote @Inject constructor(
         try {
             val result = itemRepository.listAll()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -34,7 +33,7 @@ class IListPlantNote @Inject constructor(
                 ids = idPlantList
             )
             if(resultPlantList.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultPlantList.exceptionOrNull()!!
                 )
@@ -45,7 +44,7 @@ class IListPlantNote @Inject constructor(
                 idItemList = idItemList
             )
             if(resultRespList.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultRespList.exceptionOrNull()!!
                 )
@@ -69,7 +68,7 @@ class IListPlantNote @Inject constructor(
             )
             return Result.success(listOrder)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.retrofit.datasource.stable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.retrofit.api.stable.ColabApi
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.ColabRetrofitDatasource
 import br.com.usinasantafe.pci.infra.models.retrofit.stable.ColabRetrofitModel
@@ -15,7 +15,7 @@ class IColabRetrofitDatasource @Inject constructor(
             val response = colabApi.all(token)
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -33,7 +33,7 @@ class IColabRetrofitDatasource @Inject constructor(
             )
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

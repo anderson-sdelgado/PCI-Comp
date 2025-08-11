@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
 import br.com.usinasantafe.pci.domain.entities.stable.Colab
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.ColabRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ColabRoomDatasource
@@ -21,14 +20,14 @@ class IColabRepository @Inject constructor(
             val modelList = list.map { it.entityToRoomModel() }
             val result = colabRoomDatasource.addAll(modelList)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -38,7 +37,7 @@ class IColabRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = colabRoomDatasource.deleteAll()
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -50,7 +49,7 @@ class IColabRepository @Inject constructor(
         try {
             val result = colabRetrofitDatasource.listAll(token)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -58,7 +57,7 @@ class IColabRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -75,7 +74,7 @@ class IColabRepository @Inject constructor(
                 regColab = regColab
             )
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -83,7 +82,7 @@ class IColabRepository @Inject constructor(
             val entity = result.getOrNull()!!.retrofitModelToEntity()
             return Result.success(entity)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -93,7 +92,7 @@ class IColabRepository @Inject constructor(
     override suspend fun add(entity: Colab): Result<Boolean> {
         val result = colabRoomDatasource.add(entity.entityToRoomModel())
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )

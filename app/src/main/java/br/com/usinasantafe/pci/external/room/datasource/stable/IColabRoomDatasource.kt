@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.room.datasource.stable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ColabRoomDatasource
 import br.com.usinasantafe.pci.infra.models.room.stable.ColabRoomModel
@@ -16,7 +16,7 @@ class IColabRoomDatasource @Inject constructor(
             colabDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -28,7 +28,7 @@ class IColabRoomDatasource @Inject constructor(
             colabDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -40,7 +40,7 @@ class IColabRoomDatasource @Inject constructor(
             colabDao.insert(model)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

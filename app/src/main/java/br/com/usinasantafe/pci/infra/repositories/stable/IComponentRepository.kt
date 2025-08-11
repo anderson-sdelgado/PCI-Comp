@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
 import br.com.usinasantafe.pci.domain.entities.stable.Component
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ComponentRepository
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.ComponentRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ComponentRoomDatasource
@@ -22,14 +21,14 @@ class IComponentRepository @Inject constructor(
             val modelList = list.map { it.entityToRoomModel() }
             val result = componentRoomDatasource.addAll(modelList)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -39,7 +38,7 @@ class IComponentRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = componentRoomDatasource.deleteAll()
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -51,7 +50,7 @@ class IComponentRepository @Inject constructor(
         try {
             val result = componentRetrofitDatasource.listAll(token)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -59,7 +58,7 @@ class IComponentRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -70,7 +69,7 @@ class IComponentRepository @Inject constructor(
         try {
             val result = componentRoomDatasource.listByIds(ids)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -78,7 +77,7 @@ class IComponentRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -89,7 +88,7 @@ class IComponentRepository @Inject constructor(
         try {
             val result = componentRoomDatasource.getById(id)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -97,7 +96,7 @@ class IComponentRepository @Inject constructor(
             val entity = result.getOrNull()!!.roomModelToEntity()
             return Result.success(entity)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

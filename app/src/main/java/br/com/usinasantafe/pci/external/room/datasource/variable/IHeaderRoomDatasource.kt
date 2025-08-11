@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.room.datasource.variable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.room.dao.variable.HeaderDao
 import br.com.usinasantafe.pci.infra.datasource.room.variable.HeaderRoomDatasource
 import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
@@ -17,7 +17,7 @@ class IHeaderRoomDatasource @Inject constructor(
             headerDao.save(model)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -29,7 +29,7 @@ class IHeaderRoomDatasource @Inject constructor(
             val model = headerDao.getByStatus(status)
             return Result.success(model)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

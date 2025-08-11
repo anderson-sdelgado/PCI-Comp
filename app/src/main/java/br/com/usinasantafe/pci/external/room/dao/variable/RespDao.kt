@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
+import br.com.usinasantafe.pci.utils.Status
 
 @Dao
 interface RespDao {
@@ -26,5 +27,12 @@ interface RespDao {
 
     @Query("SELECT count(*) FROM TB_RESP WHERE idItem = :idItem")
     suspend fun countByIdItem(idItem: Int): Int
+
+    @Query("UPDATE TB_RESP SET status = :status WHERE idHeader = :idHeader AND idPlant = :idPlant")
+    suspend fun closeItems(
+        idHeader: Int,
+        idPlant: Int,
+        status: Status = Status.CLOSE
+    ): Int
 
 }

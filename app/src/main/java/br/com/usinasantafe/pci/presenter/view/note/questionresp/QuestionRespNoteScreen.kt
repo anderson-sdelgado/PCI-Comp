@@ -34,7 +34,8 @@ import br.com.usinasantafe.pci.utils.OptionResp
 fun QuestionRespNoteScreen(
     viewModel: QuestionRespNoteViewModel = hiltViewModel(),
     onNavQuestionList: () -> Unit,
-    onNavQuestionObs: () -> Unit
+    onNavQuestionObs: () -> Unit,
+    onNavQuestionReturn: () -> Unit
 ) {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -53,6 +54,7 @@ fun QuestionRespNoteScreen(
                 failure = uiState.failure,
                 onNavQuestionList = onNavQuestionList,
                 onNavQuestionObs = onNavQuestionObs,
+                onNavQuestionReturn = onNavQuestionReturn,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -69,6 +71,7 @@ fun QuestionRespNoteContent(
     failure: String,
     onNavQuestionList: () -> Unit,
     onNavQuestionObs: () -> Unit,
+    onNavQuestionReturn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -120,7 +123,7 @@ fun QuestionRespNoteContent(
         }
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         Button(
-            onClick = onNavQuestionList,
+            onClick = onNavQuestionReturn,
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButtonDesign(
@@ -129,8 +132,7 @@ fun QuestionRespNoteContent(
                 )
             )
         }
-        BackHandler {
-        }
+        BackHandler {}
     }
 
     if(flagDialog) {
@@ -166,6 +168,7 @@ fun QuestionRespNotePagePreview() {
                 failure = "",
                 onNavQuestionList = {},
                 onNavQuestionObs = {},
+                onNavQuestionReturn = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -186,6 +189,7 @@ fun QuestionRespNotePagePreviewFailure() {
                 failure = "Failure",
                 onNavQuestionList = {},
                 onNavQuestionObs = {},
+                onNavQuestionReturn = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -206,6 +210,7 @@ fun QuestionRespNotePagePreview2Line() {
                 failure = "",
                 onNavQuestionList = {},
                 onNavQuestionObs = {},
+                onNavQuestionReturn = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

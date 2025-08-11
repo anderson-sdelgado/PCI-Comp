@@ -2,8 +2,7 @@ package br.com.usinasantafe.pci.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.utils.BASE_SHARE_PREFERENCES_TABLE_CONFIG
@@ -34,7 +33,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 )
             )
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -49,7 +48,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             )
             return Result.success(result != null)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -60,7 +59,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -68,7 +67,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.password!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -85,7 +84,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -96,7 +95,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val resultConfig = get()
             if (resultConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultConfig.exceptionOrNull()!!
                 )
@@ -105,14 +104,14 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             model.flagUpdate = flagUpdate
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -123,7 +122,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -131,7 +130,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.flagUpdate)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

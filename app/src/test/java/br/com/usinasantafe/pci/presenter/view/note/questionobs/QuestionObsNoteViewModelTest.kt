@@ -57,6 +57,7 @@ class QuestionObsNoteViewModelTest {
             whenever(
                 setRespItem(
                     id = 2,
+                    idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "Test"
                 )
@@ -88,6 +89,7 @@ class QuestionObsNoteViewModelTest {
             whenever(
                 setRespItem(
                     id = 2,
+                    idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "Test"
                 )

@@ -45,6 +45,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 1,
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs"
                 )
@@ -88,6 +89,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 1,
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING,
                     statusSend = StatusSend.SENT
                 )
@@ -126,6 +128,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 1,
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs"
                 )
@@ -138,34 +141,34 @@ class IRespRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val list = respDao.all()
+            val listAfter = respDao.all()
             assertEquals(
-                list.size,
+                listAfter.size,
                 1
             )
-            val entity = list[0]
+            val entityAfter = listAfter[0]
             assertEquals(
                 entityBefore.id,
                 1
             )
             assertEquals(
-                entity.idHeader,
+                entityAfter.idHeader,
                 1
             )
             assertEquals(
-                entity.idItem,
+                entityAfter.idItem,
                 1
             )
             assertEquals(
-                entity.option,
+                entityAfter.option,
                 OptionResp.NON_CONFORMING
             )
             assertEquals(
-                entity.obs,
+                entityAfter.obs,
                 "obs"
             )
             assertEquals(
-                entityBefore.statusSend,
+                entityAfter.statusSend,
                 StatusSend.SEND
             )
         }
@@ -195,6 +198,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 5,
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs"
                 )
@@ -203,6 +207,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 4,
                     idItem = 3,
+                    idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs"
                 )
@@ -211,6 +216,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 3,
                     idItem = 2,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING
                 )
             )
@@ -265,6 +271,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 5,
                     idItem = 1,
+                    idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs"
                 )
@@ -273,6 +280,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 4,
                     idItem = 3,
+                    idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs"
                 )
@@ -281,6 +289,7 @@ class IRespRoomDatasourceTest {
                 RespRoomModel(
                     idHeader = 3,
                     idItem = 2,
+                    idPlant = 1,
                     option = OptionResp.ACCORDING
                 )
             )

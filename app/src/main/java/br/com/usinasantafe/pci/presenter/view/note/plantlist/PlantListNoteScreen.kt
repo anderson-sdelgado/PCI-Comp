@@ -202,7 +202,7 @@ fun PlantListContent(
             AlertDialogCheckDesign(
                 text = stringResource(id = R.string.text_question_update),
                 setCloseDialog = setCloseDialog,
-                setActionButtonOK = {
+                setActionButtonYes = {
                     recoverAndUpdateData()
                 }
             )

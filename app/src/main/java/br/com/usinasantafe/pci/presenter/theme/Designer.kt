@@ -318,7 +318,7 @@ fun AlertDialogSimpleDesign(
 fun AlertDialogCheckDesign(
     text: String,
     setCloseDialog: () -> Unit,
-    setActionButtonOK: () -> Unit
+    setActionButtonYes: () -> Unit
 ) {
     return AlertDialog(
         title = {
@@ -336,7 +336,7 @@ fun AlertDialogCheckDesign(
         onDismissRequest = setCloseDialog,
         confirmButton = {
             Button(
-                onClick = setActionButtonOK,
+                onClick = setActionButtonYes,
                 modifier = Modifier.testTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
             ) {
                 Text("SIM")

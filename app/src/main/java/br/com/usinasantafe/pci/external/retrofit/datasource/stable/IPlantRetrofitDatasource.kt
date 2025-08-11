@@ -1,6 +1,6 @@
 package br.com.usinasantafe.pci.external.retrofit.datasource.stable
 
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.external.retrofit.api.stable.PlantApi
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.PlantRetrofitDatasource
 import br.com.usinasantafe.pci.infra.models.retrofit.stable.PlantRetrofitModel
@@ -21,7 +21,7 @@ class IPlantRetrofitDatasource @Inject constructor(
             )
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

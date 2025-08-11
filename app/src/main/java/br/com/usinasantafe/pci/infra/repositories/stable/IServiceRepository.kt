@@ -1,8 +1,7 @@
 package br.com.usinasantafe.pci.infra.repositories.stable
 
 import br.com.usinasantafe.pci.domain.entities.stable.Service
-import br.com.usinasantafe.pci.domain.errors.resultFailureFinish
-import br.com.usinasantafe.pci.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ServiceRepository
 import br.com.usinasantafe.pci.infra.datasource.retrofit.stable.ServiceRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.stable.ServiceRoomDatasource
@@ -22,14 +21,14 @@ class IServiceRepository @Inject constructor(
             val modelList = list.map { it.entityToRoomModel() }
             val result = serviceRoomDatasource.addAll(modelList)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -39,7 +38,7 @@ class IServiceRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = serviceRoomDatasource.deleteAll()
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -51,7 +50,7 @@ class IServiceRepository @Inject constructor(
         try {
             val result = serviceRetrofitDatasource.listAll(token)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -59,7 +58,7 @@ class IServiceRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -70,7 +69,7 @@ class IServiceRepository @Inject constructor(
         try {
             val result = serviceRoomDatasource.listByIds(ids)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -78,7 +77,7 @@ class IServiceRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -89,7 +88,7 @@ class IServiceRepository @Inject constructor(
         try {
             val result = serviceRoomDatasource.getById(id)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -97,7 +96,7 @@ class IServiceRepository @Inject constructor(
             val entity = result.getOrNull()!!.roomModelToEntity()
             return Result.success(entity)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
