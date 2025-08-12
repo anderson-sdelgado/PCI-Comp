@@ -134,4 +134,25 @@ class IItemRepository @Inject constructor(
         }
     }
 
+    override suspend fun listByIdOS(idOS: Int): Result<List<Item>> {
+        try {
+            val result = itemRoomDatasource.listByIdOS(
+                idOS = idOS
+            )
+            if(result.isFailure){
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

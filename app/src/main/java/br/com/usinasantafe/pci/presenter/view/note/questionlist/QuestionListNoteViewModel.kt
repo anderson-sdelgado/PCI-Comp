@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
+import br.com.usinasantafe.pci.domain.usecases.note.CheckItemsOpen
 import br.com.usinasantafe.pci.domain.usecases.note.CloseItemsNote
 import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
@@ -13,6 +14,7 @@ import br.com.usinasantafe.pci.presenter.model.ItemScreenModel
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
+import br.com.usinasantafe.pci.utils.StatusPlant
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import br.com.usinasantafe.pci.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +31,7 @@ data class QuestionListNoteState(
     val itemList: List<ItemScreenModel> = listOf(),
     val idSelection: Int = 0,
     val flagDialogCheck: Boolean = false,
-    val flagAccess: Boolean = false,
+    val statusPlant: StatusPlant = StatusPlant.OPEN,
     val flagProgress: Boolean = true,
     val flagDialog: Boolean = false,
     val failure: String = "",
@@ -67,7 +69,8 @@ class QuestionListNoteViewModel @Inject constructor(
     private val updateTableComponent: UpdateTableComponent,
     private val updateTableService: UpdateTableService,
     private val listItemNote: ListItemNote,
-    private val closeItemsNote: CloseItemsNote
+    private val closeItemsNote: CloseItemsNote,
+    private val checkItemsOpen: CheckItemsOpen,
 ) : ViewModel() {
 
     private val idPlant: Int = saveStateHandle[ID_PLANT_ARG]!!
@@ -88,9 +91,9 @@ class QuestionListNoteViewModel @Inject constructor(
     }
 
     fun closeItem() = viewModelScope.launch {
-        val result = closeItemsNote(idPlant)
-        if (result.isFailure) {
-            val error = result.exceptionOrNull()!!
+        val resultClose = closeItemsNote(idPlant)
+        if (resultClose.isFailure) {
+            val error = resultClose.exceptionOrNull()!!
             val failure =
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
@@ -104,14 +107,29 @@ class QuestionListNoteViewModel @Inject constructor(
             }
             return@launch
         }
-        val check = result.getOrNull()!!
+        val resultCheck = checkItemsOpen(idPlant)
+        if (resultCheck.isFailure) {
+            val error = resultCheck.exceptionOrNull()!!
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            Timber.e(failure)
+            _uiState.update {
+                it.copy(
+                    flagDialog = true,
+                    errors = Errors.EXCEPTION,
+                    failure = failure,
+                    flagDialogCheck = false
+                )
+            }
+            return@launch
+        }
+        val check = resultCheck.getOrNull()!!
         _uiState.update {
             it.copy(
-                flagAccess = check,
+                statusPlant = check,
                 flagDialogCheck = false
             )
         }
-        if (!check) recoverList()
     }
 
     fun checkAndUpdateData() = viewModelScope.launch {

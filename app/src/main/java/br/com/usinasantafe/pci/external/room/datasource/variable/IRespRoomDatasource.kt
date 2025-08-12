@@ -76,4 +76,36 @@ class IRespRoomDatasource  @Inject constructor(
 
     }
 
+    override suspend fun listByIdHeaderAndIdPlant(
+        idHeader: Int,
+        idPlant: Int
+    ): Result<List<RespRoomModel>> {
+        try {
+            val list = respDao.listByIdHeaderAndIdPlant(
+                idHeader = idHeader,
+                idPlant = idPlant
+            )
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIdHeader(idHeader: Int): Result<List<RespRoomModel>> {
+        try {
+            val list = respDao.listByIdHeader(
+                idHeader = idHeader
+            )
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

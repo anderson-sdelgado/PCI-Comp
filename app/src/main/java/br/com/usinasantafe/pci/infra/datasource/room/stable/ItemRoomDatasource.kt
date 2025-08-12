@@ -11,4 +11,5 @@ interface ItemRoomDatasource {
         idPlant: Int
     ): Result<List<ItemRoomModel>>
     suspend fun getById(id: Int): Result<ItemRoomModel>
+    suspend fun listByIdOS(idOS: Int): Result<List<ItemRoomModel>>
 }

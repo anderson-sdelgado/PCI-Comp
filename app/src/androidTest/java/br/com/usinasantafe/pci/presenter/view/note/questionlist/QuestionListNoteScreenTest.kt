@@ -9,21 +9,26 @@ import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.HiltTestActivity
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
+import br.com.usinasantafe.pci.domain.usecases.note.CheckItemsOpen
+import br.com.usinasantafe.pci.domain.usecases.note.CloseItemsNote
 import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ItemDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao
+import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
 import br.com.usinasantafe.pci.external.sharedpreferences.datasource.IHeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.room.stable.ComponentRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ItemRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ServiceRoomModel
+import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.utils.FlagUpdate
+import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.WEB_ALL_COMPONENT
 import br.com.usinasantafe.pci.utils.WEB_ALL_SERVICE
 import br.com.usinasantafe.pci.utils.waitUntilTimeout
@@ -62,6 +67,12 @@ class QuestionListNoteScreenTest {
     lateinit var listItemNote: ListItemNote
 
     @Inject
+    lateinit var closeItemsNote: CloseItemsNote
+
+    @Inject
+    lateinit var checkItemsOpen: CheckItemsOpen
+
+    @Inject
     lateinit var itemDao: ItemDao
 
     @Inject
@@ -75,6 +86,9 @@ class QuestionListNoteScreenTest {
 
     @Inject
     lateinit var headerSharedPreferencesDatasource: IHeaderSharedPreferencesDatasource
+
+    @Inject
+    lateinit var respDao: RespDao
 
     private val resultComponentRetrofit = """
         [{"idComponent":1,"codComponent":"1","descComponent":"TESTE 1"}]
@@ -460,6 +474,40 @@ class QuestionListNoteScreenTest {
 
         }
 
+    @Test
+    fun check_open_screen_with_item_noted() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            hiltRule.inject()
+
+            initialRegister(5)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+        }
+
+    @Test
+    fun check_open_screen_and_click_close_item_noted() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            hiltRule.inject()
+
+            initialRegister(5)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+
+
+        }
+
     @SuppressLint("ViewModelConstructorInComposable")
     private fun setContent() {
         composeTestRule.setContent {
@@ -473,11 +521,14 @@ class QuestionListNoteScreenTest {
                     checkItemNote = checkItemNote,
                     updateTableComponent = updateTableComponent,
                     updateTableService = updateTableService,
-                    listItemNote = listItemNote
+                    listItemNote = listItemNote,
+                    closeItemsNote = closeItemsNote,
+                    checkItemsOpen = checkItemsOpen
                 ),
                 onNavPlantList = {},
                 onNavQuestionResp = {},
-                onNavQuestionDesc = {}
+                onNavQuestionDesc = {},
+                onNavSplash = {}
             )
         }
     }
@@ -659,6 +710,17 @@ class QuestionListNoteScreenTest {
         )
 
         if (level == 4) return
+
+        respDao.insert(
+            RespRoomModel(
+                idHeader = 1,
+                idItem = 1,
+                idPlant = 1,
+                option = OptionResp.ACCORDING
+            )
+        )
+
+        if (level == 5) return
 
     }
 

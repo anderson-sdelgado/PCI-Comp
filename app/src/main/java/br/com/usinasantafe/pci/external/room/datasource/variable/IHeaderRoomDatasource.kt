@@ -14,7 +14,7 @@ class IHeaderRoomDatasource @Inject constructor(
 
     override suspend fun save(model: HeaderRoomModel): Result<Boolean> {
         try {
-            headerDao.save(model)
+            headerDao.insert(model)
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(
@@ -24,10 +24,24 @@ class IHeaderRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getByStatus(status: Status): Result<HeaderRoomModel> {
+    override suspend fun getByStatusOpenDefault(status: Status): Result<HeaderRoomModel> {
         try {
             val model = headerDao.getByStatus(status)
             return Result.success(model)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun finish(): Result<Boolean> {
+        try {
+            val model = headerDao.getByStatus(Status.OPEN)
+            model.status = Status.FINISH
+            headerDao.update(model)
+            return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

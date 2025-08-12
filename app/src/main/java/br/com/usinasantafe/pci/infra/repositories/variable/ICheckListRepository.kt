@@ -9,7 +9,6 @@ import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPr
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.sharedPreferencesModelToRoomModel
-import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -87,9 +86,19 @@ class ICheckListRepository @Inject constructor(
         return result
     }
 
+    override suspend fun finishHeader(): Result<Boolean> {
+        val result = headerRoomDatasource.finish()
+        if (result.isFailure)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        return result
+    }
+
     override suspend fun saveResp(resp: Resp): Result<Boolean> {
         try {
-            val resultGetOpen = headerRoomDatasource.getByStatus(Status.OPEN)
+            val resultGetOpen = headerRoomDatasource.getByStatusOpenDefault()
             if (resultGetOpen.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -161,7 +170,7 @@ class ICheckListRepository @Inject constructor(
 
     override suspend fun closeItems(idPlant: Int): Result<Boolean> {
         try {
-            val resultGetOpen = headerRoomDatasource.getByStatus(Status.OPEN)
+            val resultGetOpen = headerRoomDatasource.getByStatusOpenDefault()
             if (resultGetOpen.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -189,7 +198,66 @@ class ICheckListRepository @Inject constructor(
     }
 
     override suspend fun listRespByIdPlantAndHeaderOpen(idPlant: Int): Result<List<Resp>> {
-        TODO("Not yet implemented")
+        try {
+            val resultGetOpen = headerRoomDatasource.getByStatusOpenDefault()
+            if (resultGetOpen.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultGetOpen.exceptionOrNull()!!
+                )
+            }
+            val headerModel = resultGetOpen.getOrNull()!!
+            val result = respRoomDatasource.listByIdHeaderAndIdPlant(
+                idHeader = headerModel.id!!,
+                idPlant = idPlant
+            )
+            if(result.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            return Result.success(
+                result.getOrNull()!!.map {
+                    it.roomModelToEntity()
+                }
+            )
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listRespByHeaderOpen(): Result<List<Resp>> {
+        try {
+            val resultGetOpen = headerRoomDatasource.getByStatusOpenDefault()
+            if (resultGetOpen.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultGetOpen.exceptionOrNull()!!
+                )
+            }
+            val headerModel = resultGetOpen.getOrNull()!!
+            val resultList = respRoomDatasource.listByIdHeader(headerModel.id!!)
+            if (resultList.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultList.exceptionOrNull()!!
+                )
+            }
+            return Result.success(
+                resultList.getOrNull()!!.map {
+                    it.roomModelToEntity()
+                }
+            )
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

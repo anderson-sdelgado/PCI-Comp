@@ -418,7 +418,7 @@ class IItemRoomDatasourceTest {
         }
 
     @Test
-    fun `getById - Check return failure if table is empty`() =
+    fun `getById - Check execution correct`() =
         runTest {
             itemDao.insertAll(
                 listOf(
@@ -449,4 +449,112 @@ class IItemRoomDatasourceTest {
                 )
             )
         }
+
+    @Test
+    fun `getByIdOS - Check execution correct`() =
+        runTest {
+            itemDao.insertAll(
+                listOf(
+                    ItemRoomModel(
+                        idItem = 1,
+                        seqItem = 1,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    ),
+                    ItemRoomModel(
+                        idItem = 2,
+                        seqItem = 2,
+                        idOSItem = 1,
+                        idPlantItem = 2,
+                        idComponentItem = 2,
+                        idServiceItem = 2
+                    ),
+                    ItemRoomModel(
+                        idItem = 3,
+                        seqItem = 3,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 2,
+                        idServiceItem = 2
+                    ),
+                    ItemRoomModel(
+                        idItem = 4,
+                        seqItem = 4,
+                        idOSItem = 1,
+                        idPlantItem = 2,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    ),
+                    ItemRoomModel(
+                        idItem = 5,
+                        seqItem = 5,
+                        idOSItem = 2,
+                        idPlantItem = 2,
+                        idComponentItem = 2,
+                        idServiceItem = 2
+                    ),
+                    ItemRoomModel(
+                        idItem = 6,
+                        seqItem = 6,
+                        idOSItem = 2,
+                        idPlantItem = 1,
+                        idComponentItem = 2,
+                        idServiceItem = 2
+                    ),
+                    ItemRoomModel(
+                        idItem = 7,
+                        seqItem = 7,
+                        idOSItem = 3,
+                        idPlantItem = 2,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    ),
+                )
+            )
+            val result = datasource.listByIdOS(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    ItemRoomModel(
+                        idItem = 1,
+                        seqItem = 1,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    ),
+                    ItemRoomModel(
+                        idItem = 2,
+                        seqItem = 2,
+                        idOSItem = 1,
+                        idPlantItem = 2,
+                        idComponentItem = 2,
+                        idServiceItem = 2
+                    ),
+                    ItemRoomModel(
+                        idItem = 3,
+                        seqItem = 3,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 2,
+                        idServiceItem = 2
+                    ),
+                    ItemRoomModel(
+                        idItem = 4,
+                        seqItem = 4,
+                        idOSItem = 1,
+                        idPlantItem = 2,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    )
+                )
+            )
+        }
+
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
+import br.com.usinasantafe.pci.domain.usecases.note.CheckItemsOpen
 import br.com.usinasantafe.pci.domain.usecases.note.CloseItemsNote
 import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
@@ -13,6 +14,7 @@ import br.com.usinasantafe.pci.presenter.model.ItemScreenModel
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
+import br.com.usinasantafe.pci.utils.StatusPlant
 import br.com.usinasantafe.pci.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -36,6 +38,7 @@ class QuestionListNoteViewModelTest {
     private val updateTableService = mock<UpdateTableService>()
     private val listItemNote = mock<ListItemNote>()
     private val closeItemsNote = mock<CloseItemsNote>()
+    private val checkItemsOpen = mock<CheckItemsOpen>()
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
@@ -48,7 +51,8 @@ class QuestionListNoteViewModelTest {
         updateTableComponent = updateTableComponent,
         updateTableService = updateTableService,
         listItemNote = listItemNote,
-        closeItemsNote = closeItemsNote
+        closeItemsNote = closeItemsNote,
+        checkItemsOpen = checkItemsOpen,
     )
 
     private val qtdTable = 2f
@@ -446,12 +450,21 @@ class QuestionListNoteViewModelTest {
         }
 
     @Test
-    fun `closeItem - Check return true if CloseItemNote execute successfully and return is true`() =
+    fun `closeItem - Check return failure if have error in CheckItemsNote`() =
         runTest {
             whenever(
                 closeItemsNote(1)
             ).thenReturn(
                 Result.success(true)
+            )
+            whenever(
+                checkItemsOpen(1)
+            ).thenReturn(
+                resultFailure(
+                    context = "CheckItemsOpen",
+                    message = "-",
+                    cause = Exception()
+                )
             )
             val viewModel = createViewModel(
                 SavedStateHandle(
@@ -462,8 +475,16 @@ class QuestionListNoteViewModelTest {
             )
             viewModel.closeItem()
             assertEquals(
-                viewModel.uiState.value.flagAccess,
+                viewModel.uiState.value.flagDialog,
                 true
+            )
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "QuestionListNoteViewModel.closeItem -> CheckItemsOpen -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.EXCEPTION
             )
             assertEquals(
                 viewModel.uiState.value.flagDialogCheck,
@@ -472,41 +493,17 @@ class QuestionListNoteViewModelTest {
         }
 
     @Test
-    fun `closeItem - Check return true if CloseItemNote execute successfully and return is false`() =
+    fun `closeItem - Check return true if CloseItemNote execute successfully`() =
         runTest {
-            whenever(
-                listItemNote(1)
-            ).thenReturn(
-                Result.success(
-                    listOf(
-                        ItemScreenModel(
-                            id = 1,
-                            pos = 1,
-                            descService = "Teste 1",
-                            descComponent = "Teste 1",
-                            option = null
-                        ),
-                        ItemScreenModel(
-                            id = 2,
-                            pos = 2,
-                            descComponent = "Teste 2",
-                            descService = "Teste 2",
-                            option = null
-                        ),
-                        ItemScreenModel(
-                            id = 3,
-                            pos = 3,
-                            descComponent = "Teste 3",
-                            descService = "Teste 3",
-                            option = null
-                        ),
-                    )
-                )
-            )
             whenever(
                 closeItemsNote(1)
             ).thenReturn(
-                Result.success(false)
+                Result.success(true)
+            )
+            whenever(
+                checkItemsOpen(1)
+            ).thenReturn(
+                Result.success(StatusPlant.OPEN)
             )
             val viewModel = createViewModel(
                 SavedStateHandle(
@@ -517,83 +514,11 @@ class QuestionListNoteViewModelTest {
             )
             viewModel.closeItem()
             assertEquals(
-                viewModel.uiState.value.flagAccess,
-                false
+                viewModel.uiState.value.statusPlant,
+                StatusPlant.OPEN
             )
             assertEquals(
                 viewModel.uiState.value.flagDialogCheck,
-                false
-            )
-            val list = viewModel.uiState.value.itemList
-            assertEquals(
-                list.count(),
-                3
-            )
-            val item1 = list[0]
-            assertEquals(
-                item1.id,
-                1
-            )
-            assertEquals(
-                item1.pos,
-                1
-            )
-            assertEquals(
-                item1.descService,
-                "Teste 1"
-            )
-            assertEquals(
-                item1.descComponent,
-                "Teste 1"
-            )
-            assertEquals(
-                item1.option,
-                null
-            )
-            val item2 = list[1]
-            assertEquals(
-                item2.id,
-                2
-            )
-            assertEquals(
-                item2.pos,
-                2
-            )
-            assertEquals(
-                item2.descService,
-                "Teste 2"
-            )
-            assertEquals(
-                item2.descComponent,
-                "Teste 2"
-            )
-            assertEquals(
-                item2.option,
-                null
-            )
-            val item3 = list[2]
-            assertEquals(
-                item3.id,
-                3
-            )
-            assertEquals(
-                item3.pos,
-                3
-            )
-            assertEquals(
-                item3.descService,
-                "Teste 3"
-            )
-            assertEquals(
-                item3.descComponent,
-                "Teste 3"
-            )
-            assertEquals(
-                item3.option,
-                null
-            )
-            assertEquals(
-                viewModel.uiState.value.flagProgress,
                 false
             )
         }

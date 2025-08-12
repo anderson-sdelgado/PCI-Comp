@@ -29,4 +29,9 @@ interface ItemDao {
         id: Int
     ): ItemRoomModel
 
+    @Query("SELECT * FROM $TB_ITEM WHERE idOSItem = :idOS")
+    suspend fun listByIdOS(
+        idOS: Int
+    ): List<ItemRoomModel>
+
 }

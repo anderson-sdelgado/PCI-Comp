@@ -216,8 +216,8 @@ class PlantListNoteScreenTest {
     private fun setContent() {
         composeTestRule.setContent {
             PlantListNoteScreen(
-                onNavOSList = {},
-                onNavQuestionList = {}
+                onNavQuestionList = {},
+                onNavSplash = {}
             )
         }
     }

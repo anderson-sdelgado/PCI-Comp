@@ -68,6 +68,12 @@ class PlantListNoteViewModel @Inject constructor(
         }
     }
 
+    fun setFlagMsgUpdate() {
+        _uiState.update {
+            it.copy(flagMsgUpdate = true)
+        }
+    }
+
     fun recoverAndUpdateData() = viewModelScope.launch {
         _uiState.update {
             it.copy(

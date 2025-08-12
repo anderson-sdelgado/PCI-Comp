@@ -38,4 +38,8 @@ interface ItemModule {
     @Binds
     @Singleton
     fun bindCloseItemNote(usecase: ICloseItemsNote): CloseItemsNote
+    
+    @Binds
+    @Singleton
+    fun bindCheckItemsOpen(usecase: ICheckItemsOpen): CheckItemsOpen
 }

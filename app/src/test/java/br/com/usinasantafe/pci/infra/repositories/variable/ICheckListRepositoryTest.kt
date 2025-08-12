@@ -361,7 +361,7 @@ class ICheckListRepositoryTest {
     fun `saveResp - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatus(Status.OPEN)
+                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
             ).thenReturn(
                 resultFailure(
                     "IHeaderRoomDatasource.getByStatus",
@@ -394,7 +394,7 @@ class ICheckListRepositoryTest {
     fun `saveResp - Check return failure if have error in RespRoomDatasource save`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatus(Status.OPEN)
+                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
             ).thenReturn(
                 Result.success(
                     HeaderRoomModel(
@@ -447,7 +447,7 @@ class ICheckListRepositoryTest {
     fun `saveResp - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatus(Status.OPEN)
+                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
             ).thenReturn(
                 Result.success(
                     HeaderRoomModel(
@@ -635,7 +635,7 @@ class ICheckListRepositoryTest {
     fun `closeItems - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatus(Status.OPEN)
+                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
             ).thenReturn(
                 resultFailure(
                     "IHeaderRoomDatasource.getByStatus",
@@ -655,6 +655,394 @@ class ICheckListRepositoryTest {
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `closeItems - Check return failure if have error in RespRoomDatasource closeItems`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
+            ).thenReturn(
+                Result.success(
+                    HeaderRoomModel(
+                        id = 1,
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.OPEN,
+                    )
+                )
+            )
+            whenever(
+                respRoomDatasource.closeItems(
+                    idHeader = 1,
+                    idPlant = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.closeItems",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.closeItems(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.closeItems -> IRespRoomDatasource.closeItems"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `closeItems - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
+            ).thenReturn(
+                Result.success(
+                    HeaderRoomModel(
+                        id = 1,
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.OPEN,
+                    )
+                )
+            )
+            whenever(
+                respRoomDatasource.closeItems(
+                    idHeader = 1,
+                    idPlant = 1
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.closeItems(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `listRespByIdPlantAndHeaderOpen - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatusOpenDefault()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.getByStatusOpenDefault",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listRespByIdPlantAndHeaderOpen(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.listRespByIdPlantAndHeaderOpen -> IHeaderRoomDatasource.getByStatusOpenDefault"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listRespByIdPlantAndHeaderOpen - Check return failure if have error in RespRoomDatasource listByIdHeaderAndIdPlant`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatusOpenDefault()
+            ).thenReturn(
+                Result.success(
+                    HeaderRoomModel(
+                        id = 1,
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.OPEN,
+                    )
+                )
+            )
+            whenever(
+                respRoomDatasource.listByIdHeaderAndIdPlant(
+                    idHeader = 1,
+                    idPlant = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.listByIdHeaderAndIdPlant",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listRespByIdPlantAndHeaderOpen(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.listRespByIdPlantAndHeaderOpen -> IRespRoomDatasource.listByIdHeaderAndIdPlant"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listRespByIdPlantAndHeaderOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatusOpenDefault()
+            ).thenReturn(
+                Result.success(
+                    HeaderRoomModel(
+                        id = 1,
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.OPEN,
+                    )
+                )
+            )
+            whenever(
+                respRoomDatasource.listByIdHeaderAndIdPlant(
+                    idHeader = 1,
+                    idPlant = 1
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        RespRoomModel(
+                            id = 1,
+                            idHeader = 1,
+                            idItem = 1,
+                            idPlant = 1,
+                            option = OptionResp.ACCORDING
+                        ),
+                        RespRoomModel(
+                            id = 2,
+                            idHeader = 1,
+                            idItem = 2,
+                            idPlant = 1,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs"
+                        )
+                    )
+                )
+            )
+            val result = repository.listRespByIdPlantAndHeaderOpen(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                2
+            )
+            val entity1 = list[0]
+            assertEquals(
+                entity1,
+                Resp(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val entity2 = list[1]
+            assertEquals(
+                entity2,
+                Resp(
+                    id = 2,
+                    idHeader = 1,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+        }
+
+    @Test
+    fun `listRespByHeaderOpen - Check return failure if have error in HeaderRoomDatasource getByStatusOpenDefault`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatusOpenDefault()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.getByStatusOpenDefault",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listRespByHeaderOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.listRespByHeaderOpen -> IHeaderRoomDatasource.getByStatusOpenDefault"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listRespByHeaderOpen - Check return failure if have error in RespRoomDatasource listByIdHeader`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatusOpenDefault()
+            ).thenReturn(
+                Result.success(
+                    HeaderRoomModel(
+                        id = 2,
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.OPEN,
+                    )
+                )
+            )
+            whenever(
+                respRoomDatasource.listByIdHeader(2)
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.listByIdHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listRespByHeaderOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.listRespByHeaderOpen -> IRespRoomDatasource.listByIdHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listRespByHeaderOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.getByStatusOpenDefault()
+            ).thenReturn(
+                Result.success(
+                    HeaderRoomModel(
+                        id = 2,
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.OPEN,
+                    )
+                )
+            )
+            whenever(
+                respRoomDatasource.listByIdHeader(2)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        RespRoomModel(
+                            id = 1,
+                            idHeader = 2,
+                            idItem = 1,
+                            idPlant = 1,
+                            option = OptionResp.ACCORDING
+                        )
+                    )
+                )
+            )
+            val result = repository.listRespByHeaderOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    Resp(
+                        id = 1,
+                        idHeader = 2,
+                        idItem = 1,
+                        idPlant = 1,
+                        option = OptionResp.ACCORDING
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `finishHeader - Check return failure if have error in HeaderRoomDatasource finish`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.finish()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.finish",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.finishHeader()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.finishHeader -> IHeaderRoomDatasource.finish"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `finishHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.finish()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.finishHeader()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 }

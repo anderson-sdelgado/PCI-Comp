@@ -39,6 +39,7 @@ class ISetRespItemTest {
         runTest {
             val result = usecase(
                 id = 1,
+                idPlant = 1,
                 option = OptionResp.NON_CONFORMING,
                 obs = "obs"
             )
@@ -59,7 +60,7 @@ class ISetRespItemTest {
     @Test
     fun check_data_insert_if_process_execute_successfully() =
         runTest {
-            headerDao.save(
+            headerDao.insert(
                 model = HeaderRoomModel(
                     id = 1,
                     idColab = 1,
@@ -75,6 +76,7 @@ class ISetRespItemTest {
             )
             val result = usecase(
                 id = 1,
+                idPlant = 1,
                 option = OptionResp.NON_CONFORMING,
                 obs = "obs"
             )

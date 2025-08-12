@@ -156,7 +156,7 @@ class IItemRepositoryTest {
         }
 
     @Test
-    fun `listByIdOS - Check return failure if have error in ItemRoomDatasource listByIdOS`() =
+    fun `listByIdOS - Check return failure if have error in ItemRetrofitDatasource listByIdOS`() =
         runTest {
             whenever(
                 itemRetrofitDatasource.listByIdOS(
@@ -436,6 +436,72 @@ class IItemRepositoryTest {
                     idPlantItem = 1,
                     idComponentItem = 1,
                     idServiceItem = 1
+                )
+            )
+        }
+
+    @Test
+    fun `listByIdOS - Check return failure if have error in ItemRoomDatasource listByIdOS`() =
+        runTest {
+            whenever(
+                itemRoomDatasource.listByIdOS(1)
+            ).thenReturn(
+                resultFailure(
+                    "IItemRoomDatasource.listByIdOS",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdOS(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemRepository.listByIdOS -> IItemRoomDatasource.listByIdOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdOS - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                itemRoomDatasource.listByIdOS(1)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ItemRoomModel(
+                            idItem = 1,
+                            seqItem = 1,
+                            idOSItem = 1,
+                            idPlantItem = 1,
+                            idComponentItem = 1,
+                            idServiceItem = 1
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdOS(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+            result.getOrNull()!!,
+                listOf(
+                    Item(
+                        idItem = 1,
+                        seqItem = 1,
+                        idOSItem = 1,
+                        idPlantItem = 1,
+                        idComponentItem = 1,
+                        idServiceItem = 1
+                    )
                 )
             )
         }

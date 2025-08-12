@@ -125,13 +125,13 @@ fun NavigationGraph(
 
         composable(PLANT_LIST_NOTE_ROUTE) {
             PlantListNoteScreen(
-                onNavOSList = {
-                    navActions.navigateToOSHeader()
-                },
                 onNavQuestionList = {
                     navActions.navigateToQuestionListNote(
                         it
                     )
+                },
+                onNavSplash = {
+                    navActions.navigateToSplash()
                 }
             )
         }
@@ -160,6 +160,9 @@ fun NavigationGraph(
                         idItem = it,
                         idPlant = entry.arguments?.getInt(ID_PLANT_ARG)!!
                     )
+                },
+                onNavSplash = {
+                    navActions.navigateToSplash()
                 }
             )
         }

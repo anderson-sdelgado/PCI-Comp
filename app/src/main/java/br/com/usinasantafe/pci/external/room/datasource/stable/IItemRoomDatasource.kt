@@ -74,4 +74,16 @@ class IItemRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun listByIdOS(idOS: Int): Result<List<ItemRoomModel>> {
+        try {
+            val list = itemDao.listByIdOS(idOS)
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

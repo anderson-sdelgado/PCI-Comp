@@ -35,4 +35,15 @@ interface RespDao {
         status: Status = Status.CLOSE
     ): Int
 
+    @Query("SELECT * FROM TB_RESP WHERE idHeader = :idHeader AND idPlant = :idPlant")
+    suspend fun listByIdHeaderAndIdPlant(
+        idHeader: Int,
+        idPlant: Int
+    ): List<RespRoomModel>
+
+    @Query("SELECT * FROM TB_RESP WHERE idHeader = :idHeader")
+    suspend fun listByIdHeader(
+        idHeader: Int
+    ): List<RespRoomModel>
+
 }

@@ -6,6 +6,7 @@ import br.com.usinasantafe.pci.external.room.DatabaseRoom
 import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.utils.OptionResp
+import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.StatusSend
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -314,6 +315,294 @@ class IRespRoomDatasourceTest {
             assertEquals(
                 model.obs,
                 null
+            )
+        }
+
+    @Test
+    fun `closeItems - Check closed resp`() =
+        runTest {
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 3,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val listBefore = respDao.all()
+            assertEquals(
+                listBefore.size,
+                3
+            )
+            val model1Before = listBefore[0]
+            assertEquals(
+                model1Before,
+                RespRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                    obs = null,
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val model2Before = listBefore[1]
+            assertEquals(
+                model2Before,
+                RespRoomModel(
+                    id = 2,
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val model3Before = listBefore[2]
+            assertEquals(
+                model3Before,
+                RespRoomModel(
+                    id = 3,
+                    idHeader = 3,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                    obs = null,
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val result = datasource.closeItems(
+                idHeader = 1,
+                idPlant = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val listAfter = respDao.all()
+            assertEquals(
+                listAfter.size,
+                3
+            )
+            val model1After = listAfter[0]
+            assertEquals(
+                model1After,
+                RespRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                    obs = null,
+                    statusSend = StatusSend.SEND,
+                    status = Status.CLOSE
+                )
+            )
+            val model2After = listAfter[1]
+            assertEquals(
+                model2After,
+                RespRoomModel(
+                    id = 2,
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SEND,
+                    status = Status.CLOSE
+                )
+            )
+            val model3After = listAfter[2]
+            assertEquals(
+                model3After,
+                RespRoomModel(
+                    id = 3,
+                    idHeader = 3,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                    obs = null,
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+        }
+
+    @Test
+    fun `listByIdHeaderAndIdPlant - Check return list correct`() =
+        runTest {
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 3,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val result = datasource.listByIdHeaderAndIdPlant(
+                idHeader = 1,
+                idPlant = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                2
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1,
+                RespRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val model2 = list[1]
+            assertEquals(
+                model2,
+                RespRoomModel(
+                    id = 2,
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+        }
+
+    @Test
+    fun `listByIdHeader - Check return list correct`() =
+        runTest {
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 4,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 3,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val result = datasource.listByIdHeader(
+                idHeader = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                3
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1,
+                RespRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val model2 = list[1]
+            assertEquals(
+                model2,
+                RespRoomModel(
+                    id = 2,
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            val model3 = list[2]
+            assertEquals(
+                model3,
+                RespRoomModel(
+                    id = 3,
+                    idHeader = 1,
+                    idItem = 4,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
             )
         }
 }

@@ -351,6 +351,7 @@ class QuestionDescNoteScreenTest {
         respDao.insert(
             RespRoomModel(
                 idHeader = 1,
+                idPlant = 1,
                 idItem = 1,
                 option = OptionResp.ACCORDING
             )
@@ -358,6 +359,7 @@ class QuestionDescNoteScreenTest {
         respDao.insert(
             RespRoomModel(
                 idHeader = 1,
+                idPlant = 1,
                 idItem = 2,
                 option = OptionResp.NON_CONFORMING,
                 obs = "OBS TEST"

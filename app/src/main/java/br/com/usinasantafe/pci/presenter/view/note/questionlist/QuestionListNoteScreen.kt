@@ -36,13 +36,15 @@ import br.com.usinasantafe.pci.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
 import br.com.usinasantafe.pci.utils.OptionResp
+import br.com.usinasantafe.pci.utils.StatusPlant
 
 @Composable
 fun QuestionListNoteScreen(
     viewModel: QuestionListNoteViewModel = hiltViewModel(),
     onNavPlantList: () -> Unit,
     onNavQuestionResp: (Int) -> Unit,
-    onNavQuestionDesc: (Int) -> Unit
+    onNavQuestionDesc: (Int) -> Unit,
+    onNavSplash: () -> Unit
 ) {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -58,7 +60,7 @@ fun QuestionListNoteScreen(
                 closeItem = viewModel::closeItem,
                 flagDialogCheck = uiState.flagDialogCheck,
                 setDialogCheck = viewModel::setDialogCheck,
-                flagAccess = uiState.flagAccess,
+                statusPlant = uiState.statusPlant,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagProgress = uiState.flagProgress,
                 flagDialog = uiState.flagDialog,
@@ -70,6 +72,7 @@ fun QuestionListNoteScreen(
                 onNavPlantList = onNavPlantList,
                 onNavQuestionResp = onNavQuestionResp,
                 onNavQuestionDesc = onNavQuestionDesc,
+                onNavSplash = onNavSplash,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -83,7 +86,7 @@ fun QuestionListNoteContent(
     closeItem: () -> Unit,
     flagDialogCheck: Boolean,
     setDialogCheck: (Boolean) -> Unit,
-    flagAccess: Boolean,
+    statusPlant: StatusPlant,
     setCloseDialog: () -> Unit,
     flagProgress: Boolean,
     flagDialog: Boolean,
@@ -95,6 +98,7 @@ fun QuestionListNoteContent(
     onNavPlantList: () -> Unit,
     onNavQuestionResp: (Int) -> Unit,
     onNavQuestionDesc: (Int) -> Unit,
+    onNavSplash: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -225,9 +229,11 @@ fun QuestionListNoteContent(
         }
     }
 
-    LaunchedEffect(flagAccess) {
-        if(flagAccess){
-            onNavPlantList()
+    LaunchedEffect(statusPlant) {
+        when(statusPlant) {
+            StatusPlant.OPEN -> recoverList
+            StatusPlant.CLOSE -> onNavPlantList
+            StatusPlant.CLOSE_ALL -> TODO()
         }
     }
 
@@ -244,7 +250,7 @@ fun QuestionListNotePagePreview() {
                 closeItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
-                flagAccess = false,
+                statusPlant = StatusPlant.OPEN,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = false,
@@ -256,6 +262,7 @@ fun QuestionListNotePagePreview() {
                 onNavPlantList = {},
                 onNavQuestionResp = {},
                 onNavQuestionDesc = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -273,7 +280,7 @@ fun QuestionListNotePagePreviewFinishUpdate() {
                 closeItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
-                flagAccess = false,
+                statusPlant = StatusPlant.OPEN,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = false,
@@ -285,6 +292,7 @@ fun QuestionListNotePagePreviewFinishUpdate() {
                 onNavPlantList = {},
                 onNavQuestionResp = {},
                 onNavQuestionDesc = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -302,7 +310,7 @@ fun QuestionListNotePagePreviewDataUpdate() {
                 closeItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
-                flagAccess = false,
+                statusPlant = StatusPlant.OPEN,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = false,
@@ -314,6 +322,7 @@ fun QuestionListNotePagePreviewDataUpdate() {
                 onNavPlantList = {},
                 onNavQuestionResp = {},
                 onNavQuestionDesc = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -331,7 +340,7 @@ fun QuestionListNotePagePreviewFailureUpdate() {
                 closeItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
-                flagAccess = false,
+                statusPlant = StatusPlant.OPEN,
                 setCloseDialog = {},
                 flagProgress = true,
                 flagDialog = true,
@@ -343,6 +352,7 @@ fun QuestionListNotePagePreviewFailureUpdate() {
                 onNavPlantList = {},
                 onNavQuestionResp = {},
                 onNavQuestionDesc = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -360,7 +370,7 @@ fun QuestionListNotePagePreviewUpdate() {
                 closeItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
-                flagAccess = false,
+                statusPlant = StatusPlant.OPEN,
                 setCloseDialog = {},
                 flagProgress = false,
                 flagDialog = true,
@@ -372,6 +382,7 @@ fun QuestionListNotePagePreviewUpdate() {
                 onNavPlantList = {},
                 onNavQuestionResp = {},
                 onNavQuestionDesc = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -418,7 +429,7 @@ fun QuestionListNotePagePreviewData() {
                 closeItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
-                flagAccess = false,
+                statusPlant = StatusPlant.OPEN,
                 setCloseDialog = {},
                 flagProgress = false,
                 flagDialog = false,
@@ -430,6 +441,7 @@ fun QuestionListNotePagePreviewData() {
                 onNavPlantList = {},
                 onNavQuestionResp = {},
                 onNavQuestionDesc = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -477,7 +489,7 @@ fun QuestionListNotePagePreviewDataMsgClose() {
                 closeItem = {},
                 flagDialogCheck = true,
                 setDialogCheck = {},
-                flagAccess = false,
+                statusPlant = StatusPlant.OPEN,
                 setCloseDialog = {},
                 flagProgress = false,
                 flagDialog = false,
@@ -489,6 +501,7 @@ fun QuestionListNotePagePreviewDataMsgClose() {
                 onNavPlantList = {},
                 onNavQuestionResp = {},
                 onNavQuestionDesc = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

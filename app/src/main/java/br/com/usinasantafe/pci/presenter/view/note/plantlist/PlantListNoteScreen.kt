@@ -39,8 +39,8 @@ import br.com.usinasantafe.pci.utils.LevelUpdate
 @Composable
 fun PlantListNoteScreen(
     viewModel: PlantListNoteViewModel = hiltViewModel(),
-    onNavOSList: () -> Unit,
-    onNavQuestionList: (Int) -> Unit
+    onNavQuestionList: (Int) -> Unit,
+    onNavSplash: () -> Unit
 ) {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -55,6 +55,7 @@ fun PlantListNoteScreen(
                 recoverList = viewModel::recoverList,
                 flagMsgUpdate = uiState.flagMsgUpdate,
                 recoverAndUpdateData = viewModel::recoverAndUpdateData,
+                setFlagMsgUpdate = viewModel::setFlagMsgUpdate,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagProgress = uiState.flagProgress,
                 flagDialog = uiState.flagDialog,
@@ -63,8 +64,8 @@ fun PlantListNoteScreen(
                 levelUpdate = uiState.levelUpdate,
                 tableUpdate = uiState.tableUpdate,
                 errors = uiState.errors,
-                onNavOSList = onNavOSList,
                 onNavQuestionList = onNavQuestionList,
+                onNavSplash = onNavSplash,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -77,6 +78,7 @@ fun PlantListContent(
     recoverList: () -> Unit,
     flagMsgUpdate: Boolean,
     recoverAndUpdateData: () -> Unit,
+    setFlagMsgUpdate: () -> Unit,
     setCloseDialog: () -> Unit,
     flagProgress: Boolean,
     flagDialog: Boolean,
@@ -85,8 +87,8 @@ fun PlantListContent(
     levelUpdate: LevelUpdate?,
     tableUpdate: String,
     errors: Errors,
-    onNavOSList: () -> Unit,
     onNavQuestionList: (Int) -> Unit,
+    onNavSplash: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -162,7 +164,7 @@ fun PlantListContent(
         }
         Spacer(modifier = Modifier.height(4.dp))
         Button(
-            onClick = onNavOSList,
+            onClick = setFlagMsgUpdate,
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButtonDesign(
@@ -171,7 +173,7 @@ fun PlantListContent(
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            onClick = onNavOSList,
+            onClick = onNavSplash,
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButtonDesign(
@@ -197,16 +199,16 @@ fun PlantListContent(
                 setCloseDialog = setCloseDialog,
             )
         }
+    }
 
-        if(flagMsgUpdate) {
-            AlertDialogCheckDesign(
-                text = stringResource(id = R.string.text_question_update),
-                setCloseDialog = setCloseDialog,
-                setActionButtonYes = {
-                    recoverAndUpdateData()
-                }
-            )
-        }
+    if(flagMsgUpdate) {
+        AlertDialogCheckDesign(
+            text = stringResource(id = R.string.text_question_update),
+            setCloseDialog = setCloseDialog,
+            setActionButtonYes = {
+                recoverAndUpdateData()
+            }
+        )
     }
 
     LaunchedEffect(levelUpdate) {
@@ -227,6 +229,7 @@ fun PlantListPagePreviewUpdate() {
                 plantList = listOf(),
                 recoverList = {},
                 recoverAndUpdateData = {},
+                setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
                 setCloseDialog = {},
                 flagDialog = false,
@@ -235,8 +238,8 @@ fun PlantListPagePreviewUpdate() {
                 tableUpdate = "",
                 currentProgress = 0.0f,
                 errors = Errors.FIELD_EMPTY,
-                onNavOSList = {},
                 onNavQuestionList = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -253,6 +256,7 @@ fun PlantListPagePreviewDataUpdate() {
                 plantList = listOf(),
                 recoverList = {},
                 recoverAndUpdateData = {},
+                setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
                 setCloseDialog = {},
                 flagDialog = false,
@@ -261,8 +265,8 @@ fun PlantListPagePreviewDataUpdate() {
                 tableUpdate = "tb_item",
                 currentProgress = 0.25555f,
                 errors = Errors.FIELD_EMPTY,
-                onNavOSList = {},
                 onNavQuestionList = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -279,6 +283,7 @@ fun PlantListPagePreviewFinishUpdate() {
                 plantList = listOf(),
                 recoverList = {},
                 recoverAndUpdateData = {},
+                setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
                 setCloseDialog = {},
                 flagDialog = false,
@@ -287,8 +292,8 @@ fun PlantListPagePreviewFinishUpdate() {
                 tableUpdate = "tb_plant",
                 currentProgress = 1f,
                 errors = Errors.FIELD_EMPTY,
-                onNavOSList = {},
                 onNavQuestionList = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -305,6 +310,7 @@ fun PlantListPagePreviewFailureUpdate() {
                 plantList = listOf(),
                 recoverList = {},
                 recoverAndUpdateData = {},
+                setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
                 setCloseDialog = {},
                 flagDialog = true,
@@ -313,8 +319,8 @@ fun PlantListPagePreviewFailureUpdate() {
                 tableUpdate = "tb_os",
                 currentProgress = 1f,
                 errors = Errors.UPDATE,
-                onNavOSList = {},
                 onNavQuestionList = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -331,6 +337,7 @@ fun PlantListPagePreviewFailure() {
                 plantList = listOf(),
                 recoverList = {},
                 recoverAndUpdateData = {},
+                setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
                 setCloseDialog = {},
                 flagDialog = true,
@@ -339,8 +346,8 @@ fun PlantListPagePreviewFailure() {
                 tableUpdate = "tb_os",
                 currentProgress = 1f,
                 errors = Errors.UPDATE,
-                onNavOSList = {},
                 onNavQuestionList = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -370,6 +377,7 @@ fun PlantListPagePreviewList() {
                 ),
                 recoverList = {},
                 recoverAndUpdateData = {},
+                setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
                 setCloseDialog = {},
                 flagDialog = false,
@@ -378,8 +386,8 @@ fun PlantListPagePreviewList() {
                 tableUpdate = "tb_os",
                 currentProgress = 1f,
                 errors = Errors.UPDATE,
-                onNavOSList = {},
                 onNavQuestionList = {},
+                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

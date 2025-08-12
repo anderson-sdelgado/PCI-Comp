@@ -17,4 +17,7 @@ interface ItemRepository {
     suspend fun getById(
         id: Int
     ): Result<Item>
+    suspend fun listByIdOS(
+        idOS: Int
+    ): Result<List<Item>>
 }
