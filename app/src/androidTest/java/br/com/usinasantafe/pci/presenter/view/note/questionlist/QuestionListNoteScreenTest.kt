@@ -5,30 +5,37 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.HiltTestActivity
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemsOpen
-import br.com.usinasantafe.pci.domain.usecases.note.CloseItemsNote
+import br.com.usinasantafe.pci.domain.usecases.note.FinishItemsNote
 import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ItemDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao
+import br.com.usinasantafe.pci.external.room.dao.variable.HeaderDao
 import br.com.usinasantafe.pci.external.room.dao.variable.RespDao
 import br.com.usinasantafe.pci.external.sharedpreferences.datasource.IHeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.room.stable.ComponentRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ItemRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.ServiceRoomModel
+import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
+import br.com.usinasantafe.pci.presenter.theme.TAG_BUTTON_NO_ALERT_DIALOG_CHECK
+import br.com.usinasantafe.pci.presenter.theme.TAG_BUTTON_YES_ALERT_DIALOG_CHECK
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.OptionResp
+import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.WEB_ALL_COMPONENT
 import br.com.usinasantafe.pci.utils.WEB_ALL_SERVICE
 import br.com.usinasantafe.pci.utils.waitUntilTimeout
@@ -67,7 +74,7 @@ class QuestionListNoteScreenTest {
     lateinit var listItemNote: ListItemNote
 
     @Inject
-    lateinit var closeItemsNote: CloseItemsNote
+    lateinit var finishItemsNote: FinishItemsNote
 
     @Inject
     lateinit var checkItemsOpen: CheckItemsOpen
@@ -89,6 +96,9 @@ class QuestionListNoteScreenTest {
 
     @Inject
     lateinit var respDao: RespDao
+
+    @Inject
+    lateinit var headerDao: HeaderDao
 
     private val resultComponentRetrofit = """
         [{"idComponent":1,"codComponent":"1","descComponent":"TESTE 1"}]
@@ -491,7 +501,7 @@ class QuestionListNoteScreenTest {
         }
 
     @Test
-    fun check_open_screen_and_click_close_item_noted() =
+    fun check_open_screen_and_view_msg_if_not_have_header_room() =
         runTest(
             timeout = 1.minutes
         ) {
@@ -504,7 +514,95 @@ class QuestionListNoteScreenTest {
 
             composeTestRule.waitUntilTimeout(3_000)
 
+            composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+                .performClick()
 
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag(TAG_BUTTON_NO_ALERT_DIALOG_CHECK)
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. QuestionListNoteViewModel.closeItem -> ICloseItemsNote -> ICheckListRepository.closeItems -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun check_open_screen_and_close_item_noted() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            hiltRule.inject()
+
+            initialRegister(6)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag(TAG_BUTTON_NO_ALERT_DIALOG_CHECK)
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            val list = respDao.all()
+            assertEquals(
+                list.size,
+                1
+            )
+            val entity = list[0]
+            assertEquals(
+                entity.id,
+                1
+            )
+            assertEquals(
+                entity.idItem,
+                1
+            )
+            assertEquals(
+                entity.idPlant,
+                1
+            )
+            assertEquals(
+                entity.option,
+                OptionResp.ACCORDING
+            )
+            assertEquals(
+                entity.status,
+                Status.FINISH
+            )
+
+            composeTestRule.waitUntilTimeout(3_000)
 
         }
 
@@ -522,7 +620,7 @@ class QuestionListNoteScreenTest {
                     updateTableComponent = updateTableComponent,
                     updateTableService = updateTableService,
                     listItemNote = listItemNote,
-                    closeItemsNote = closeItemsNote,
+                    finishItemsNote = finishItemsNote,
                     checkItemsOpen = checkItemsOpen
                 ),
                 onNavPlantList = {},
@@ -548,14 +646,6 @@ class QuestionListNoteScreenTest {
                 ItemRoomModel(
                     idItem = 2,
                     seqItem = 2,
-                    idOSItem = 1,
-                    idPlantItem = 1,
-                    idComponentItem = 1,
-                    idServiceItem = 1
-                ),
-                ItemRoomModel(
-                    idItem = 3,
-                    seqItem = 3,
                     idOSItem = 1,
                     idPlantItem = 1,
                     idComponentItem = 1,
@@ -721,6 +811,18 @@ class QuestionListNoteScreenTest {
         )
 
         if (level == 5) return
+
+        headerDao.insert(
+            HeaderRoomModel(
+                id = 1,
+                idColab = 1,
+                idFactorySection = 1,
+                idOS = 1,
+                status = Status.OPEN
+            )
+        )
+
+        if (level == 6) return
 
     }
 

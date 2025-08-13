@@ -37,7 +37,7 @@ interface ItemModule {
 
     @Binds
     @Singleton
-    fun bindCloseItemNote(usecase: ICloseItemsNote): CloseItemsNote
+    fun bindCloseItemNote(usecase: IFinishItemsNote): FinishItemsNote
     
     @Binds
     @Singleton

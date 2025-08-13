@@ -57,12 +57,12 @@ class IRespRoomDatasource  @Inject constructor(
         }
     }
 
-    override suspend fun closeItems(
+    override suspend fun finishItems(
         idHeader: Int,
         idPlant: Int
     ): Result<Boolean> {
         try {
-            respDao.closeItems(
+            respDao.finishItems(
                 idHeader = idHeader,
                 idPlant = idPlant
             )

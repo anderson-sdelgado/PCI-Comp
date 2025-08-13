@@ -45,7 +45,9 @@ class PlantListNoteScreenTest {
             {"idItem":7,"seqItem":7,"idOSItem":1,"idPlantItem":2,"idComponentItem":5,"idServiceItem":4},
             {"idItem":8,"seqItem":8,"idOSItem":1,"idPlantItem":2,"idComponentItem":5,"idServiceItem":5},
             {"idItem":9,"seqItem":9,"idOSItem":1,"idPlantItem":2,"idComponentItem":6,"idServiceItem":5},
-            {"idItem":10,"seqItem":10,"idOSItem":1,"idPlantItem":2,"idComponentItem":6,"idServiceItem":5}
+            {"idItem":10,"seqItem":10,"idOSItem":1,"idPlantItem":2,"idComponentItem":0,"idServiceItem":5},
+            {"idItem":11,"seqItem":11,"idOSItem":1,"idPlantItem":3,"idComponentItem":6,"idServiceItem":5},
+            {"idItem":12,"seqItem":12,"idOSItem":1,"idPlantItem":3,"idComponentItem":7,"idServiceItem":8}
         ]
     """.trimIndent()
 
@@ -258,6 +260,12 @@ class PlantListNoteScreenTest {
                     idPlant = 2,
                     codPlant = "02",
                     descPlant = "PLANT 2",
+                    idFactorySectionPlant = 1
+                ),
+                PlantRoomModel(
+                    idPlant = 3,
+                    codPlant = "03",
+                    descPlant = "PLANT 3",
                     idFactorySectionPlant = 1
                 )
             )

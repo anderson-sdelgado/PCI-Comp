@@ -1,5 +1,6 @@
 package br.com.usinasantafe.pci.domain.usecases.note
 
+import androidx.compose.ui.geometry.Rect
 import br.com.usinasantafe.pci.domain.entities.stable.Item
 import br.com.usinasantafe.pci.domain.entities.stable.Plant
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
@@ -9,6 +10,7 @@ import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.presenter.model.PlantScreenModel
 import br.com.usinasantafe.pci.utils.OptionResp
+import br.com.usinasantafe.pci.utils.Status
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.mockito.Mockito.mock
@@ -90,6 +92,21 @@ class IListPlantNoteTest {
         )
     )
 
+    private val plantMinorList = listOf(
+        Plant(
+            idPlant = 1,
+            codPlant = "01",
+            descPlant = "Plant 1",
+            idFactorySectionPlant = 1
+        ),
+        Plant(
+            idPlant = 3,
+            codPlant = "03",
+            descPlant = "Plant 3",
+            idFactorySectionPlant = 1
+        )
+    )
+
     @Test
     fun `Check return failure if have error in ItemRepository listAll`() =
         runTest {
@@ -118,12 +135,53 @@ class IListPlantNoteTest {
         }
 
     @Test
-    fun `Check return failure if have error in PlantRepository getById`() =
+    fun `Check return failure if have error in CheckListRepository listByIdItems`() =
         runTest {
             whenever(
                 itemRepository.listAll()
             ).thenReturn(
                 Result.success(itemList)
+            )
+            whenever(
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
+                )
+            ).thenReturn(
+                resultFailure(
+                    "ICheckListRepository.listByIdItems",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListPlantNote -> ICheckListRepository.listByIdItems"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in PlantRepository getById and resp is list empty`() =
+        runTest {
+            whenever(
+                itemRepository.listAll()
+            ).thenReturn(
+                Result.success(itemList)
+            )
+            whenever(
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
+                )
+            ).thenReturn(
+                Result.success(emptyList())
             )
             val ids = listOf(1, 2, 3)
             whenever(
@@ -151,61 +209,25 @@ class IListPlantNoteTest {
         }
 
     @Test
-    fun `Check return failure if have error in CheckListRepository listByIdItems`() =
+    fun `Check return list if process execute successfully and resp is list empty`() =
         runTest {
             whenever(
                 itemRepository.listAll()
             ).thenReturn(
                 Result.success(itemList)
             )
-            val ids = listOf(1, 2, 3)
             whenever(
-                plantRepository.listByIds(ids)
-            ).thenReturn(
-                Result.success(plantList)
-            )
-            whenever(
-                checkListRepository.listRespByIdItems(listOf(1, 2, 3, 4, 5))
-            ).thenReturn(
-                resultFailure(
-                    "ICheckListRepository.listByIdItems",
-                    "-",
-                    Exception()
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
                 )
-            )
-            val result = usecase()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IListPlantNote -> ICheckListRepository.listByIdItems"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `Check return success if process execute success and list resp is empty`() =
-        runTest {
-            whenever(
-                itemRepository.listAll()
             ).thenReturn(
-                Result.success(itemList)
+                Result.success(emptyList())
             )
             val ids = listOf(1, 2, 3)
             whenever(
                 plantRepository.listByIds(ids)
             ).thenReturn(
                 Result.success(plantList)
-            )
-            whenever(
-                checkListRepository.listRespByIdItems(listOf(1, 2, 3, 4, 5))
-            ).thenReturn(
-                Result.success(listOf())
             )
             val result = usecase()
             assertEquals(
@@ -238,18 +260,12 @@ class IListPlantNoteTest {
         }
 
     @Test
-    fun `Check return success if process execute success`() =
+    fun `Check return failure if have error in PlantRepository getById and resp with data`() =
         runTest {
             whenever(
                 itemRepository.listAll()
             ).thenReturn(
                 Result.success(itemList)
-            )
-            val ids = listOf(1, 2, 3)
-            whenever(
-                plantRepository.listByIds(ids)
-            ).thenReturn(
-                Result.success(plantList)
             )
             whenever(
                 checkListRepository.listRespByIdItems(
@@ -265,15 +281,64 @@ class IListPlantNoteTest {
                             option = OptionResp.NON_CONFORMING,
                             obs = "obs"
                         ),
+                    )
+                )
+            )
+            val ids = listOf(1, 2, 3)
+            whenever(
+                plantRepository.listByIds(ids)
+            ).thenReturn(
+                resultFailure(
+                    "IPlantRepository.listByIdList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListPlantNote -> IPlantRepository.listByIdList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return list if process execute successfully and resp with data`() =
+        runTest {
+            whenever(
+                itemRepository.listAll()
+            ).thenReturn(
+                Result.success(itemList)
+            )
+            whenever(
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
                         Resp(
                             idHeader = 1,
-                            idItem = 1,
+                            idItem = 5,
                             idPlant = 1,
                             option = OptionResp.NON_CONFORMING,
                             obs = "obs"
-                        )
+                        ),
                     )
                 )
+            )
+            val ids = listOf(1, 2, 3)
+            whenever(
+                plantRepository.listByIds(ids)
+            ).thenReturn(
+                Result.success(plantList)
             )
             val result = usecase()
             assertEquals(
@@ -284,16 +349,16 @@ class IListPlantNoteTest {
                 result.getOrNull()!!,
                 listOf(
                     PlantScreenModel(
+                        id = 1,
+                        cod = "01",
+                        desc = "Plant 1",
+                        status = false
+                    ),
+                    PlantScreenModel(
                         id = 2,
                         cod = "02",
                         desc = "Plant 2",
                         status = false
-                    ),
-                    PlantScreenModel(
-                        id = 1,
-                        cod = "01",
-                        desc = "Plant 1",
-                        status = true
                     ),
                     PlantScreenModel(
                         id = 3,
@@ -305,4 +370,267 @@ class IListPlantNoteTest {
             )
         }
 
+    @Test
+    fun `Check return failure if have error in PlantRepository getById and resp with data and resp finish`() =
+        runTest {
+            whenever(
+                itemRepository.listAll()
+            ).thenReturn(
+                Result.success(itemList)
+            )
+            whenever(
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        Resp(
+                            idHeader = 1,
+                            idItem = 4,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                            status = Status.FINISH
+                        ),
+                        Resp(
+                            idHeader = 1,
+                            idItem = 5,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                        ),
+                    )
+                )
+            )
+            val ids = listOf(1, 2, 3)
+            whenever(
+                plantRepository.listByIds(ids)
+            ).thenReturn(
+                resultFailure(
+                    "IPlantRepository.listByIdList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListPlantNote -> IPlantRepository.listByIdList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return list if process execute successfully and resp with data and resp finish`() =
+        runTest {
+            whenever(
+                itemRepository.listAll()
+            ).thenReturn(
+                Result.success(itemList)
+            )
+            whenever(
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        Resp(
+                            idHeader = 1,
+                            idItem = 4,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                            status = Status.FINISH
+                        ),
+                        Resp(
+                            idHeader = 1,
+                            idItem = 5,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                        ),
+                    )
+                )
+            )
+            val ids = listOf(1, 2, 3)
+            whenever(
+                plantRepository.listByIds(ids)
+            ).thenReturn(
+                Result.success(plantList)
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    PlantScreenModel(
+                        id = 1,
+                        cod = "01",
+                        desc = "Plant 1",
+                        status = false
+                    ),
+                    PlantScreenModel(
+                        id = 2,
+                        cod = "02",
+                        desc = "Plant 2",
+                        status = false
+                    ),
+                    PlantScreenModel(
+                        id = 3,
+                        cod = "03",
+                        desc = "Plant 3",
+                        status = true
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in PlantRepository getById and resp with data and plant finish`() =
+        runTest {
+            whenever(
+                itemRepository.listAll()
+            ).thenReturn(
+                Result.success(itemList)
+            )
+            whenever(
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        Resp(
+                            idHeader = 1,
+                            idItem = 3,
+                            idPlant = 2,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                            status = Status.FINISH
+                        ),
+                        Resp(
+                            idHeader = 1,
+                            idItem = 4,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                        ),
+                        Resp(
+                            idHeader = 1,
+                            idItem = 5,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                            status = Status.FINISH
+                        ),
+                    )
+                )
+            )
+            val ids = listOf(1, 3)
+            whenever(
+                plantRepository.listByIds(ids)
+            ).thenReturn(
+                resultFailure(
+                    "IPlantRepository.listByIdList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListPlantNote -> IPlantRepository.listByIdList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return list if process execute successfully and resp with data and plant finish`() =
+        runTest {
+            whenever(
+                itemRepository.listAll()
+            ).thenReturn(
+                Result.success(itemList)
+            )
+            whenever(
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        Resp(
+                            idHeader = 1,
+                            idItem = 3,
+                            idPlant = 2,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                            status = Status.FINISH
+                        ),
+                        Resp(
+                            idHeader = 1,
+                            idItem = 4,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                        ),
+                        Resp(
+                            idHeader = 1,
+                            idItem = 5,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                            status = Status.FINISH
+                        ),
+                    )
+                )
+            )
+            val ids = listOf(1, 3)
+            whenever(
+                plantRepository.listByIds(ids)
+            ).thenReturn(
+                Result.success(plantMinorList)
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    PlantScreenModel(
+                        id = 1,
+                        cod = "01",
+                        desc = "Plant 1",
+                        status = false
+                    ),
+                    PlantScreenModel(
+                        id = 3,
+                        cod = "03",
+                        desc = "Plant 3",
+                        status = true
+                    )
+                )
+            )
+        }
 }

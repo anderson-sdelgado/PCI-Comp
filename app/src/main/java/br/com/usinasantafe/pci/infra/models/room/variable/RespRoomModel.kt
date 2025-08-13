@@ -30,6 +30,7 @@ fun RespRoomModel.roomModelToEntity(): Resp {
             idPlant = idPlant,
             option = option,
             obs = obs,
+            status = status
         )
     }
 }
@@ -43,6 +44,7 @@ fun Resp.entityToRoomModel(): RespRoomModel {
             idPlant = idPlant,
             option = option,
             obs = obs,
+            status = status
         )
     }
 }

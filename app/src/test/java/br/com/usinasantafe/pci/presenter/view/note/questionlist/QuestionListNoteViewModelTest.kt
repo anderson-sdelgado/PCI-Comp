@@ -5,7 +5,7 @@ import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemsOpen
-import br.com.usinasantafe.pci.domain.usecases.note.CloseItemsNote
+import br.com.usinasantafe.pci.domain.usecases.note.FinishItemsNote
 import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
@@ -37,7 +37,7 @@ class QuestionListNoteViewModelTest {
     private val updateTableComponent = mock<UpdateTableComponent>()
     private val updateTableService = mock<UpdateTableService>()
     private val listItemNote = mock<ListItemNote>()
-    private val closeItemsNote = mock<CloseItemsNote>()
+    private val finishItemsNote = mock<FinishItemsNote>()
     private val checkItemsOpen = mock<CheckItemsOpen>()
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
@@ -51,7 +51,7 @@ class QuestionListNoteViewModelTest {
         updateTableComponent = updateTableComponent,
         updateTableService = updateTableService,
         listItemNote = listItemNote,
-        closeItemsNote = closeItemsNote,
+        finishItemsNote = finishItemsNote,
         checkItemsOpen = checkItemsOpen,
     )
 
@@ -415,7 +415,7 @@ class QuestionListNoteViewModelTest {
     fun `closeItem - Check return failure if have error in CloseItemNote`() =
         runTest {
             whenever(
-                closeItemsNote(1)
+                finishItemsNote(1)
             ).thenReturn(
                 resultFailure(
                     context = "CloseItemNote",
@@ -430,7 +430,7 @@ class QuestionListNoteViewModelTest {
                     )
                 )
             )
-            viewModel.closeItem()
+            viewModel.finishItem()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
@@ -453,7 +453,7 @@ class QuestionListNoteViewModelTest {
     fun `closeItem - Check return failure if have error in CheckItemsNote`() =
         runTest {
             whenever(
-                closeItemsNote(1)
+                finishItemsNote(1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -473,7 +473,7 @@ class QuestionListNoteViewModelTest {
                     )
                 )
             )
-            viewModel.closeItem()
+            viewModel.finishItem()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
@@ -496,7 +496,7 @@ class QuestionListNoteViewModelTest {
     fun `closeItem - Check return true if CloseItemNote execute successfully`() =
         runTest {
             whenever(
-                closeItemsNote(1)
+                finishItemsNote(1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -512,7 +512,7 @@ class QuestionListNoteViewModelTest {
                     )
                 )
             )
-            viewModel.closeItem()
+            viewModel.finishItem()
             assertEquals(
                 viewModel.uiState.value.statusPlant,
                 StatusPlant.OPEN

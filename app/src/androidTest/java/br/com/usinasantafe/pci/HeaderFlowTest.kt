@@ -2,7 +2,6 @@ package br.com.usinasantafe.pci
 
 import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -16,7 +15,9 @@ import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.presenter.MainActivity
+import br.com.usinasantafe.pci.presenter.theme.TAG_BUTTON_NO_ALERT_DIALOG_CHECK
 import br.com.usinasantafe.pci.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
+import br.com.usinasantafe.pci.presenter.theme.TAG_BUTTON_YES_ALERT_DIALOG_CHECK
 import br.com.usinasantafe.pci.presenter.view.note.questionobs.TAG_OBS_TEXT_FIELD
 import br.com.usinasantafe.pci.utils.FlagUpdate
 import br.com.usinasantafe.pci.utils.OptionResp
@@ -183,7 +184,7 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 1")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("APONTAMENTO")
             .assertIsDisplayed()
@@ -194,14 +195,14 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 2")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("APONTAMENTO")
             .performClick()
 
         Log.d("TestDebug", "Position 3")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.activityRule.scenario.onActivity { activity ->
             activity.onBackPressedDispatcher.onBackPressed()
@@ -209,14 +210,14 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 4")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("APONTAMENTO")
             .performClick()
 
         Log.d("TestDebug", "Position 5")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("1")
             .performClick()
@@ -233,7 +234,7 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 6")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         val colabRoomModelList = colabDao.all()
         assertEquals(
@@ -275,14 +276,14 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 7")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
         Log.d("TestDebug", "Position 8")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("1")
             .performClick()
@@ -299,14 +300,14 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 9")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 10")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         val headerRoomModelList = headerDao.all()
         assertEquals(
@@ -331,70 +332,70 @@ class HeaderFlowTest {
             1
         )
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 11")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
         Log.d("TestDebug", "Position 12")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_2")
             .performClick()
 
         Log.d("TestDebug", "Position 13")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
         Log.d("TestDebug", "Position 14")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 15")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 16")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
         Log.d("TestDebug", "Position 17")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 18")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("CONFORME")
             .performClick()
 
         Log.d("TestDebug", "Position 19")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         val respRoomModelList = respDao.all()
         assertEquals(
@@ -421,63 +422,63 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 20")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
         Log.d("TestDebug", "Position 21")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 22")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_2")
             .performClick()
 
         Log.d("TestDebug", "Position 23")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("NÃO CONFORME")
             .performClick()
 
         Log.d("TestDebug", "Position 24")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("CANCELAR")
             .performClick()
 
         Log.d("TestDebug", "Position 25")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("NÃO CONFORME")
             .performClick()
 
         Log.d("TestDebug", "Position 26")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("OK")
             .performClick()
 
         Log.d("TestDebug", "Position 27")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
             .performClick()
 
         Log.d("TestDebug", "Position 28")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag(TAG_OBS_TEXT_FIELD)
             .performTextInput("Test obs")
@@ -487,7 +488,7 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 29")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         val respRoomModelListTest2 = respDao.all()
         assertEquals(
@@ -537,42 +538,42 @@ class HeaderFlowTest {
             "Test obs"
         )
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 30")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("CANCELAR")
             .performClick()
 
         Log.d("TestDebug", "Position 31")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 32")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("EDITAR")
             .performClick()
 
         Log.d("TestDebug", "Position 33")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("NÃO CONFORME")
             .performClick()
 
         Log.d("TestDebug", "Position 34")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag(TAG_OBS_TEXT_FIELD)
             .performTextInput("Test obs 2")
@@ -582,7 +583,7 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 35")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         val respRoomModelListTestAlter = respDao.all()
         assertEquals(
@@ -634,61 +635,299 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 36")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithTag("item_list_1")
             .performClick()
 
         Log.d("TestDebug", "Position 37")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("EDITAR")
             .performClick()
 
         Log.d("TestDebug", "Position 38")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
         Log.d("TestDebug", "Position 39")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("EDITAR")
             .performClick()
 
         Log.d("TestDebug", "Position 40")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("NÃO CONFORME")
             .performClick()
 
         Log.d("TestDebug", "Position 41")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("CANCELAR")
             .performClick()
 
         Log.d("TestDebug", "Position 42")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
         Log.d("TestDebug", "Position 43")
 
-        composeTestRule.waitUntilTimeout(3_000)
+        composeTestRule.waitUntilTimeout()
 
         composeTestRule.onNodeWithText("CANCELAR")
             .performClick()
 
         Log.d("TestDebug", "Position 44")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+            .performClick()
+
+        Log.d("TestDebug", "Position 45")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag(TAG_BUTTON_NO_ALERT_DIALOG_CHECK)
+            .performClick()
+
+        Log.d("TestDebug", "Position 46")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+            .performClick()
+
+        Log.d("TestDebug", "Position 47")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
+            .performClick()
+
+        Log.d("TestDebug", "Position 48")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_3")
+            .performClick()
+
+        Log.d("TestDebug", "Position 49")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 50")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_4")
+            .performClick()
+
+        Log.d("TestDebug", "Position 51")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 52")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_5")
+            .performClick()
+
+        Log.d("TestDebug", "Position 53")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 54")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+            .performClick()
+
+        Log.d("TestDebug", "Position 55")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
+            .performClick()
+
+        Log.d("TestDebug", "Position 56")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_2")
+            .performClick()
+
+        Log.d("TestDebug", "Position 57")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_6")
+            .performClick()
+
+        Log.d("TestDebug", "Position 58")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 59")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_7")
+            .performClick()
+
+        Log.d("TestDebug", "Position 60")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 61")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_8")
+            .performClick()
+
+        Log.d("TestDebug", "Position 62")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 63")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_9")
+            .performClick()
+
+        Log.d("TestDebug", "Position 64")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 65")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_10")
+            .performClick()
+
+        Log.d("TestDebug", "Position 66")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 67")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+            .performClick()
+
+        Log.d("TestDebug", "Position 68")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
+            .performClick()
+
+        Log.d("TestDebug", "Position 69")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_3")
+            .performClick()
+
+        Log.d("TestDebug", "Position 70")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_11")
+            .performClick()
+
+        Log.d("TestDebug", "Position 71")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 72")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_12")
+            .performClick()
+
+        Log.d("TestDebug", "Position 73")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 74")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag("item_list_13")
+            .performClick()
+
+        Log.d("TestDebug", "Position 75")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("CONFORME")
+            .performClick()
+
+        Log.d("TestDebug", "Position 76")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("FECHAR ITEN(S) APONTADO(S)")
+            .performClick()
+
+        Log.d("TestDebug", "Position 77")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
+            .performClick()
+
+        Log.d("TestDebug", "Position 78")
 
         composeTestRule.waitUntilTimeout(10_000)
 

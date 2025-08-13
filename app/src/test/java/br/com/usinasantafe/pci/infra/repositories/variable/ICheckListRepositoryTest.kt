@@ -507,7 +507,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.listByIdItems -> IRespRoomDatasource.listByIdItems"
+                "ICheckListRepository.listRespByIdItems -> IRespRoomDatasource.listByIdItems"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -632,7 +632,7 @@ class ICheckListRepositoryTest {
         }
 
     @Test
-    fun `closeItems - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
+    fun `finishItems - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
         runTest {
             whenever(
                 headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
@@ -643,14 +643,14 @@ class ICheckListRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.closeItems(1)
+            val result = repository.finishItems(1)
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.closeItems -> IHeaderRoomDatasource.getByStatus"
+                "ICheckListRepository.finishItems -> IHeaderRoomDatasource.getByStatus"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -659,7 +659,7 @@ class ICheckListRepositoryTest {
         }
 
     @Test
-    fun `closeItems - Check return failure if have error in RespRoomDatasource closeItems`() =
+    fun `finishItems - Check return failure if have error in RespRoomDatasource closeItems`() =
         runTest {
             whenever(
                 headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
@@ -675,25 +675,25 @@ class ICheckListRepositoryTest {
                 )
             )
             whenever(
-                respRoomDatasource.closeItems(
+                respRoomDatasource.finishItems(
                     idHeader = 1,
                     idPlant = 1
                 )
             ).thenReturn(
                 resultFailure(
-                    "IRespRoomDatasource.closeItems",
+                    "IRespRoomDatasource.finishItems",
                     "-",
                     Exception()
                 )
             )
-            val result = repository.closeItems(1)
+            val result = repository.finishItems(1)
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.closeItems -> IRespRoomDatasource.closeItems"
+                "ICheckListRepository.finishItems -> IRespRoomDatasource.finishItems"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -702,7 +702,7 @@ class ICheckListRepositoryTest {
         }
 
     @Test
-    fun `closeItems - Check return correct if function execute successfully`() =
+    fun `finishItems - Check return correct if function execute successfully`() =
         runTest {
             whenever(
                 headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
@@ -718,14 +718,14 @@ class ICheckListRepositoryTest {
                 )
             )
             whenever(
-                respRoomDatasource.closeItems(
+                respRoomDatasource.finishItems(
                     idHeader = 1,
                     idPlant = 1
                 )
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.closeItems(1)
+            val result = repository.finishItems(1)
             assertEquals(
                 result.isSuccess,
                 true

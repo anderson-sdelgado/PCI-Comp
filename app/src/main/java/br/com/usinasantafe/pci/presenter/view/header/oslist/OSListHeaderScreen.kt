@@ -152,12 +152,13 @@ fun OSListHeaderContent(
             ) {
                 items(osList) { os ->
                     ItemListOSDesign(
-                        id = os.id,
+                        id = os.idOS,
                         period = os.period,
-                        os = os.os,
+                        os = os.nroOS,
                         codPlant = os.codPlant,
                         descPlant = os.descPlant,
-                        setActionItem = { setId(os.id) },
+                        status = os.status,
+                        setActionItem = { setId(os.idOS) },
                         font = 24,
                         padding = 6
                     )
@@ -378,18 +379,20 @@ fun OSHeaderPagePreviewList() {
                 flagProgress = false,
                 osList = listOf(
                     OSScreenModel(
-                        id = 1,
-                        os = "OS 99975",
+                        idOS = 1,
+                        nroOS = 99975,
                         period = "DIÁRIO",
                         codPlant = "1.04.01.04",
-                        descPlant = "PRÉDIO"
+                        descPlant = "PRÉDIO",
+                        status = false
                     ),
                     OSScreenModel(
-                        id = 1,
-                        os = "OS 99976",
+                        idOS = 1,
+                        nroOS = 99976,
                         period = "DIÁRIO",
                         codPlant = "1.04.01.05",
-                        descPlant = "PATIO"
+                        descPlant = "PATIO",
+                        status = true
                     ),
                 ),
                 recoverList = {},

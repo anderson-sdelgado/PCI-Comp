@@ -6,6 +6,7 @@ import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.ServiceRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.presenter.model.ItemScreenModel
+import br.com.usinasantafe.pci.utils.Status // Assume que Status está em utils
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -74,7 +75,11 @@ class IListItemNote @Inject constructor(
                 )
             }
             val respList = resultRespList.getOrNull()!!
-            val list = itemList.map { item ->
+            val itemOpenList = itemList.filter { item ->
+                val resp = respList.firstOrNull { r -> r.idItem == item.idItem }
+                resp == null || resp.status != Status.FINISH
+            }
+            val list = itemOpenList.map { item ->
                 val descService = serviceList.first { s -> s.idService == item.idServiceItem }.descService
                 var descComponent = ""
                 if(item.idComponentItem > 0){

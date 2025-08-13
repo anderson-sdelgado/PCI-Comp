@@ -6,7 +6,7 @@ import java.util.Timer
 import kotlin.concurrent.schedule
 
 fun ComposeTestRule.waitUntilTimeout(
-    timeoutMillis: Long
+    timeoutMillis: Long = 2_000
 ) {
     AsyncTimer.start(timeoutMillis)
     this.waitUntil(

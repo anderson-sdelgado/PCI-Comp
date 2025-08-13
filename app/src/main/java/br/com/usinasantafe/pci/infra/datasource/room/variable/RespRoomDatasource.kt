@@ -6,7 +6,7 @@ interface RespRoomDatasource {
     suspend fun save(model: RespRoomModel): Result<Boolean>
     suspend fun listByIdItems(idItemList: List<Int>): Result<List<RespRoomModel>>
     suspend fun getByIdItem(idItem: Int): Result<RespRoomModel>
-    suspend fun closeItems(
+    suspend fun finishItems(
         idHeader: Int,
         idPlant: Int
     ): Result<Boolean>

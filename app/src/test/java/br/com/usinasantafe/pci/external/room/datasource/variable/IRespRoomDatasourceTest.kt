@@ -319,7 +319,7 @@ class IRespRoomDatasourceTest {
         }
 
     @Test
-    fun `closeItems - Check closed resp`() =
+    fun `finishItems - Check finish resp`() =
         runTest {
             respDao.insert(
                 RespRoomModel(
@@ -393,7 +393,7 @@ class IRespRoomDatasourceTest {
                     status = Status.OPEN
                 )
             )
-            val result = datasource.closeItems(
+            val result = datasource.finishItems(
                 idHeader = 1,
                 idPlant = 1
             )
@@ -421,7 +421,7 @@ class IRespRoomDatasourceTest {
                     option = OptionResp.ACCORDING,
                     obs = null,
                     statusSend = StatusSend.SEND,
-                    status = Status.CLOSE
+                    status = Status.FINISH
                 )
             )
             val model2After = listAfter[1]
@@ -435,7 +435,7 @@ class IRespRoomDatasourceTest {
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs",
                     statusSend = StatusSend.SEND,
-                    status = Status.CLOSE
+                    status = Status.FINISH
                 )
             )
             val model3After = listAfter[2]

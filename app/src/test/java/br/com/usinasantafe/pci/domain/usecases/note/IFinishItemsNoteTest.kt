@@ -1,21 +1,17 @@
 package br.com.usinasantafe.pci.domain.usecases.note
 
-import br.com.usinasantafe.pci.domain.entities.stable.Item
-import br.com.usinasantafe.pci.domain.entities.variable.Resp
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
-import br.com.usinasantafe.pci.utils.OptionResp
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 
-class ICloseItemsNoteTest {
+class IFinishItemsNoteTest {
 
     private val checkListRepository = mock<CheckListRepository>()
-    private val usecase = ICloseItemsNote(
+    private val usecase = IFinishItemsNote(
         checkListRepository = checkListRepository
     )
 
@@ -23,7 +19,7 @@ class ICloseItemsNoteTest {
     fun `Check return failure if have error in CheckListRepository closeItem`() =
         runTest {
             whenever(
-                checkListRepository.closeItems(1)
+                checkListRepository.finishItems(1)
             ).thenReturn(
                 resultFailure(
                     "ICheckListRepository.closeItem",
@@ -38,7 +34,7 @@ class ICloseItemsNoteTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICloseItemsNote -> ICheckListRepository.closeItem"
+                "IFinishItemsNote -> ICheckListRepository.closeItem"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -50,7 +46,7 @@ class ICloseItemsNoteTest {
     fun `Check return true if function execute successfully`() =
         runTest {
             whenever(
-                checkListRepository.closeItems(1)
+                checkListRepository.finishItems(1)
             ).thenReturn(
                 Result.success(true)
             )

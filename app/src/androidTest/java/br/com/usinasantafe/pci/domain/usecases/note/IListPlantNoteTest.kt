@@ -8,6 +8,7 @@ import br.com.usinasantafe.pci.infra.models.room.stable.PlantRoomModel
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.presenter.model.PlantScreenModel
 import br.com.usinasantafe.pci.utils.OptionResp
+import br.com.usinasantafe.pci.utils.Status
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -175,15 +176,15 @@ class IListPlantNoteTest {
         }
 
     @Test
-    fun check_return_success_if_process_execute() =
+    fun check_return_success_if_process_execute_and_resp_contains_noted_open() =
         runTest {
             itemDao.insertAll(itemRoomModelList)
             plantDao.insertAll(plantRoomModelList)
             respDao.insert(
                 RespRoomModel(
                     idHeader = 1,
+                    idItem = 1,
                     idPlant = 1,
-                    idItem = 2,
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs"
                 )
@@ -218,4 +219,116 @@ class IListPlantNoteTest {
             )
         }
 
+    @Test
+    fun check_return_success_if_process_execute_and_resp_contains_noted_finish() =
+        runTest {
+            itemDao.insertAll(itemRoomModelList)
+            plantDao.insertAll(plantRoomModelList)
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    status = Status.FINISH
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    PlantScreenModel(
+                        id = 2,
+                        cod = "02",
+                        desc = "Plant 2",
+                        status = false
+                    ),
+                    PlantScreenModel(
+                        id = 3,
+                        cod = "03",
+                        desc = "Plant 3",
+                        status = false
+                    ),
+                    PlantScreenModel(
+                        id = 1,
+                        cod = "01",
+                        desc = "Plant 1",
+                        status = true
+                    ),
+                )
+            )
+        }
+
+
+    @Test
+    fun check_return_success_if_process_execute_and_contains_plant_finish() =
+        runTest {
+            itemDao.insertAll(itemRoomModelList)
+            plantDao.insertAll(plantRoomModelList)
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    status = Status.FINISH
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    status = Status.FINISH
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    PlantScreenModel(
+                        id = 3,
+                        cod = "03",
+                        desc = "Plant 3",
+                        status = false
+                    ),
+                    PlantScreenModel(
+                        id = 1,
+                        cod = "01",
+                        desc = "Plant 1",
+                        status = true
+                    )
+                )
+            )
+        }
 }

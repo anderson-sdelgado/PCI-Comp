@@ -57,7 +57,7 @@ fun QuestionListNoteScreen(
             QuestionListNoteContent(
                 itemList = uiState.itemList,
                 recoverList = viewModel::recoverList,
-                closeItem = viewModel::closeItem,
+                finishItem = viewModel::finishItem,
                 flagDialogCheck = uiState.flagDialogCheck,
                 setDialogCheck = viewModel::setDialogCheck,
                 statusPlant = uiState.statusPlant,
@@ -83,10 +83,10 @@ fun QuestionListNoteScreen(
 fun QuestionListNoteContent(
     itemList: List<ItemScreenModel>,
     recoverList: () -> Unit,
-    closeItem: () -> Unit,
+    finishItem: () -> Unit,
     flagDialogCheck: Boolean,
     setDialogCheck: (Boolean) -> Unit,
-    statusPlant: StatusPlant,
+    statusPlant: StatusPlant?,
     setCloseDialog: () -> Unit,
     flagProgress: Boolean,
     flagDialog: Boolean,
@@ -201,7 +201,7 @@ fun QuestionListNoteContent(
         AlertDialogCheckDesign(
             text = stringResource(id = R.string.text_question_close_item),
             setCloseDialog = { setDialogCheck(false) },
-            setActionButtonYes = closeItem
+            setActionButtonYes = finishItem
         )
     }
 
@@ -231,9 +231,10 @@ fun QuestionListNoteContent(
 
     LaunchedEffect(statusPlant) {
         when(statusPlant) {
-            StatusPlant.OPEN -> recoverList
-            StatusPlant.CLOSE -> onNavPlantList
-            StatusPlant.CLOSE_ALL -> TODO()
+            StatusPlant.OPEN -> recoverList()
+            StatusPlant.CLOSE -> onNavPlantList()
+            StatusPlant.CLOSE_ALL -> onNavSplash()
+            null -> {}
         }
     }
 
@@ -247,7 +248,7 @@ fun QuestionListNotePagePreview() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
-                closeItem = {},
+                finishItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
                 statusPlant = StatusPlant.OPEN,
@@ -277,7 +278,7 @@ fun QuestionListNotePagePreviewFinishUpdate() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
-                closeItem = {},
+                finishItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
                 statusPlant = StatusPlant.OPEN,
@@ -307,7 +308,7 @@ fun QuestionListNotePagePreviewDataUpdate() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
-                closeItem = {},
+                finishItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
                 statusPlant = StatusPlant.OPEN,
@@ -337,7 +338,7 @@ fun QuestionListNotePagePreviewFailureUpdate() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
-                closeItem = {},
+                finishItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
                 statusPlant = StatusPlant.OPEN,
@@ -367,7 +368,7 @@ fun QuestionListNotePagePreviewUpdate() {
             QuestionListNoteContent(
                 itemList = listOf(),
                 recoverList = {},
-                closeItem = {},
+                finishItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
                 statusPlant = StatusPlant.OPEN,
@@ -426,7 +427,7 @@ fun QuestionListNotePagePreviewData() {
                     )
                 ),
                 recoverList = {},
-                closeItem = {},
+                finishItem = {},
                 flagDialogCheck = false,
                 setDialogCheck = {},
                 statusPlant = StatusPlant.OPEN,
@@ -486,7 +487,7 @@ fun QuestionListNotePagePreviewDataMsgClose() {
                     )
                 ),
                 recoverList = {},
-                closeItem = {},
+                finishItem = {},
                 flagDialogCheck = true,
                 setDialogCheck = {},
                 statusPlant = StatusPlant.OPEN,

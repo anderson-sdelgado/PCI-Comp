@@ -23,4 +23,8 @@ interface HeaderModule {
     @Singleton
     fun bindSetIdOS(usecase: ISetIdOSHeader): SetIdOSHeader
 
+    @Binds
+    @Singleton
+    fun bindCloseHeaders(usecase: ICloseHeaders): CloseHeaders
+
 }

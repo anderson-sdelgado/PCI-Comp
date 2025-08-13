@@ -10,6 +10,7 @@ import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.ServiceRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.utils.OptionResp
+import br.com.usinasantafe.pci.utils.Status
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.mockito.Mockito.mock
@@ -595,16 +596,24 @@ class IListItemNoteTest {
                             idHeader = 1,
                             idPlant = 1,
                             idItem = 1,
-                            option = OptionResp.ACCORDING
+                            option = OptionResp.ACCORDING,
                         ),
-
                         Resp(
                             id = 2,
                             idHeader = 2,
                             idPlant = 1,
                             idItem = 3,
                             option = OptionResp.NON_CONFORMING,
-                            obs = "OBS"
+                            obs = "OBS",
+                            status = Status.FINISH
+                        ),
+                        Resp(
+                            id = 2,
+                            idHeader = 2,
+                            idPlant = 1,
+                            idItem = 4,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "OBS 2"
                         )
                     )
                 )
@@ -617,7 +626,7 @@ class IListItemNoteTest {
             val list = result.getOrNull()!!
             assertEquals(
                 list.size,
-                5
+                4
             )
             val itemScreenModel2 = list[0]
             assertEquals(
@@ -640,28 +649,7 @@ class IListItemNoteTest {
                 itemScreenModel2.option,
                 null
             )
-            val itemScreenModel4 = list[1]
-            assertEquals(
-                itemScreenModel4.id,
-                4
-            )
-            assertEquals(
-                itemScreenModel4.pos,
-                4
-            )
-            assertEquals(
-                itemScreenModel4.descService,
-                "Service 3"
-            )
-            assertEquals(
-                itemScreenModel4.descComponent,
-                "03 - Component 3"
-            )
-            assertEquals(
-                itemScreenModel4.option,
-                null
-            )
-            val itemScreenModel5 = list[2]
+            val itemScreenModel5 = list[1]
             assertEquals(
                 itemScreenModel5.id,
                 5
@@ -682,7 +670,7 @@ class IListItemNoteTest {
                 itemScreenModel5.option,
                 null
             )
-            val itemScreenModel1 = list[3]
+            val itemScreenModel1 = list[2]
             assertEquals(
                 itemScreenModel1.id,
                 1
@@ -703,25 +691,25 @@ class IListItemNoteTest {
                 itemScreenModel1.option,
                 OptionResp.ACCORDING
             )
-            val itemScreenModel3 = list[4]
+            val itemScreenModel4 = list[3]
             assertEquals(
-                itemScreenModel3.id,
-                3
+                itemScreenModel4.id,
+                4
             )
             assertEquals(
-                itemScreenModel3.pos,
-                3
+                itemScreenModel4.pos,
+                4
             )
             assertEquals(
-                itemScreenModel3.descService,
-                "Service 2"
+                itemScreenModel4.descService,
+                "Service 3"
             )
             assertEquals(
-                itemScreenModel3.descComponent,
-                "02 - Component 2"
+                itemScreenModel4.descComponent,
+                "03 - Component 3"
             )
             assertEquals(
-                itemScreenModel3.option,
+                itemScreenModel4.option,
                 OptionResp.NON_CONFORMING
             )
         }

@@ -57,6 +57,7 @@ class OSListHeaderViewModelTest {
                         currentProgress = percentage(1f, 7f)
                     ),
                     ResultUpdateModel(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -83,6 +84,7 @@ class OSListHeaderViewModelTest {
             assertEquals(
                 result[1],
                 OSListHeaderState(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -137,6 +139,7 @@ class OSListHeaderViewModelTest {
                         currentProgress = percentage(4f, 7f)
                     ),
                     ResultUpdateModel(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -190,6 +193,7 @@ class OSListHeaderViewModelTest {
             assertEquals(
                 result[4],
                 OSListHeaderState(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -359,18 +363,20 @@ class OSListHeaderViewModelTest {
                 Result.success(
                     listOf(
                         OSScreenModel(
-                            id = 1,
+                            idOS = 1,
                             period = "DIARIO",
-                            os = "210000",
+                            nroOS = 210000,
                             codPlant = "01.0.002.003",
-                            descPlant = "PLANT 1"
+                            descPlant = "PLANT 1",
+                            status = false
                         ),
                         OSScreenModel(
-                            id = 2,
+                            idOS = 2,
                             period = "SEMANAL",
-                            os = "220000",
+                            nroOS = 220000,
                             codPlant = "01.0.002.003",
-                            descPlant = "PLANT 2"
+                            descPlant = "PLANT 2",
+                            status = true
                         )
                     )
                 )
@@ -387,7 +393,7 @@ class OSListHeaderViewModelTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.id,
+                entity1.idOS,
                 1
             )
             assertEquals(
@@ -395,8 +401,8 @@ class OSListHeaderViewModelTest {
                 "DIARIO"
             )
             assertEquals(
-                entity1.os,
-                "210000"
+                entity1.nroOS,
+                210000
             )
             assertEquals(
                 entity1.codPlant,
@@ -406,9 +412,13 @@ class OSListHeaderViewModelTest {
                 entity1.descPlant,
                 "PLANT 1"
             )
+            assertEquals(
+                entity1.status,
+                false
+            )
             val entity2 = list[1]
             assertEquals(
-                entity2.id,
+                entity2.idOS,
                 2
             )
             assertEquals(
@@ -416,8 +426,8 @@ class OSListHeaderViewModelTest {
                 "SEMANAL"
             )
             assertEquals(
-                entity2.os,
-                "220000"
+                entity2.nroOS,
+                220000
             )
             assertEquals(
                 entity2.codPlant,
@@ -426,6 +436,10 @@ class OSListHeaderViewModelTest {
             assertEquals(
                 entity2.descPlant,
                 "PLANT 2"
+            )
+            assertEquals(
+                entity2.status,
+                true
             )
         }
 

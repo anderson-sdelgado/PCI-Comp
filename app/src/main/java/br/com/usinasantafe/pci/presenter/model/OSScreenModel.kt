@@ -1,9 +1,10 @@
 package br.com.usinasantafe.pci.presenter.model
 
 data class OSScreenModel(
-    val id: Int,
+    val idOS: Int,
     val period: String,
-    val os: String,
+    val nroOS: Int,
     val codPlant: String,
     val descPlant: String,
+    val status: Boolean
 )

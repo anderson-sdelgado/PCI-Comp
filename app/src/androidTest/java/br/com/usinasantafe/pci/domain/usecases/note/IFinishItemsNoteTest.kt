@@ -17,13 +17,13 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class ICloseItemsNoteTest {
+class IFinishItemsNoteTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: ICloseItemsNote
+    lateinit var usecase: IFinishItemsNote
 
     @Inject
     lateinit var headerDao: HeaderDao
@@ -46,7 +46,7 @@ class ICloseItemsNoteTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICloseItemsNote -> ICheckListRepository.closeItems"
+                "IFinishItemsNote -> ICheckListRepository.finishItems"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -169,7 +169,7 @@ class ICloseItemsNoteTest {
                     option = OptionResp.ACCORDING,
                     obs = null,
                     statusSend = StatusSend.SEND,
-                    status = Status.CLOSE
+                    status = Status.FINISH
                 )
             )
             val model2After = listAfter[1]
@@ -183,7 +183,7 @@ class ICloseItemsNoteTest {
                     option = OptionResp.NON_CONFORMING,
                     obs = "obs",
                     statusSend = StatusSend.SEND,
-                    status = Status.CLOSE
+                    status = Status.FINISH
                 )
             )
             val model3After = listAfter[2]

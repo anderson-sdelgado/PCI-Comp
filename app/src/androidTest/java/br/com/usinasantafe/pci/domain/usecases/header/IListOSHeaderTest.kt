@@ -184,12 +184,12 @@ class IListOSHeaderTest {
                 3
             )
             assertEquals(
-                list[0].id,
+                list[0].idOS,
                 1
             )
             assertEquals(
-                list[0].os,
-                "OS 1"
+                list[0].nroOS,
+                1
             )
             assertEquals(
                 list[0].period,
@@ -204,12 +204,12 @@ class IListOSHeaderTest {
                 "PLANT 001"
             )
             assertEquals(
-                list[1].id,
+                list[1].idOS,
                 2
             )
             assertEquals(
-                list[1].os,
-                "OS 2"
+                list[1].nroOS,
+                2
             )
             assertEquals(
                 list[1].period,
@@ -224,12 +224,12 @@ class IListOSHeaderTest {
                 "PLANT 001"
             )
             assertEquals(
-                list[2].id,
+                list[2].idOS,
                 4
             )
             assertEquals(
-                list[2].os,
-                "OS 4"
+                list[2].nroOS,
+                4
             )
             assertEquals(
                 list[2].period,

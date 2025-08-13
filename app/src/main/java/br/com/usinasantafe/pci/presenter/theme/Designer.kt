@@ -54,13 +54,16 @@ fun ItemListDesign(
 fun ItemListOSDesign(
     id: Int = 0,
     period: String,
-    os: String,
+    os: Int,
     codPlant: String,
     descPlant: String,
+    status: Boolean,
     font: Int = 22,
     padding: Int = 8,
     setActionItem: () -> Unit
 ) {
+
+    val color = if(!status) Color.Black else Color.Red
     return  Column(
         modifier = Modifier
             .testTag("item_list_$id")
@@ -72,28 +75,43 @@ fun ItemListOSDesign(
         Text(
             textAlign = TextAlign.Left,
             text = period,
-            fontSize = font.sp,
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
         Text(
             textAlign = TextAlign.Left,
-            text = os,
-            fontSize = font.sp,
+            text = stringResource(
+                id = R.string.text_item_os,
+                os
+            ),
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
         Text(
             textAlign = TextAlign.Left,
             text = codPlant,
-            fontSize = font.sp,
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
         Text(
             textAlign = TextAlign.Left,
             text = descPlant,
-            fontSize = font.sp,
+            style = TextStyle(
+                fontSize = font.sp,
+                color = color
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )

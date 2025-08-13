@@ -5,20 +5,20 @@ import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface CloseItemsNote {
+interface FinishItemsNote {
     suspend operator fun invoke(
         idPlant: Int,
     ): Result<Boolean>
 }
 
-class ICloseItemsNote @Inject constructor(
+class IFinishItemsNote @Inject constructor(
     private val checkListRepository: CheckListRepository,
-): CloseItemsNote {
+): FinishItemsNote {
 
     override suspend fun invoke(
         idPlant: Int,
     ): Result<Boolean> {
-        val result = checkListRepository.closeItems(idPlant)
+        val result = checkListRepository.finishItems(idPlant)
         if (result.isFailure) {
             return resultFailure(
                 context = getClassAndMethod(),

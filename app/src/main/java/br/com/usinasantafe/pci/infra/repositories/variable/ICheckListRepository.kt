@@ -1,5 +1,6 @@
 package br.com.usinasantafe.pci.infra.repositories.variable
 
+import br.com.usinasantafe.pci.domain.entities.variable.Header
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
@@ -96,6 +97,14 @@ class ICheckListRepository @Inject constructor(
         return result
     }
 
+    override suspend fun listHeaderByIdOSList(ids: List<Int>): Result<List<Header>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getIdColabHeaderOpen(): Result<Int> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun saveResp(resp: Resp): Result<Boolean> {
         try {
             val resultGetOpen = headerRoomDatasource.getByStatusOpenDefault()
@@ -168,7 +177,7 @@ class ICheckListRepository @Inject constructor(
         }
     }
 
-    override suspend fun closeItems(idPlant: Int): Result<Boolean> {
+    override suspend fun finishItems(idPlant: Int): Result<Boolean> {
         try {
             val resultGetOpen = headerRoomDatasource.getByStatusOpenDefault()
             if (resultGetOpen.isFailure) {
@@ -178,7 +187,7 @@ class ICheckListRepository @Inject constructor(
                 )
             }
             val headerModel = resultGetOpen.getOrNull()!!
-            val resultClose = respRoomDatasource.closeItems(
+            val resultClose = respRoomDatasource.finishItems(
                 idHeader = headerModel.id!!,
                 idPlant = idPlant
             )

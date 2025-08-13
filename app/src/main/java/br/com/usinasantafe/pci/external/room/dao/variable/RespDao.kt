@@ -29,10 +29,10 @@ interface RespDao {
     suspend fun countByIdItem(idItem: Int): Int
 
     @Query("UPDATE TB_RESP SET status = :status WHERE idHeader = :idHeader AND idPlant = :idPlant")
-    suspend fun closeItems(
+    suspend fun finishItems(
         idHeader: Int,
         idPlant: Int,
-        status: Status = Status.CLOSE
+        status: Status = Status.FINISH
     ): Int
 
     @Query("SELECT * FROM TB_RESP WHERE idHeader = :idHeader AND idPlant = :idPlant")

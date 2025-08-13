@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
 import br.com.usinasantafe.pci.domain.usecases.note.CheckItemsOpen
-import br.com.usinasantafe.pci.domain.usecases.note.CloseItemsNote
+import br.com.usinasantafe.pci.domain.usecases.note.FinishItemsNote
 import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
@@ -31,7 +31,7 @@ data class QuestionListNoteState(
     val itemList: List<ItemScreenModel> = listOf(),
     val idSelection: Int = 0,
     val flagDialogCheck: Boolean = false,
-    val statusPlant: StatusPlant = StatusPlant.OPEN,
+    val statusPlant: StatusPlant? = null,
     val flagProgress: Boolean = true,
     val flagDialog: Boolean = false,
     val failure: String = "",
@@ -69,7 +69,7 @@ class QuestionListNoteViewModel @Inject constructor(
     private val updateTableComponent: UpdateTableComponent,
     private val updateTableService: UpdateTableService,
     private val listItemNote: ListItemNote,
-    private val closeItemsNote: CloseItemsNote,
+    private val finishItemsNote: FinishItemsNote,
     private val checkItemsOpen: CheckItemsOpen,
 ) : ViewModel() {
 
@@ -90,8 +90,8 @@ class QuestionListNoteViewModel @Inject constructor(
         }
     }
 
-    fun closeItem() = viewModelScope.launch {
-        val resultClose = closeItemsNote(idPlant)
+    fun finishItem() = viewModelScope.launch {
+        val resultClose = finishItemsNote(idPlant)
         if (resultClose.isFailure) {
             val error = resultClose.exceptionOrNull()!!
             val failure =
