@@ -7,6 +7,7 @@ import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.pci.domain.repositories.stable.PlantRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
+import br.com.usinasantafe.pci.presenter.model.OSScreenModel
 import br.com.usinasantafe.pci.utils.Status
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -326,7 +327,7 @@ class IListOSHeaderTest {
         }
 
     @Test
-    fun `Check return success`() =
+    fun `Check return correct if process execute successfully`() =
         runTest {
             val osList = listOf(
                 OS(
@@ -355,25 +356,11 @@ class IListOSHeaderTest {
                 ),
                 OS(
                     idOS = 4,
-                    nroOS = 160000,
-                    idPlantOS = 3,
+                    nroOS = 200000,
+                    idPlantOS = 2,
                     qtdDayOS = 1,
                     descPeriodOS = "DIÁRIO",
                     idFactorySectionOS = 1
-                ),
-            )
-            val plantList = listOf(
-                Plant(
-                    idPlant = 1,
-                    codPlant = "001",
-                    descPlant = "PLANT 001",
-                    idFactorySectionPlant = 1
-                ),
-                Plant(
-                    idPlant = 2,
-                    codPlant = "002",
-                    descPlant = "PLANT 002",
-                    idFactorySectionPlant = 1
                 ),
             )
             whenever(
@@ -382,27 +369,75 @@ class IListOSHeaderTest {
                 Result.success(1)
             )
             whenever(
-                osRepository.listByIdFactorySection(1)
-            ).thenReturn(
-                Result.success(osList)
-            )
-            whenever(
                 plantRepository.listByIdFactorySection(1)
             ).thenReturn(
                 Result.success(plantList)
             )
+            whenever(
+                osRepository.listByIdFactorySection(1)
+            ).thenReturn(
+                Result.success(osList)
+            )
+            val idOSList = osList.map { it.idOS }.distinct()
+            whenever(
+                checkListRepository.listHeaderByIdOSList(idOSList)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        Header(
+                            id = 1,
+                            idColab = 1,
+                            idFactorySection = 1,
+                            idOS = 1,
+                            status = Status.FINISH
+                        ),
+                        Header(
+                            id = 1,
+                            idColab = 2,
+                            idFactorySection = 1,
+                            idOS = 2,
+                            status = Status.CLOSE
+                        ),
+                        Header(
+                            id = 1,
+                            idColab = 1,
+                            idFactorySection = 1,
+                            idOS = 3,
+                            status = Status.CLOSE
+                        )
+                    )
+                )
+            )
+            whenever(
+                checkListRepository.getIdColabHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
             val result = usecase()
             assertEquals(
-                result.isFailure,
+                result.isSuccess,
                 true
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IListOSHeader"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.util.NoSuchElementException: Collection contains no element matching the predicate."
+                result.getOrNull()!!,
+                listOf(
+                    OSScreenModel(
+                        idOS = 4,
+                        nroOS = 200000,
+                        period = "DIÁRIO",
+                        codPlant = "002",
+                        descPlant = "PLANT 002",
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 3,
+                        nroOS = 150000,
+                        period = "DIÁRIO",
+                        codPlant = "002",
+                        descPlant = "PLANT 002",
+                        status = true
+                    )
+                ),
             )
         }
 

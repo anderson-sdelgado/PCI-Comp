@@ -14,6 +14,16 @@ class IHeaderRoomDatasource @Inject constructor(
 
     override suspend fun save(model: HeaderRoomModel): Result<Boolean> {
         try {
+            val list = headerDao.listByIdColabAndIdOS(
+                idColab = model.idColab,
+                idOS = model.idOS
+            )
+            if (list.isNotEmpty()) {
+                val modelBD = list[0]
+                modelBD.status = Status.OPEN
+                headerDao.update(modelBD)
+                return Result.success(true)
+            }
             headerDao.insert(model)
             return Result.success(true)
         } catch (e: Exception) {
@@ -36,6 +46,22 @@ class IHeaderRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun close(): Result<Boolean> {
+        try {
+            val list = headerDao.listByStatus(Status.OPEN)
+            for (model in list) {
+                model.status = Status.CLOSE
+                headerDao.update(model)
+            }
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
     override suspend fun finish(): Result<Boolean> {
         try {
             val model = headerDao.getByStatus(Status.OPEN)
@@ -48,6 +74,22 @@ class IHeaderRoomDatasource @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun listByIdOSList(ids: List<Int>): Result<List<HeaderRoomModel>> {
+        try {
+            val models = headerDao.listByIdOSList(ids)
+            return Result.success(models)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIds(ids: List<Int>): Result<List<HeaderRoomModel>> {
+        TODO("Not yet implemented")
     }
 
 }

@@ -87,6 +87,16 @@ class ICheckListRepository @Inject constructor(
         return result
     }
 
+    override suspend fun closeHeaders(): Result<Boolean> {
+        val result = headerRoomDatasource.close()
+        if (result.isFailure)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        return result
+    }
+
     override suspend fun finishHeader(): Result<Boolean> {
         val result = headerRoomDatasource.finish()
         if (result.isFailure)
@@ -98,11 +108,32 @@ class ICheckListRepository @Inject constructor(
     }
 
     override suspend fun listHeaderByIdOSList(ids: List<Int>): Result<List<Header>> {
-        TODO("Not yet implemented")
+        try {
+            val result = headerRoomDatasource.listByIdOSList(ids)
+            if (result.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val list = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
     override suspend fun getIdColabHeaderOpen(): Result<Int> {
-        TODO("Not yet implemented")
+        val result = headerSharedPreferencesDatasource.getIdColab()
+        if (result.isFailure)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        return result
     }
 
     override suspend fun saveResp(resp: Resp): Result<Boolean> {
@@ -261,6 +292,47 @@ class ICheckListRepository @Inject constructor(
                     it.roomModelToEntity()
                 }
             )
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun checkRespSend(): Result<Boolean> {
+        val result = respRoomDatasource.checkRespSend()
+        if (result.isFailure)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        return result
+    }
+
+    override suspend fun sendNote(
+        token: String,
+        number: Long
+    ): Result<Boolean> {
+        try {
+            val resultListResp = respRoomDatasource.listRespSend()
+            if (resultListResp.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultListResp.exceptionOrNull()!!
+                )
+            }
+            val listResp = resultListResp.getOrNull()!!
+            val idHeaderList = listResp.map { it.idHeader }
+            val resultListHeader = headerRoomDatasource.listByIds(idHeaderList)
+            if (resultListHeader.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultListHeader.exceptionOrNull()!!
+                )
+            }
+            val headerList = resultListHeader.getOrNull()!!
+            return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

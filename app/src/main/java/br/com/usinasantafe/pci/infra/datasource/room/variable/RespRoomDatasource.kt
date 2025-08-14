@@ -17,4 +17,6 @@ interface RespRoomDatasource {
     suspend fun listByIdHeader(
         idHeader: Int
     ): Result<List<RespRoomModel>>
+    suspend fun checkRespSend(): Result<Boolean>
+    suspend fun listRespSend(): Result<List<RespRoomModel>>
 }

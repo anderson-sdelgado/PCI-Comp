@@ -108,4 +108,20 @@ class IRespRoomDatasource  @Inject constructor(
         }
     }
 
+    override suspend fun checkRespSend(): Result<Boolean> {
+        try {
+            val count = respDao.countRespSend()
+            return Result.success(count > 0)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listRespSend(): Result<List<RespRoomModel>> {
+        TODO("Not yet implemented")
+    }
+
 }

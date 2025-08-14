@@ -4,17 +4,21 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.usinasantafe.pci.HiltTestActivity
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.pci.external.room.dao.stable.OSDao
 import br.com.usinasantafe.pci.external.room.dao.stable.PlantDao
+import br.com.usinasantafe.pci.external.room.dao.variable.HeaderDao
 import br.com.usinasantafe.pci.external.sharedpreferences.datasource.IHeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.pci.infra.models.room.stable.OSRoomModel
+import br.com.usinasantafe.pci.infra.models.room.stable.PlantRoomModel
+import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.pci.utils.FlagUpdate
+import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.WEB_LIST_OS_BY_ID_FACTORY_SECTION
 import br.com.usinasantafe.pci.utils.WEB_LIST_PLANT_BY_ID_FACTORY_SECTION
 import br.com.usinasantafe.pci.utils.waitUntilTimeout
@@ -44,21 +48,27 @@ class OSListHeaderScreenTest {
     private val resultOSList = """
         [
             {"idOS":1,"nroOS":1,"idPlantOS":1,"qtdDayOS":1,"descPeriodOS":"DIARIO","idFactorySectionOS":1},
-            {"idOS":2,"nroOS":2,"idPlantOS":2,"qtdDayOS":2,"descPeriodOS":"SEMANAL","idFactorySectionOS":1}
+            {"idOS":2,"nroOS":2,"idPlantOS":2,"qtdDayOS":2,"descPeriodOS":"SEMANAL","idFactorySectionOS":1},
+            {"idOS":3,"nroOS":3,"idPlantOS":3,"qtdDayOS":3,"descPeriodOS":"DIARIO","idFactorySectionOS":2},
+            {"idOS":4,"nroOS":4,"idPlantOS":2,"qtdDayOS":4,"descPeriodOS":"DIARIO","idFactorySectionOS":1},
+            {"idOS":5,"nroOS":5,"idPlantOS":3,"qtdDayOS":5,"descPeriodOS":"DIARIO","idFactorySectionOS":1}
         ]
     """.trimIndent()
 
     private val resultPlantListIncorrect = """
         [
             {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
-            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1}
+            {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
         ]
     """.trimIndent()
 
     private val resultPlantList = """
         [
             {"idPlant":1,"codPlant":"01","descPlant":"PLANTA 01","idFactorySectionPlant":1},
-            {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02","idFactorySectionPlant":1}
+            {"idPlant":2,"codPlant":"02","descPlant":"PLANTA 02","idFactorySectionPlant":1},
+            {"idPlant":3,"codPlant":"03","descPlant":"PLANTA 03","idFactorySectionPlant":1},
+            {"idPlant":4,"codPlant":"04","descPlant":"PLANTA 04","idFactorySectionPlant":1},
+            {"idPlant":5,"codPlant":"05","descPlant":"PLANTA 05","idFactorySectionPlant":2}
         ]
     """.trimIndent()
 
@@ -79,6 +89,9 @@ class OSListHeaderScreenTest {
 
     @Inject
     lateinit var plantDao: PlantDao
+
+    @Inject
+    lateinit var headerDao: HeaderDao
 
     @Test
     fun check_open_screen_and_not_have_config_shared_preferences() =
@@ -238,7 +251,7 @@ class OSListHeaderScreenTest {
         }
 
     @Test
-    fun check_open_screen_and_web_service_return_correct() =
+    fun check_open_screen_and_web_service_return_correct_without_header() =
         runTest(
             timeout = 10.minutes
         ) {
@@ -264,105 +277,152 @@ class OSListHeaderScreenTest {
 
             setContent()
 
-            composeTestRule.waitUntilTimeout(25_000)
+            composeTestRule.waitUntilTimeout(10_000)
 
-            val osList = osDao.all()
+            val listOS = osDao.all()
             assertEquals(
-                osList.size,
-                2
+                listOS,
+                listOf(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        idPlantOS = 1,
+                        qtdDayOS = 1,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        idPlantOS = 2,
+                        qtdDayOS = 2,
+                        descPeriodOS = "SEMANAL",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 3,
+                        nroOS = 3,
+                        idPlantOS = 3,
+                        qtdDayOS = 3,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 2
+                    ),
+                    OSRoomModel(
+                        idOS = 4,
+                        nroOS = 4,
+                        idPlantOS = 2,
+                        qtdDayOS = 4,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 5,
+                        nroOS = 5,
+                        idPlantOS = 3,
+                        qtdDayOS = 5,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    )
+                )
             )
-            val entityOS1 = osList[0]
+            val listPlant = plantDao.all()
             assertEquals(
-                entityOS1.idOS,
+                listPlant.size,
+                5
+            )
+            val entity1 = listPlant[0]
+            assertEquals(
+                entity1.idPlant,
                 1
             )
             assertEquals(
-                entityOS1.nroOS,
-                1
-            )
-            assertEquals(
-                entityOS1.idPlantOS,
-                1
-            )
-            assertEquals(
-                entityOS1.qtdDayOS,
-                1
-            )
-            assertEquals(
-                entityOS1.descPeriodOS,
-                "DIARIO"
-            )
-            assertEquals(
-                entityOS1.idFactorySectionOS,
-                1
-            )
-            val entityOS2 = osList[1]
-            assertEquals(
-                entityOS2.idOS,
-                2
-            )
-            assertEquals(
-                entityOS2.nroOS,
-                2
-            )
-            assertEquals(
-                entityOS2.idPlantOS,
-                2
-            )
-            assertEquals(
-                entityOS2.qtdDayOS,
-                2
-            )
-            assertEquals(
-                entityOS2.descPeriodOS,
-                "SEMANAL"
-            )
-            val plantList = plantDao.all()
-            assertEquals(
-                plantList.size,
-                2
-            )
-            val entityPlant1 = plantList[0]
-            assertEquals(
-                entityPlant1.idPlant,
-                1
-            )
-            assertEquals(
-                entityPlant1.codPlant,
+                entity1.codPlant,
                 "01"
             )
             assertEquals(
-                entityPlant1.descPlant,
+                entity1.descPlant,
                 "PLANTA 01"
             )
             assertEquals(
-                entityPlant1.idFactorySectionPlant,
+                entity1.idFactorySectionPlant,
                 1
             )
-            val entityPlant2 = plantList[1]
+            val entity2 = listPlant[1]
             assertEquals(
-                entityPlant2.idPlant,
+                entity2.idPlant,
                 2
             )
             assertEquals(
-                entityPlant2.codPlant,
+                entity2.codPlant,
                 "02"
             )
             assertEquals(
-                entityPlant2.descPlant,
+                entity2.descPlant,
                 "PLANTA 02"
             )
             assertEquals(
-                entityPlant2.idFactorySectionPlant,
+                entity2.idFactorySectionPlant,
                 1
+            )
+            val entity3 = listPlant[2]
+            assertEquals(
+                entity3.idPlant,
+                3
+            )
+            assertEquals(
+                entity3.codPlant,
+                "03"
+            )
+            assertEquals(
+                entity3.descPlant,
+                "PLANTA 03"
+            )
+            assertEquals(
+                entity3.idFactorySectionPlant,
+                1
+            )
+            val entity4 = listPlant[3]
+            assertEquals(
+                entity4.idPlant,
+                4
+            )
+            assertEquals(
+                entity4.codPlant,
+                "04"
+            )
+            assertEquals(
+                entity4.descPlant,
+                "PLANTA 04"
+            )
+            assertEquals(
+                entity4.idFactorySectionPlant,
+                1
+            )
+            val entity5 = listPlant[4]
+            assertEquals(
+                entity5.idPlant,
+                5
+            )
+            assertEquals(
+                entity5.codPlant,
+                "05"
+            )
+            assertEquals(
+                entity5.descPlant,
+                "PLANTA 05"
+            )
+            assertEquals(
+                entity5.idFactorySectionPlant,
+                2
             )
         }
 
     @Test
-    fun check_open_screen_and_click() =
+    fun check_open_screen_and_web_service_return_correct_with_header_close_same_colab() =
         runTest(
             timeout = 10.minutes
         ) {
+
             val dispatcherSuccessFlow: Dispatcher = object : Dispatcher() {
                 @Throws(InterruptedException::class)
                 override fun dispatch(request: RecordedRequest): MockResponse {
@@ -381,14 +441,69 @@ class OSListHeaderScreenTest {
 
             hiltRule.inject()
 
-            initialRegister(2)
+            initialRegister(3)
 
             setContent()
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout(10_000)
 
-            composeTestRule.onNodeWithTag("item_list_1")
-                .performClick()
+        }
+
+    @Test
+    fun check_return_list_correct_if_process_execute_successfully_with_header_finish_same_colab() =
+        runTest {
+
+            val dispatcherSuccessFlow: Dispatcher = object : Dispatcher() {
+                @Throws(InterruptedException::class)
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return when (request.path) {
+                        "/$WEB_LIST_OS_BY_ID_FACTORY_SECTION" -> MockResponse().setBody(resultOSList)
+                        "/$WEB_LIST_PLANT_BY_ID_FACTORY_SECTION" -> MockResponse().setBody(resultPlantList)
+                        else -> MockResponse().setResponseCode(404)
+                    }
+                }
+            }
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherSuccessFlow
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            initialRegister(4)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+        }
+
+    @Test
+    fun check_return_list_correct_if_process_execute_successfully_with_header_other_colab() =
+        runTest {
+
+            val dispatcherSuccessFlow: Dispatcher = object : Dispatcher() {
+                @Throws(InterruptedException::class)
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return when (request.path) {
+                        "/$WEB_LIST_OS_BY_ID_FACTORY_SECTION" -> MockResponse().setBody(resultOSList)
+                        "/$WEB_LIST_PLANT_BY_ID_FACTORY_SECTION" -> MockResponse().setBody(resultPlantList)
+                        else -> MockResponse().setResponseCode(404)
+                    }
+                }
+            }
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherSuccessFlow
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            initialRegister(5)
+
+            setContent()
 
             composeTestRule.waitUntilTimeout(10_000)
 
@@ -426,6 +541,40 @@ class OSListHeaderScreenTest {
         )
 
         if (level == 2) return
+
+        headerDao.insert(
+            HeaderRoomModel(
+                id = 1,
+                idColab = 1,
+                idFactorySection = 1,
+                idOS = 1,
+                status = Status.CLOSE
+            )
+        )
+
+        if (level == 3) return
+
+        headerDao.insert(
+            HeaderRoomModel(
+                idColab = 1,
+                idFactorySection = 1,
+                idOS = 4,
+                status = Status.FINISH
+            )
+        )
+
+        if (level == 4) return
+
+        headerDao.insert(
+            HeaderRoomModel(
+                idColab = 2,
+                idFactorySection = 1,
+                idOS = 5,
+                status = Status.CLOSE
+            )
+        )
+
+        if (level == 5) return
 
     }
 }

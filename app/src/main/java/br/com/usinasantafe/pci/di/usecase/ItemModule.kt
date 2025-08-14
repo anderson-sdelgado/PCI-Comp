@@ -42,4 +42,13 @@ interface ItemModule {
     @Binds
     @Singleton
     fun bindCheckItemsOpen(usecase: ICheckItemsOpen): CheckItemsOpen
+
+    @Binds
+    @Singleton
+    fun bindCheckRespSend(usecase: ICheckRespSend): CheckRespSend
+
+    @Binds
+    @Singleton
+    fun bindSendNote(usecase: ISendNote): SendNote
+
 }

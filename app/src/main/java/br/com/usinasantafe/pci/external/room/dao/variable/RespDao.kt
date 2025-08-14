@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.utils.Status
+import br.com.usinasantafe.pci.utils.StatusSend
 
 @Dao
 interface RespDao {
@@ -45,5 +46,10 @@ interface RespDao {
     suspend fun listByIdHeader(
         idHeader: Int
     ): List<RespRoomModel>
+
+    @Query("SELECT count(*) FROM TB_RESP WHERE statusSend = :statusSend")
+    suspend fun countRespSend(
+        statusSend: StatusSend = StatusSend.SEND
+    ): Int
 
 }

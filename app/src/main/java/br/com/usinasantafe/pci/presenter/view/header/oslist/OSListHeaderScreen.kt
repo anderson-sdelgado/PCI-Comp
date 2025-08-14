@@ -185,37 +185,36 @@ fun OSListHeaderContent(
         }
         BackHandler {}
 
-        if (flagDialog) {
-            val text =
-                when(errors) {
-                    Errors.UPDATE -> stringResource(
-                        id = R.string.text_update_failure,
-                        failure
-                    )
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
-        }
-
-        if(flagMsgUpdate) {
-            AlertDialogCheckDesign(
-                text = stringResource(id = R.string.text_question_update),
-                setCloseDialog = setCloseDialog,
-                setActionButtonYes = {
-                    recoverAndUpdateData()
-                }
-            )
-
-        }
-
     }
 
+    if (flagDialog) {
+        val text =
+            when(errors) {
+                Errors.UPDATE -> stringResource(
+                    id = R.string.text_update_failure,
+                    failure
+                )
+                else -> stringResource(
+                    id = R.string.text_failure,
+                    failure
+                )
+            }
+        AlertDialogSimpleDesign(
+            text = text,
+            setCloseDialog = setCloseDialog,
+        )
+    }
+
+    if(flagMsgUpdate) {
+        AlertDialogCheckDesign(
+            text = stringResource(id = R.string.text_question_update),
+            setCloseDialog = setCloseDialog,
+            setActionButtonYes = {
+                recoverAndUpdateData()
+            }
+        )
+
+    }
     LaunchedEffect(levelUpdate) {
         if(levelUpdate == LevelUpdate.FINISH_UPDATE_COMPLETED){
             recoverList()

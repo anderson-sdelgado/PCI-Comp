@@ -18,7 +18,8 @@ data class RespRoomModel(
     var option: OptionResp,
     var obs: String? = null,
     val status: Status = Status.OPEN,
-    var statusSend: StatusSend = StatusSend.SEND
+    var statusSend: StatusSend = StatusSend.SEND,
+    var idServ: Int? = null,
 )
 
 fun RespRoomModel.roomModelToEntity(): Resp {

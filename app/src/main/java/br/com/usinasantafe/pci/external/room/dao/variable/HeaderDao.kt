@@ -22,4 +22,14 @@ interface HeaderDao {
     @Query("SELECT * FROM TB_HEADER WHERE status = :status")
     suspend fun getByStatus(status: Status): HeaderRoomModel
 
+    @Query("SELECT * FROM TB_HEADER WHERE idOS IN (:ids)")
+    suspend fun listByIdOSList(ids: List<Int>): List<HeaderRoomModel>
+
+    @Query("SELECT * FROM TB_HEADER WHERE status = :status")
+    suspend fun listByStatus(status: Status): List<HeaderRoomModel>
+
+    @Query("SELECT * FROM TB_HEADER WHERE idColab = :idColab AND idOS = :idOS")
+    suspend fun listByIdColabAndIdOS(idColab: Int, idOS: Int): List<HeaderRoomModel>
+
+
 }

@@ -11,4 +11,5 @@ interface HeaderSharedPreferencesDatasource {
     suspend fun getIdFactorySection(): Result<Int>
     suspend fun setIdOS(idOS: Int): Result<Boolean>
     suspend fun getIdOS(): Result<Int>
+    suspend fun getIdColab(): Result<Int>
 }

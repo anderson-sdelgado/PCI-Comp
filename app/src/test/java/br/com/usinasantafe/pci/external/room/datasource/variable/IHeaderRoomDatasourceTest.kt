@@ -84,7 +84,148 @@ class IHeaderRoomDatasourceTest {
         }
 
     @Test
-    fun `getByStatus - Check data save is correct`() =
+    fun `save - Check add`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 1,
+                    idOS = 100,
+                    status = Status.CLOSE
+                )
+            )
+            val qtdBefore = headerDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.save(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+
+            val list = headerDao.all()
+            assertEquals(
+                list.size,
+                2
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1.id,
+                1
+            )
+            assertEquals(
+                model1.idColab,
+                2
+            )
+            assertEquals(
+                model1.idFactorySection,
+                1
+            )
+            assertEquals(
+                model1.idOS,
+                100
+            )
+            assertEquals(
+                model1.status,
+                Status.CLOSE
+            )
+            val model2 = list[1]
+            assertEquals(
+                model2.id,
+                2
+            )
+            assertEquals(
+                model2.idColab,
+                1
+            )
+            assertEquals(
+                model2.idFactorySection,
+                1
+            )
+            assertEquals(
+                model2.idOS,
+                1
+            )
+            assertEquals(
+                model2.status,
+                Status.OPEN
+            )
+        }
+
+    @Test
+    fun `save - Check update`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 1,
+                    idOS = 100,
+                    status = Status.CLOSE
+                )
+            )
+            val qtdBefore = headerDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.save(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 1,
+                    idOS = 100
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+
+            val list = headerDao.all()
+            assertEquals(
+                list.size,
+                1
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1.id,
+                1
+            )
+            assertEquals(
+                model1.idColab,
+                2
+            )
+            assertEquals(
+                model1.idFactorySection,
+                1
+            )
+            assertEquals(
+                model1.idOS,
+                100
+            )
+            assertEquals(
+                model1.status,
+                Status.OPEN
+            )
+        }
+
+    @Test
+    fun `getByStatus - Check return data`() =
         runTest {
             headerDao.insert(
                 HeaderRoomModel(
@@ -216,5 +357,189 @@ class IHeaderRoomDatasourceTest {
                 Status.FINISH
             )
         }
+
+    @Test
+    fun `listByIdOSList - Check return data correct`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 2,
+                    idOS = 2,
+                    status = Status.OPEN
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 3,
+                    idFactorySection = 3,
+                    idOS = 3,
+                    status = Status.OPEN
+                )
+            )
+            val ids = listOf(1, 3)
+            val result = datasource.listByIdOSList(ids)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    HeaderRoomModel(
+                        idColab = 1,
+                        idFactorySection = 1,
+                        idOS = 1,
+                        status = Status.CLOSE
+                    ),
+                    HeaderRoomModel(
+                        idColab = 3,
+                        idFactorySection = 3,
+                        idOS = 3,
+                        status = Status.OPEN
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `close - Check data if finish is correct`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 2,
+                    idOS = 2,
+                    status = Status.OPEN
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 3,
+                    idFactorySection = 1,
+                    idOS = 3,
+                    status = Status.FINISH
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 4,
+                    idFactorySection = 1,
+                    idOS = 10,
+                    status = Status.OPEN
+                )
+            )
+            val result = datasource.close()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val list = headerDao.all()
+            val model1 = list[0]
+            assertEquals(
+                model1.id,
+                1
+            )
+            assertEquals(
+                model1.idColab,
+                1
+            )
+            assertEquals(
+                model1.idFactorySection,
+                1
+            )
+            assertEquals(
+                model1.idOS,
+                1
+            )
+            assertEquals(
+                model1.status,
+                Status.CLOSE
+            )
+            val model2 = list[1]
+            assertEquals(
+                model2.id,
+                2
+            )
+            assertEquals(
+                model2.idColab,
+                2
+            )
+            assertEquals(
+                model2.idFactorySection,
+                2
+            )
+            assertEquals(
+                model2.idOS,
+                2
+            )
+            assertEquals(
+                model2.status,
+                Status.CLOSE
+            )
+            val model3 = list[2]
+            assertEquals(
+                model3.id,
+                3
+            )
+            assertEquals(
+                model3.idColab,
+                3
+            )
+            assertEquals(
+                model3.idFactorySection,
+                1
+            )
+            assertEquals(
+                model3.idOS,
+                3
+            )
+            assertEquals(
+                model3.status,
+                Status.FINISH
+            )
+            val model4 = list[3]
+            assertEquals(
+                model4.id,
+                4
+            )
+            assertEquals(
+                model4.idColab,
+                4
+            )
+            assertEquals(
+                model4.idFactorySection,
+                1
+            )
+            assertEquals(
+                model4.idOS,
+                10
+            )
+            assertEquals(
+                model4.status,
+                Status.CLOSE
+            )
+        }
+
 
 }

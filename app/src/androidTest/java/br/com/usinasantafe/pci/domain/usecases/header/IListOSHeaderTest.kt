@@ -2,9 +2,13 @@ package br.com.usinasantafe.pci.domain.usecases.header
 
 import br.com.usinasantafe.pci.external.room.dao.stable.OSDao
 import br.com.usinasantafe.pci.external.room.dao.stable.PlantDao
+import br.com.usinasantafe.pci.external.room.dao.variable.HeaderDao
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.room.stable.OSRoomModel
 import br.com.usinasantafe.pci.infra.models.room.stable.PlantRoomModel
+import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
+import br.com.usinasantafe.pci.presenter.model.OSScreenModel
+import br.com.usinasantafe.pci.utils.Status
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -31,6 +35,42 @@ class IListOSHeaderTest {
 
     @Inject
     lateinit var plantDao: PlantDao
+
+    @Inject
+    lateinit var headerDao: HeaderDao
+
+    val plantList = listOf(
+        PlantRoomModel(
+            idPlant = 1,
+            codPlant = "001",
+            descPlant = "PLANT 001",
+            idFactorySectionPlant = 1
+        ),
+        PlantRoomModel(
+            idPlant = 2,
+            codPlant = "002",
+            descPlant = "PLANT 002",
+            idFactorySectionPlant = 1
+        ),
+        PlantRoomModel(
+            idPlant = 3,
+            codPlant = "003",
+            descPlant = "PLANT 003",
+            idFactorySectionPlant = 1
+        ),
+        PlantRoomModel(
+            idPlant = 4,
+            codPlant = "004",
+            descPlant = "PLANT 004",
+            idFactorySectionPlant = 1
+        ),
+        PlantRoomModel(
+            idPlant = 5,
+            codPlant = "005",
+            descPlant = "PLANT 005",
+            idFactorySectionPlant = 2
+        )
+    )
 
     @Before
     fun setup() {
@@ -109,7 +149,7 @@ class IListOSHeaderTest {
         }
 
     @Test
-    fun check_return_list_correct_if_process_execute_successfully() =
+    fun check_return_list_correct_if_process_execute_successfully_without_header() =
         runTest {
             headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
                 idColab = 1,
@@ -136,7 +176,7 @@ class IListOSHeaderTest {
                     OSRoomModel(
                         idOS = 3,
                         nroOS = 3,
-                        idPlantOS = 2,
+                        idPlantOS = 5,
                         qtdDayOS = 2,
                         descPeriodOS = "DIARIO",
                         idFactorySectionOS = 2
@@ -148,29 +188,121 @@ class IListOSHeaderTest {
                         qtdDayOS = 2,
                         descPeriodOS = "DIARIO",
                         idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 5,
+                        nroOS = 5,
+                        idPlantOS = 3,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
                     )
                 )
             )
-            plantDao.insertAll(
+            plantDao.insertAll(plantList)
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
                 listOf(
-                    PlantRoomModel(
-                        idPlant = 1,
+                    OSScreenModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        period = "DIARIO",
                         codPlant = "001",
                         descPlant = "PLANT 001",
-                        idFactorySectionPlant = 1
+                        status = false
                     ),
-                    PlantRoomModel(
-                        idPlant = 2,
+                    OSScreenModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        period = "SEMANAL",
+                        codPlant = "001",
+                        descPlant = "PLANT 001",
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 4,
+                        nroOS = 4,
+                        period = "DIARIO",
                         codPlant = "002",
                         descPlant = "PLANT 002",
-                        idFactorySectionPlant = 1
-                        ),
-                    PlantRoomModel(
-                        idPlant = 3,
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 5,
+                        nroOS = 5,
+                        period = "DIARIO",
                         codPlant = "003",
                         descPlant = "PLANT 003",
-                        idFactorySectionPlant = 2
+                        status = false
                     )
+                )
+            )
+        }
+
+    @Test
+    fun check_return_list_correct_if_process_execute_successfully_with_header_close_same_colab() =
+        runTest {
+            headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
+                idColab = 1,
+                idFactorySection = 1
+            )
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        idPlantOS = 1,
+                        qtdDayOS = 1,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        idPlantOS = 1,
+                        qtdDayOS = 2,
+                        descPeriodOS = "SEMANAL",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 3,
+                        nroOS = 3,
+                        idPlantOS = 5,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 2
+                    ),
+                    OSRoomModel(
+                        idOS = 4,
+                        nroOS = 4,
+                        idPlantOS = 2,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 5,
+                        nroOS = 5,
+                        idPlantOS = 3,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    )
+                )
+            )
+            plantDao.insertAll(plantList)
+            headerDao.insert(
+                HeaderRoomModel(
+                    id = 1,
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE
                 )
             )
             val result = usecase()
@@ -178,70 +310,250 @@ class IListOSHeaderTest {
                 result.isSuccess,
                 true
             )
-            val list = result.getOrNull()!!
             assertEquals(
-                list.count(),
-                3
+                result.getOrNull()!!,
+                listOf(
+                    OSScreenModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        period = "SEMANAL",
+                        codPlant = "001",
+                        descPlant = "PLANT 001",
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 4,
+                        nroOS = 4,
+                        period = "DIARIO",
+                        codPlant = "002",
+                        descPlant = "PLANT 002",
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 5,
+                        nroOS = 5,
+                        period = "DIARIO",
+                        codPlant = "003",
+                        descPlant = "PLANT 003",
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        period = "DIARIO",
+                        codPlant = "001",
+                        descPlant = "PLANT 001",
+                        status = true
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun check_return_list_correct_if_process_execute_successfully_with_header_finish_same_colab() =
+        runTest {
+            headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
+                idColab = 1,
+                idFactorySection = 1
+            )
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        idPlantOS = 1,
+                        qtdDayOS = 1,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        idPlantOS = 1,
+                        qtdDayOS = 2,
+                        descPeriodOS = "SEMANAL",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 3,
+                        nroOS = 3,
+                        idPlantOS = 5,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 2
+                    ),
+                    OSRoomModel(
+                        idOS = 4,
+                        nroOS = 4,
+                        idPlantOS = 2,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 5,
+                        nroOS = 5,
+                        idPlantOS = 3,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    )
+                )
+            )
+            plantDao.insertAll(plantList)
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 4,
+                    status = Status.FINISH
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
             )
             assertEquals(
-                list[0].idOS,
-                1
+                result.getOrNull()!!,
+                listOf(
+                    OSScreenModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        period = "SEMANAL",
+                        codPlant = "001",
+                        descPlant = "PLANT 001",
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 5,
+                        nroOS = 5,
+                        period = "DIARIO",
+                        codPlant = "003",
+                        descPlant = "PLANT 003",
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        period = "DIARIO",
+                        codPlant = "001",
+                        descPlant = "PLANT 001",
+                        status = true
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun check_return_list_correct_if_process_execute_successfully_with_header_other_colab() =
+        runTest {
+            headerSharedPreferencesDatasource.setIdColabAndIdFactorySection(
+                idColab = 1,
+                idFactorySection = 1
+            )
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        idPlantOS = 1,
+                        qtdDayOS = 1,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        idPlantOS = 1,
+                        qtdDayOS = 2,
+                        descPeriodOS = "SEMANAL",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 3,
+                        nroOS = 3,
+                        idPlantOS = 5,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 2
+                    ),
+                    OSRoomModel(
+                        idOS = 4,
+                        nroOS = 4,
+                        idPlantOS = 2,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    ),
+                    OSRoomModel(
+                        idOS = 5,
+                        nroOS = 5,
+                        idPlantOS = 3,
+                        qtdDayOS = 2,
+                        descPeriodOS = "DIARIO",
+                        idFactorySectionOS = 1
+                    )
+                )
+            )
+            plantDao.insertAll(plantList)
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 4,
+                    status = Status.FINISH
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 1,
+                    idOS = 5,
+                    status = Status.CLOSE
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
             )
             assertEquals(
-                list[0].nroOS,
-                1
-            )
-            assertEquals(
-                list[0].period,
-                "DIARIO"
-            )
-            assertEquals(
-                list[0].codPlant,
-                "001"
-            )
-            assertEquals(
-                list[0].descPlant,
-                "PLANT 001"
-            )
-            assertEquals(
-                list[1].idOS,
-                2
-            )
-            assertEquals(
-                list[1].nroOS,
-                2
-            )
-            assertEquals(
-                list[1].period,
-                "SEMANAL"
-            )
-            assertEquals(
-                list[1].codPlant,
-                "001"
-            )
-            assertEquals(
-                list[1].descPlant,
-                "PLANT 001"
-            )
-            assertEquals(
-                list[2].idOS,
-                4
-            )
-            assertEquals(
-                list[2].nroOS,
-                4
-            )
-            assertEquals(
-                list[2].period,
-                "DIARIO"
-            )
-            assertEquals(
-                list[2].codPlant,
-                "002"
-            )
-            assertEquals(
-                list[2].descPlant,
-                "PLANT 002"
+                result.getOrNull()!!,
+                listOf(
+                    OSScreenModel(
+                        idOS = 2,
+                        nroOS = 2,
+                        period = "SEMANAL",
+                        codPlant = "001",
+                        descPlant = "PLANT 001",
+                        status = false
+                    ),
+                    OSScreenModel(
+                        idOS = 1,
+                        nroOS = 1,
+                        period = "DIARIO",
+                        codPlant = "001",
+                        descPlant = "PLANT 001",
+                        status = true
+                    )
+                )
             )
         }
 }

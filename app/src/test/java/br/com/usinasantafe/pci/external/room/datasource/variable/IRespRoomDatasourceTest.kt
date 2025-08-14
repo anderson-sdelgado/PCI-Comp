@@ -605,4 +605,41 @@ class IRespRoomDatasourceTest {
                 )
             )
         }
+
+    @Test
+    fun `checkRespSend - Check return false if not have resp send`() =
+        runTest {
+            val result = datasource.checkRespSend()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `checkRespSend - Check return true if not have resp send`() =
+        runTest {
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            val result = datasource.checkRespSend()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
 }

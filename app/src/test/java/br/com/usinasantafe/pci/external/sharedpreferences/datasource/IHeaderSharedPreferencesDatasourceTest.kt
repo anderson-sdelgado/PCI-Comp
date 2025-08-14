@@ -192,4 +192,40 @@ class IHeaderSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `getIdColab - Check return failure if not have data in Config SharedPreferences internal`() =
+        runTest {
+            val result = datasource.getIdColab()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderSharedPreferencesDatasource.getIdColab"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getIdColab - Check return correct if function execute successfully`() =
+        runTest {
+            val data = HeaderSharedPreferencesModel(
+                idColab = 3
+            )
+            datasource.save(data)
+            val result = datasource.getIdColab()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                3
+            )
+        }
+
 }
