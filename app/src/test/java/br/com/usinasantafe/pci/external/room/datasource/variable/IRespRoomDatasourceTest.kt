@@ -642,4 +642,137 @@ class IRespRoomDatasourceTest {
                 true
             )
         }
+
+    @Test
+    fun `listRespSend - Check return list correct`() =
+        runTest {
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SENT
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs 2"
+                )
+            )
+            val result = datasource.listRespSend()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model,
+                RespRoomModel(
+                    id = 2,
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs 2",
+                    statusSend = StatusSend.SEND
+                )
+            )
+        }
+
+    @Test
+    fun `setIdServAndSentById - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.setIdServAndSentById(
+                1,
+                1
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IRespRoomDatasource.setIdServAndSentById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause!!.message,
+                "Cannot invoke \"br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel.setIdServ(java.lang.Integer)\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `setIdServAndSentById - Check alter data`() =
+        runTest {
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            val result = datasource.setIdServAndSentById(
+                id = 1,
+                idServ = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val list = respDao.all()
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model.id,
+                1
+            )
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.idItem,
+                1
+            )
+            assertEquals(
+                model.idPlant,
+                1
+            )
+            assertEquals(
+                model.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                model.obs,
+                "obs"
+            )
+            assertEquals(
+                model.idServ,
+                1
+            )
+            assertEquals(
+                model.statusSend,
+                StatusSend.SENT
+            )
+        }
+
 }

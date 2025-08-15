@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import br.com.usinasantafe.pci.domain.usecases.note.CheckRespSend
-import br.com.usinasantafe.pci.domain.usecases.note.SendNote
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckRespSend
+import br.com.usinasantafe.pci.domain.usecases.flow.SendNote
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject

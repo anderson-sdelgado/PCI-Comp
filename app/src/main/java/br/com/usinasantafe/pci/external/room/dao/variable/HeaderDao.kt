@@ -31,5 +31,13 @@ interface HeaderDao {
     @Query("SELECT * FROM TB_HEADER WHERE idColab = :idColab AND idOS = :idOS")
     suspend fun listByIdColabAndIdOS(idColab: Int, idOS: Int): List<HeaderRoomModel>
 
+    @Query("SELECT * FROM TB_HEADER WHERE id IN (:ids)")
+    suspend fun listByIds(ids: List<Int>): List<HeaderRoomModel>
+
+    @Query("SELECT * FROM TB_HEADER WHERE id = :id")
+    suspend fun getById(id: Int): HeaderRoomModel
+
+    @Query("DELETE FROM TB_HEADER WHERE id = :id")
+    suspend fun delete(id: Int): Int
 
 }

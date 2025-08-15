@@ -2,7 +2,6 @@ package br.com.usinasantafe.pci.infra.models.retrofit.variable
 
 import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 data class HeaderRetrofitModelOutput(
@@ -12,6 +11,8 @@ data class HeaderRetrofitModelOutput(
     val idOS: Int,
     val dateHour: String,
     val respList: List<RespRetrofitModelOutput>,
+    val number: Long,
+    val idServ: Int?
 )
 
 data class HeaderRetrofitModelInput(
@@ -20,7 +21,7 @@ data class HeaderRetrofitModelInput(
     val respList: List<RespRetrofitModelInput>,
 )
 
-fun HeaderRoomModel.roomModelToRetrofitModel(
+fun HeaderRoomModel.headerRoomModelToHeaderRetrofitModel(
     number: Long,
     respList: List<RespRetrofitModelOutput>,
 ): HeaderRetrofitModelOutput {
@@ -32,9 +33,11 @@ fun HeaderRoomModel.roomModelToRetrofitModel(
             idOS = idOS,
             dateHour = SimpleDateFormat(
                 "dd/MM/yyyy HH:mm",
-                Locale("pt", "BR")
+                Locale.Builder().setLanguage("pt").setRegion("BR").build()
             ).format(this.dateHour),
             respList = respList,
+            number = number,
+            idServ = idServ
         )
     }
 }

@@ -2,7 +2,7 @@ package br.com.usinasantafe.pci.presenter.view.note.plantlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.pci.domain.usecases.note.ListPlantNote
+import br.com.usinasantafe.pci.domain.usecases.flow.ListPlantNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableItemByIdOS
 import br.com.usinasantafe.pci.presenter.model.PlantScreenModel
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel

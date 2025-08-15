@@ -3,7 +3,7 @@ package br.com.usinasantafe.pci.presenter.view.note.questiondesc
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.domain.usecases.note.GetResp
+import br.com.usinasantafe.pci.domain.usecases.flow.GetResp
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.presenter.model.RespScreenModel

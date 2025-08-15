@@ -3,10 +3,10 @@ package br.com.usinasantafe.pci.presenter.view.note.questionlist
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
-import br.com.usinasantafe.pci.domain.usecases.note.CheckItemsOpen
-import br.com.usinasantafe.pci.domain.usecases.note.FinishItemsNote
-import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckItemNote
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckItemsOpen
+import br.com.usinasantafe.pci.domain.usecases.flow.FinishItemsNote
+import br.com.usinasantafe.pci.domain.usecases.flow.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG

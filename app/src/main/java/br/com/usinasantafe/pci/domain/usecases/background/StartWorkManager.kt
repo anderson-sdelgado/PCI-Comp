@@ -6,7 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import br.com.usinasantafe.pci.domain.usecases.note.CheckRespSend
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckRespSend
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import timber.log.Timber
 import java.util.concurrent.TimeUnit

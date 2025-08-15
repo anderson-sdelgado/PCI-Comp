@@ -2,8 +2,8 @@ package br.com.usinasantafe.pci.presenter.view.header.oslist
 
 import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.domain.usecases.header.ListOSHeader
-import br.com.usinasantafe.pci.domain.usecases.header.SetIdOSHeader
+import br.com.usinasantafe.pci.domain.usecases.flow.ListOSHeader
+import br.com.usinasantafe.pci.domain.usecases.flow.SetIdOSHeader
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableOSByIdFactorySection
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTablePlantByIdFactorySection
 import br.com.usinasantafe.pci.presenter.model.OSScreenModel

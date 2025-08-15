@@ -62,7 +62,13 @@ class IRespRoomDatasource  @Inject constructor(
         idPlant: Int
     ): Result<Boolean> {
         try {
-            respDao.finishItems(
+            if(idPlant == 0) {
+                respDao.finishItems(
+                    idHeader = idHeader
+                )
+                return Result.success(true)
+            }
+            respDao.finishItemsByIdPlant(
                 idHeader = idHeader,
                 idPlant = idPlant
             )
@@ -121,7 +127,45 @@ class IRespRoomDatasource  @Inject constructor(
     }
 
     override suspend fun listRespSend(): Result<List<RespRoomModel>> {
-        TODO("Not yet implemented")
+        try {
+            val list = respDao.listRespSend()
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setIdServAndSentById(
+        id: Int,
+        idServ: Int
+    ): Result<Boolean> {
+        try {
+            val model = respDao.getById(id)
+            model.idServ = idServ
+            model.statusSend = StatusSend.SENT
+            respDao.update(model)
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun deleteRespByIdHeader(idHeader: Int): Result<Boolean> {
+        try {
+            respDao.delete(idHeader)
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

@@ -2,7 +2,7 @@ package br.com.usinasantafe.pci.presenter.view.header.colab
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.pci.domain.usecases.header.CheckAndSetRegColabHeader
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckAndSetRegColabHeader
 import br.com.usinasantafe.pci.presenter.theme.addTextField
 import br.com.usinasantafe.pci.presenter.theme.clearTextField
 import br.com.usinasantafe.pci.utils.Errors

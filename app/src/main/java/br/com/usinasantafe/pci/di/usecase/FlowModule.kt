@@ -1,0 +1,75 @@
+package br.com.usinasantafe.pci.di.usecase
+
+import br.com.usinasantafe.pci.domain.usecases.flow.*
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface FlowModule {
+
+    @Binds
+    @Singleton
+    fun bindCheckAndSetRegColab(usecase: ICheckAndSetRegColabHeader): CheckAndSetRegColabHeader
+
+    @Binds
+    @Singleton
+    fun bindListOS(usecase: IListOSHeader): ListOSHeader
+
+    @Binds
+    @Singleton
+    fun bindSetIdOS(usecase: ISetIdOSHeader): SetIdOSHeader
+
+    @Binds
+    @Singleton
+    fun bindCheckItemNote(usecase: ICheckItemNote): CheckItemNote
+
+    @Binds
+    @Singleton
+    fun bindListPlantNote(usecase: IListPlantNote): ListPlantNote
+
+    @Binds
+    @Singleton
+    fun bindListItemNote(usecase: IListItemNote): ListItemNote
+
+    @Binds
+    @Singleton
+    fun bindGetItem(usecase: IGetDescItem): GetDescItem
+
+    @Binds
+    @Singleton
+    fun bindSetRespItem(usecase: ISetRespItem): SetRespItem
+
+    @Binds
+    @Singleton
+    fun bindGetResp(usecase: IGetResp): GetResp
+
+    @Binds
+    @Singleton
+    fun bindCloseItemNote(usecase: IFinishItemsNote): FinishItemsNote
+
+    @Binds
+    @Singleton
+    fun bindCheckItemsOpen(usecase: ICheckItemsOpen): CheckItemsOpen
+
+    @Binds
+    @Singleton
+    fun bindCheckRespSend(usecase: ICheckRespSend): CheckRespSend
+
+    @Binds
+    @Singleton
+    fun bindSendNote(usecase: ISendNote): SendNote
+
+    @Binds
+    @Singleton
+    fun bindCloseHeaders(usecase: ICloseHeaders): CloseHeaders
+
+    @Binds
+    @Singleton
+    fun bindDeleteNote(usecase: IDeleteNote): DeleteNote
+
+
+}

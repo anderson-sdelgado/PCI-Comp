@@ -9,8 +9,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.HiltTestActivity
-import br.com.usinasantafe.pci.domain.usecases.note.GetDescItem
-import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
+import br.com.usinasantafe.pci.domain.usecases.flow.GetDescItem
+import br.com.usinasantafe.pci.domain.usecases.flow.SetRespItem
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ItemDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao

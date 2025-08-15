@@ -3,8 +3,8 @@ package br.com.usinasantafe.pci.presenter.view.note.questionresp
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.pci.domain.usecases.note.GetDescItem
-import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
+import br.com.usinasantafe.pci.domain.usecases.flow.GetDescItem
+import br.com.usinasantafe.pci.domain.usecases.flow.SetRespItem
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.presenter.Args.ID_PLANT_ARG
 import br.com.usinasantafe.pci.utils.OptionResp

@@ -15,6 +15,8 @@ interface CheckListRepository {
     suspend fun finishHeader(): Result<Boolean>
     suspend fun listHeaderByIdOSList(ids: List<Int>): Result<List<Header>>
     suspend fun getIdColabHeaderOpen(): Result<Int>
+    suspend fun allHeader(): Result<List<Header>>
+    suspend fun deleteHeader(id: Int): Result<Boolean>
     suspend fun saveResp(resp: Resp): Result<Boolean>
     suspend fun listRespByIdItems(idItemList: List<Int>): Result<List<Resp>>
     suspend fun getRespByIdItem(idItem: Int): Result<Resp>
@@ -22,8 +24,10 @@ interface CheckListRepository {
     suspend fun listRespByIdPlantAndHeaderOpen(idPlant: Int): Result<List<Resp>>
     suspend fun listRespByHeaderOpen(): Result<List<Resp>>
     suspend fun checkRespSend(): Result<Boolean>
+    suspend fun deleteRespByIdHeader(idHeader: Int): Result<Boolean>
     suspend fun sendNote(
         token: String,
         number: Long,
     ): Result<Boolean>
+
 }

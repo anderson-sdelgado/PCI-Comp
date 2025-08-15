@@ -7,7 +7,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.HiltTestActivity
-import br.com.usinasantafe.pci.domain.usecases.note.GetResp
+import br.com.usinasantafe.pci.domain.usecases.flow.GetResp
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ItemDao
 import br.com.usinasantafe.pci.external.room.dao.stable.ServiceDao

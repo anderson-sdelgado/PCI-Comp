@@ -5,10 +5,12 @@ import br.com.usinasantafe.pci.utils.OptionResp
 
 data class RespRetrofitModelOutput(
     val id: Int,
+    val idHeader: Int,
     val idItem: Int,
     val idPlant: Int,
     var option: OptionResp,
-    var obs: String? = null,
+    var obs: String?,
+    val idServ: Int?
 )
 
 data class RespRetrofitModelInput(
@@ -16,14 +18,16 @@ data class RespRetrofitModelInput(
     val idServ: Int,
 )
 
-fun RespRoomModel.roomModelToRetrofitModel(): RespRetrofitModelOutput {
+fun RespRoomModel.respRoomModelToRespRetrofitModel(): RespRetrofitModelOutput {
     return with(this) {
         RespRetrofitModelOutput(
             id = id!!,
+            idHeader = idHeader,
             idItem = idItem,
             idPlant = idPlant,
             option = option,
             obs = obs,
+            idServ = idServ
         )
     }
 }

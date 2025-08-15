@@ -19,4 +19,9 @@ interface RespRoomDatasource {
     ): Result<List<RespRoomModel>>
     suspend fun checkRespSend(): Result<Boolean>
     suspend fun listRespSend(): Result<List<RespRoomModel>>
+    suspend fun setIdServAndSentById(
+        id: Int,
+        idServ: Int
+    ): Result<Boolean>
+    suspend fun deleteRespByIdHeader(idHeader: Int): Result<Boolean>
 }

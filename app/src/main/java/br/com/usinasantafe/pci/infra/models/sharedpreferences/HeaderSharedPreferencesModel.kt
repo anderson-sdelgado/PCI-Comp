@@ -1,6 +1,7 @@
 package br.com.usinasantafe.pci.infra.models.sharedpreferences
 
 import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
+import java.util.Date
 
 data class HeaderSharedPreferencesModel(
     var idColab: Int? = null,
@@ -13,7 +14,8 @@ fun HeaderSharedPreferencesModel.sharedPreferencesModelToRoomModel(): HeaderRoom
         HeaderRoomModel(
             idColab = idColab!!,
             idFactorySection = idFactorySection!!,
-            idOS = idOS!!
+            idOS = idOS!!,
+            dateHour = Date()
         )
     }
 }

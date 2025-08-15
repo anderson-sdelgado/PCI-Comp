@@ -1,7 +1,6 @@
 package br.com.usinasantafe.pci.presenter.view.note.questionobs
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -10,13 +9,12 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.HiltTestActivity
-import br.com.usinasantafe.pci.domain.usecases.note.SetRespItem
+import br.com.usinasantafe.pci.domain.usecases.flow.SetRespItem
 import br.com.usinasantafe.pci.presenter.Args.ID_ITEM_ARG
 import br.com.usinasantafe.pci.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject

@@ -1,6 +1,7 @@
 package br.com.usinasantafe.pci.di.external.retrofit
 
 import br.com.usinasantafe.pci.di.provider.DefaultRetrofit
+import br.com.usinasantafe.pci.external.retrofit.api.variable.CheckListApi
 import br.com.usinasantafe.pci.external.retrofit.api.variable.ConfigApi
 import dagger.Module
 import dagger.Provides
@@ -18,5 +19,11 @@ object VariableRetrofitModule {
     fun configApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): ConfigApi = retrofit.create(ConfigApi::class.java)
+
+    @Provides
+    @Singleton
+    fun checkListApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): CheckListApi = retrofit.create(CheckListApi::class.java)
 
 }

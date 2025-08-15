@@ -30,9 +30,15 @@ interface RespDao {
     suspend fun countByIdItem(idItem: Int): Int
 
     @Query("UPDATE TB_RESP SET status = :status WHERE idHeader = :idHeader AND idPlant = :idPlant")
-    suspend fun finishItems(
+    suspend fun finishItemsByIdPlant(
         idHeader: Int,
         idPlant: Int,
+        status: Status = Status.FINISH
+    ): Int
+
+    @Query("UPDATE TB_RESP SET status = :status WHERE idHeader = :idHeader")
+    suspend fun finishItems(
+        idHeader: Int,
         status: Status = Status.FINISH
     ): Int
 
@@ -51,5 +57,17 @@ interface RespDao {
     suspend fun countRespSend(
         statusSend: StatusSend = StatusSend.SEND
     ): Int
+
+    @Query("SELECT * FROM TB_RESP WHERE statusSend = :statusSend")
+    suspend fun listRespSend(
+        statusSend: StatusSend = StatusSend.SEND
+    ): List<RespRoomModel>
+
+    @Query("SELECT * FROM TB_RESP WHERE id = :id")
+    suspend fun getById(id: Int): RespRoomModel
+
+
+    @Query("DELETE FROM TB_RESP WHERE idHeader = :id")
+    suspend fun delete(id: Int): Int
 
 }

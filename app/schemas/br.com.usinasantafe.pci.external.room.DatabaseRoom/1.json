@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "49151eae226dffe8871a94d677f52cd5",
+    "identityHash": "97e445125f97de221685b91fd85e7f7d",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -246,7 +246,7 @@
       },
       {
         "tableName": "tb_header",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idColab` INTEGER NOT NULL, `idFactorySection` INTEGER NOT NULL, `idOS` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `status` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idColab` INTEGER NOT NULL, `idFactorySection` INTEGER NOT NULL, `idOS` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `status` TEXT NOT NULL, `idServ` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -283,6 +283,12 @@
             "columnName": "status",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -296,7 +302,7 @@
       },
       {
         "tableName": "tb_resp",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `idPlant` INTEGER NOT NULL, `option` TEXT NOT NULL, `obs` TEXT, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `idPlant` INTEGER NOT NULL, `option` TEXT NOT NULL, `obs` TEXT, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, `idServ` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -345,6 +351,12 @@
             "columnName": "statusSend",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -360,7 +372,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '49151eae226dffe8871a94d677f52cd5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '97e445125f97de221685b91fd85e7f7d')"
     ]
   }
 }

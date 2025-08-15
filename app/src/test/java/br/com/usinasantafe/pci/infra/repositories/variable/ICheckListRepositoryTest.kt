@@ -3,9 +3,13 @@ package br.com.usinasantafe.pci.infra.repositories.variable
 import br.com.usinasantafe.pci.domain.entities.variable.Header
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
 import br.com.usinasantafe.pci.domain.errors.resultFailure
+import br.com.usinasantafe.pci.infra.datasource.retrofit.variable.CheckListRetrofitDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.variable.HeaderRoomDatasource
 import br.com.usinasantafe.pci.infra.datasource.room.variable.RespRoomDatasource
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
+import br.com.usinasantafe.pci.infra.models.retrofit.variable.HeaderRetrofitModelInput
+import br.com.usinasantafe.pci.infra.models.retrofit.variable.HeaderRetrofitModelOutput
+import br.com.usinasantafe.pci.infra.models.retrofit.variable.RespRetrofitModelInput
 import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
 import br.com.usinasantafe.pci.infra.models.room.variable.RespRoomModel
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.HeaderSharedPreferencesModel
@@ -14,8 +18,11 @@ import br.com.usinasantafe.pci.utils.Status
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.whenever
+import java.util.Date
+import kotlin.apply
 import kotlin.test.Test
 
 class ICheckListRepositoryTest {
@@ -23,10 +30,12 @@ class ICheckListRepositoryTest {
     private val headerSharedPreferencesDatasource = mock<HeaderSharedPreferencesDatasource>()
     private val headerRoomDatasource = mock<HeaderRoomDatasource>()
     private val respRoomDatasource = mock<RespRoomDatasource>()
+    private val checkListRetrofitDatasource = mock<CheckListRetrofitDatasource>()
     private val repository = ICheckListRepository(
         headerSharedPreferencesDatasource = headerSharedPreferencesDatasource,
         headerRoomDatasource = headerRoomDatasource,
-        respRoomDatasource = respRoomDatasource
+        respRoomDatasource = respRoomDatasource,
+        checkListRetrofitDatasource = checkListRetrofitDatasource
     )
 
     @Test
@@ -362,7 +371,7 @@ class ICheckListRepositoryTest {
     fun `saveResp - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
                 resultFailure(
                     "IHeaderRoomDatasource.getByStatus",
@@ -395,17 +404,9 @@ class ICheckListRepositoryTest {
     fun `saveResp - Check return failure if have error in RespRoomDatasource save`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(
-                    HeaderRoomModel(
-                        id = 1,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 respRoomDatasource.save(
@@ -448,17 +449,9 @@ class ICheckListRepositoryTest {
     fun `saveResp - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(
-                    HeaderRoomModel(
-                        id = 1,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 respRoomDatasource.save(
@@ -636,7 +629,7 @@ class ICheckListRepositoryTest {
     fun `finishItems - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
                 resultFailure(
                     "IHeaderRoomDatasource.getByStatus",
@@ -663,17 +656,9 @@ class ICheckListRepositoryTest {
     fun `finishItems - Check return failure if have error in RespRoomDatasource closeItems`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(
-                    HeaderRoomModel(
-                        id = 1,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 respRoomDatasource.finishItems(
@@ -706,17 +691,9 @@ class ICheckListRepositoryTest {
     fun `finishItems - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault(Status.OPEN)
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(
-                    HeaderRoomModel(
-                        id = 1,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 respRoomDatasource.finishItems(
@@ -741,7 +718,7 @@ class ICheckListRepositoryTest {
     fun `listRespByIdPlantAndHeaderOpen - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault()
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
                 resultFailure(
                     "IHeaderRoomDatasource.getByStatusOpenDefault",
@@ -768,17 +745,9 @@ class ICheckListRepositoryTest {
     fun `listRespByIdPlantAndHeaderOpen - Check return failure if have error in RespRoomDatasource listByIdHeaderAndIdPlant`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault()
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(
-                    HeaderRoomModel(
-                        id = 1,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 respRoomDatasource.listByIdHeaderAndIdPlant(
@@ -811,17 +780,9 @@ class ICheckListRepositoryTest {
     fun `listRespByIdPlantAndHeaderOpen - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault()
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(
-                    HeaderRoomModel(
-                        id = 1,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 respRoomDatasource.listByIdHeaderAndIdPlant(
@@ -888,7 +849,7 @@ class ICheckListRepositoryTest {
     fun `listRespByHeaderOpen - Check return failure if have error in HeaderRoomDatasource getByStatusOpenDefault`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault()
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
                 resultFailure(
                     "IHeaderRoomDatasource.getByStatusOpenDefault",
@@ -915,17 +876,9 @@ class ICheckListRepositoryTest {
     fun `listRespByHeaderOpen - Check return failure if have error in RespRoomDatasource listByIdHeader`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault()
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(
-                    HeaderRoomModel(
-                        id = 2,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 respRoomDatasource.listByIdHeader(2)
@@ -955,17 +908,9 @@ class ICheckListRepositoryTest {
     fun `listRespByHeaderOpen - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerRoomDatasource.getByStatusOpenDefault()
+                headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(
-                    HeaderRoomModel(
-                        id = 2,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 respRoomDatasource.listByIdHeader(2)
@@ -1278,4 +1223,1048 @@ class ICheckListRepositoryTest {
                 true
             )
         }
+    
+    @Test
+    fun `sendNote - Check return failure if have error in RespRoomDatasource listRespSend`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listRespSend()
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.listRespSend",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.sendNote(
+                token = "token",
+                number = 1
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.sendNote -> IRespRoomDatasource.listRespSend"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `sendNote - Check return failure if have error in HeaderRoomDatasource listByIds`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listRespSend()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        RespRoomModel(
+                            id = 1,
+                            idHeader = 1,
+                            idItem = 1,
+                            idPlant = 1,
+                            option = OptionResp.ACCORDING
+                        ),
+                        RespRoomModel(
+                            id = 2,
+                            idHeader = 2,
+                            idItem = 2,
+                            idPlant = 2,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs"
+                        )
+                    )
+                )
+            )
+            whenever(
+                headerRoomDatasource.listByIds(listOf(1, 2))
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.listByIds",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.sendNote(
+                token = "token",
+                number = 1
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.sendNote -> IHeaderRoomDatasource.listByIds"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `sendNote - Check return failure if have error in CheckListRetrofitDatasource send`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listRespSend()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        RespRoomModel(
+                            id = 1,
+                            idHeader = 1,
+                            idItem = 1,
+                            idPlant = 1,
+                            option = OptionResp.ACCORDING
+                        ),
+                        RespRoomModel(
+                            id = 2,
+                            idHeader = 2,
+                            idItem = 2,
+                            idPlant = 2,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs"
+                        ),
+                        RespRoomModel(
+                            id = 3,
+                            idHeader = 2,
+                            idItem = 3,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs 2"
+                        )
+                    )
+                )
+            )
+            whenever(
+                headerRoomDatasource.listByIds(listOf(1, 2))
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        HeaderRoomModel(
+                            id = 1,
+                            idColab = 1,
+                            idFactorySection = 1,
+                            idOS = 1,
+                            status = Status.OPEN,
+                            dateHour = Date(1755260418000)
+                        ),
+                        HeaderRoomModel(
+                            id = 2,
+                            idColab = 2,
+                            idFactorySection = 2,
+                            idOS = 2,
+                            status = Status.OPEN,
+                            dateHour = Date(1755174018000)
+                        )
+                    )
+                )
+            )
+            val modelCaptor = argumentCaptor<List<HeaderRetrofitModelOutput>>().apply {
+                whenever(
+                    checkListRetrofitDatasource.send(
+                        token = any(),
+                        capture()
+                    )
+                ).thenReturn(
+                    resultFailure(
+                        "ICheckListRetrofitDatasource.send",
+                        "-",
+                        Exception()
+                    )
+                )
+            }
+            val result = repository.sendNote(
+                token = "token",
+                number = 1
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.sendNote -> ICheckListRetrofitDatasource.send"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+            val headerList = modelCaptor.firstValue
+            assertEquals(
+                headerList.size,
+                2
+            )
+            val header1 = headerList[0]
+            assertEquals(
+                header1.idColab,
+                1
+            )
+            assertEquals(
+                header1.idFactorySection,
+                1
+            )
+            assertEquals(
+                header1.idOS,
+                1
+            )
+            assertEquals(
+                header1.dateHour,
+                "15/08/2025 09:20"
+            )
+            assertEquals(
+                header1.number,
+                1
+            )
+            val respListHeader1 = header1.respList
+            assertEquals(
+                respListHeader1.size,
+                1
+            )
+            val resp1Header1 = respListHeader1[0]
+            assertEquals(
+                resp1Header1.id,
+                1
+            )
+            assertEquals(
+                resp1Header1.idHeader,
+                1
+            )
+            assertEquals(
+                resp1Header1.idItem,
+                1
+            )
+            assertEquals(
+                resp1Header1.idPlant,
+                1
+            )
+            assertEquals(
+                resp1Header1.option,
+                OptionResp.ACCORDING
+            )
+            assertEquals(
+                resp1Header1.obs,
+                null
+            )
+            val header2 = headerList[1]
+            assertEquals(
+                header2.idColab,
+                2
+            )
+            assertEquals(
+                header2.idFactorySection,
+                2
+            )
+            assertEquals(
+                header2.idOS,
+                2
+            )
+            assertEquals(
+                header2.dateHour,
+                "14/08/2025 09:20"
+            )
+            assertEquals(
+                header2.number,
+                1
+            )
+            val respListHeader2 = header2.respList
+            assertEquals(
+                respListHeader2.size,
+                2
+            )
+            val resp1Header2 = respListHeader2[0]
+            assertEquals(
+                resp1Header2.id,
+                2
+            )
+            assertEquals(
+                resp1Header2.idHeader,
+                2
+            )
+            assertEquals(
+                resp1Header2.idItem,
+                2
+            )
+            assertEquals(
+                resp1Header2.idPlant,
+                2
+            )
+            assertEquals(
+                resp1Header2.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                resp1Header2.obs,
+                "obs"
+            )
+            val resp2Header2 = respListHeader2[1]
+            assertEquals(
+                resp2Header2.id,
+                3
+            )
+            assertEquals(
+                resp2Header2.idHeader,
+                2
+            )
+            assertEquals(
+                resp2Header2.idItem,
+                3
+            )
+            assertEquals(
+                resp2Header2.idPlant,
+                3
+            )
+            assertEquals(
+                resp2Header2.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                resp2Header2.obs,
+                "obs 2"
+            )
+        }
+    
+    @Test
+    fun `sendNote - Check return failure if have error in RespRoomDatasource setIdServAndSentById`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listRespSend()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        RespRoomModel(
+                            id = 1,
+                            idHeader = 1,
+                            idItem = 1,
+                            idPlant = 1,
+                            option = OptionResp.ACCORDING
+                        ),
+                        RespRoomModel(
+                            id = 2,
+                            idHeader = 2,
+                            idItem = 2,
+                            idPlant = 2,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs"
+                        ),
+                        RespRoomModel(
+                            id = 3,
+                            idHeader = 2,
+                            idItem = 3,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs 2"
+                        )
+                    )
+                )
+            )
+            whenever(
+                headerRoomDatasource.listByIds(listOf(1, 2))
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        HeaderRoomModel(
+                            id = 1,
+                            idColab = 1,
+                            idFactorySection = 1,
+                            idOS = 1,
+                            status = Status.OPEN,
+                            dateHour = Date(1755260418000)
+                        ),
+                        HeaderRoomModel(
+                            id = 2,
+                            idColab = 2,
+                            idFactorySection = 2,
+                            idOS = 2,
+                            status = Status.OPEN,
+                            dateHour = Date(1755174018000)
+                        )
+                    )
+                )
+            )
+            val modelCaptor = argumentCaptor<List<HeaderRetrofitModelOutput>>().apply {
+                whenever(
+                    checkListRetrofitDatasource.send(
+                        token = any(),
+                        capture()
+                    )
+                ).thenReturn(
+                    Result.success(
+                        listOf(
+                            HeaderRetrofitModelInput(
+                                id = 1,
+                                idServ = 1,
+                                respList = listOf(
+                                    RespRetrofitModelInput(
+                                        id = 1,
+                                        idServ = 1
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            }
+            whenever(
+                respRoomDatasource.setIdServAndSentById(
+                    idServ = 1,
+                    id = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.setIdServAndSentById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.sendNote(
+                token = "token",
+                number = 1
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.sendNote -> IRespRoomDatasource.setIdServAndSentById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+            val headerList = modelCaptor.firstValue
+            assertEquals(
+                headerList.size,
+                2
+            )
+            val header1 = headerList[0]
+            assertEquals(
+                header1.idColab,
+                1
+            )
+            assertEquals(
+                header1.idFactorySection,
+                1
+            )
+            assertEquals(
+                header1.idOS,
+                1
+            )
+            assertEquals(
+                header1.dateHour,
+                "15/08/2025 09:20"
+            )
+            assertEquals(
+                header1.number,
+                1
+            )
+            val respListHeader1 = header1.respList
+            assertEquals(
+                respListHeader1.size,
+                1
+            )
+            val resp1Header1 = respListHeader1[0]
+            assertEquals(
+                resp1Header1.id,
+                1
+            )
+            assertEquals(
+                resp1Header1.idHeader,
+                1
+            )
+            assertEquals(
+                resp1Header1.idItem,
+                1
+            )
+            assertEquals(
+                resp1Header1.idPlant,
+                1
+            )
+            assertEquals(
+                resp1Header1.option,
+                OptionResp.ACCORDING
+            )
+            assertEquals(
+                resp1Header1.obs,
+                null
+            )
+            val header2 = headerList[1]
+            assertEquals(
+                header2.idColab,
+                2
+            )
+            assertEquals(
+                header2.idFactorySection,
+                2
+            )
+            assertEquals(
+                header2.idOS,
+                2
+            )
+            assertEquals(
+                header2.dateHour,
+                "14/08/2025 09:20"
+            )
+            assertEquals(
+                header2.number,
+                1
+            )
+            val respListHeader2 = header2.respList
+            assertEquals(
+                respListHeader2.size,
+                2
+            )
+            val resp1Header2 = respListHeader2[0]
+            assertEquals(
+                resp1Header2.id,
+                2
+            )
+            assertEquals(
+                resp1Header2.idHeader,
+                2
+            )
+            assertEquals(
+                resp1Header2.idItem,
+                2
+            )
+            assertEquals(
+                resp1Header2.idPlant,
+                2
+            )
+            assertEquals(
+                resp1Header2.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                resp1Header2.obs,
+                "obs"
+            )
+            val resp2Header2 = respListHeader2[1]
+            assertEquals(
+                resp2Header2.id,
+                3
+            )
+            assertEquals(
+                resp2Header2.idHeader,
+                2
+            )
+            assertEquals(
+                resp2Header2.idItem,
+                3
+            )
+            assertEquals(
+                resp2Header2.idPlant,
+                3
+            )
+            assertEquals(
+                resp2Header2.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                resp2Header2.obs,
+                "obs 2"
+            )
+        }
+
+    @Test
+    fun `sendNote - Check return failure if have error in HeaderRoomDatasource setIdServById`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listRespSend()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        RespRoomModel(
+                            id = 1,
+                            idHeader = 1,
+                            idItem = 1,
+                            idPlant = 1,
+                            option = OptionResp.ACCORDING
+                        ),
+                        RespRoomModel(
+                            id = 2,
+                            idHeader = 2,
+                            idItem = 2,
+                            idPlant = 2,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs"
+                        ),
+                        RespRoomModel(
+                            id = 3,
+                            idHeader = 2,
+                            idItem = 3,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs 2"
+                        )
+                    )
+                )
+            )
+            whenever(
+                headerRoomDatasource.listByIds(listOf(1, 2))
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        HeaderRoomModel(
+                            id = 1,
+                            idColab = 1,
+                            idFactorySection = 1,
+                            idOS = 1,
+                            status = Status.OPEN,
+                            dateHour = Date(1755260418000)
+                        ),
+                        HeaderRoomModel(
+                            id = 2,
+                            idColab = 2,
+                            idFactorySection = 2,
+                            idOS = 2,
+                            status = Status.OPEN,
+                            dateHour = Date(1755174018000)
+                        )
+                    )
+                )
+            )
+            val modelCaptor = argumentCaptor<List<HeaderRetrofitModelOutput>>().apply {
+                whenever(
+                    checkListRetrofitDatasource.send(
+                        token = any(),
+                        capture()
+                    )
+                ).thenReturn(
+                    Result.success(
+                        listOf(
+                            HeaderRetrofitModelInput(
+                                id = 1,
+                                idServ = 1,
+                                respList = listOf(
+                                    RespRetrofitModelInput(
+                                        id = 1,
+                                        idServ = 1
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            }
+            whenever(
+                respRoomDatasource.setIdServAndSentById(
+                    idServ = 1,
+                    id = 1
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                headerRoomDatasource.setIdServById(
+                    idServ = 1,
+                    id = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.setIdServById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.sendNote(
+                token = "token",
+                number = 1
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.sendNote -> IHeaderRoomDatasource.setIdServById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+            val headerList = modelCaptor.firstValue
+            assertEquals(
+                headerList.size,
+                2
+            )
+            val header1 = headerList[0]
+            assertEquals(
+                header1.idColab,
+                1
+            )
+            assertEquals(
+                header1.idFactorySection,
+                1
+            )
+            assertEquals(
+                header1.idOS,
+                1
+            )
+            assertEquals(
+                header1.dateHour,
+                "15/08/2025 09:20"
+            )
+            assertEquals(
+                header1.number,
+                1
+            )
+            val respListHeader1 = header1.respList
+            assertEquals(
+                respListHeader1.size,
+                1
+            )
+            val resp1Header1 = respListHeader1[0]
+            assertEquals(
+                resp1Header1.id,
+                1
+            )
+            assertEquals(
+                resp1Header1.idHeader,
+                1
+            )
+            assertEquals(
+                resp1Header1.idItem,
+                1
+            )
+            assertEquals(
+                resp1Header1.idPlant,
+                1
+            )
+            assertEquals(
+                resp1Header1.option,
+                OptionResp.ACCORDING
+            )
+            assertEquals(
+                resp1Header1.obs,
+                null
+            )
+            val header2 = headerList[1]
+            assertEquals(
+                header2.idColab,
+                2
+            )
+            assertEquals(
+                header2.idFactorySection,
+                2
+            )
+            assertEquals(
+                header2.idOS,
+                2
+            )
+            assertEquals(
+                header2.dateHour,
+                "14/08/2025 09:20"
+            )
+            assertEquals(
+                header2.number,
+                1
+            )
+            val respListHeader2 = header2.respList
+            assertEquals(
+                respListHeader2.size,
+                2
+            )
+            val resp1Header2 = respListHeader2[0]
+            assertEquals(
+                resp1Header2.id,
+                2
+            )
+            assertEquals(
+                resp1Header2.idHeader,
+                2
+            )
+            assertEquals(
+                resp1Header2.idItem,
+                2
+            )
+            assertEquals(
+                resp1Header2.idPlant,
+                2
+            )
+            assertEquals(
+                resp1Header2.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                resp1Header2.obs,
+                "obs"
+            )
+            val resp2Header2 = respListHeader2[1]
+            assertEquals(
+                resp2Header2.id,
+                3
+            )
+            assertEquals(
+                resp2Header2.idHeader,
+                2
+            )
+            assertEquals(
+                resp2Header2.idItem,
+                3
+            )
+            assertEquals(
+                resp2Header2.idPlant,
+                3
+            )
+            assertEquals(
+                resp2Header2.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                resp2Header2.obs,
+                "obs 2"
+            )
+        }
+
+    @Test
+    fun `sendNote - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                respRoomDatasource.listRespSend()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        RespRoomModel(
+                            id = 1,
+                            idHeader = 1,
+                            idItem = 1,
+                            idPlant = 1,
+                            option = OptionResp.ACCORDING
+                        ),
+                        RespRoomModel(
+                            id = 2,
+                            idHeader = 2,
+                            idItem = 2,
+                            idPlant = 2,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs"
+                        ),
+                        RespRoomModel(
+                            id = 3,
+                            idHeader = 2,
+                            idItem = 3,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs 2"
+                        )
+                    )
+                )
+            )
+            whenever(
+                headerRoomDatasource.listByIds(listOf(1, 2))
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        HeaderRoomModel(
+                            id = 1,
+                            idColab = 1,
+                            idFactorySection = 1,
+                            idOS = 1,
+                            status = Status.OPEN,
+                            dateHour = Date(1755260418000)
+                        ),
+                        HeaderRoomModel(
+                            id = 2,
+                            idColab = 2,
+                            idFactorySection = 2,
+                            idOS = 2,
+                            status = Status.OPEN,
+                            dateHour = Date(1755174018000)
+                        )
+                    )
+                )
+            )
+            val modelCaptor = argumentCaptor<List<HeaderRetrofitModelOutput>>().apply {
+                whenever(
+                    checkListRetrofitDatasource.send(
+                        token = any(),
+                        capture()
+                    )
+                ).thenReturn(
+                    Result.success(
+                        listOf(
+                            HeaderRetrofitModelInput(
+                                id = 1,
+                                idServ = 1,
+                                respList = listOf(
+                                    RespRetrofitModelInput(
+                                        id = 1,
+                                        idServ = 1
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            }
+            whenever(
+                respRoomDatasource.setIdServAndSentById(
+                    idServ = 1,
+                    id = 1
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                headerRoomDatasource.setIdServById(
+                    idServ = 1,
+                    id = 1
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.sendNote(
+                token = "token",
+                number = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val headerList = modelCaptor.firstValue
+            assertEquals(
+                headerList.size,
+                2
+            )
+            val header1 = headerList[0]
+            assertEquals(
+                header1.idColab,
+                1
+            )
+            assertEquals(
+                header1.idFactorySection,
+                1
+            )
+            assertEquals(
+                header1.idOS,
+                1
+            )
+            assertEquals(
+                header1.dateHour,
+                "15/08/2025 09:20"
+            )
+            assertEquals(
+                header1.number,
+                1
+            )
+            val respListHeader1 = header1.respList
+            assertEquals(
+                respListHeader1.size,
+                1
+            )
+            val resp1Header1 = respListHeader1[0]
+            assertEquals(
+                resp1Header1.id,
+                1
+            )
+            assertEquals(
+                resp1Header1.idHeader,
+                1
+            )
+            assertEquals(
+                resp1Header1.idItem,
+                1
+            )
+            assertEquals(
+                resp1Header1.idPlant,
+                1
+            )
+            assertEquals(
+                resp1Header1.option,
+                OptionResp.ACCORDING
+            )
+            assertEquals(
+                resp1Header1.obs,
+                null
+            )
+            val header2 = headerList[1]
+            assertEquals(
+                header2.idColab,
+                2
+            )
+            assertEquals(
+                header2.idFactorySection,
+                2
+            )
+            assertEquals(
+                header2.idOS,
+                2
+            )
+            assertEquals(
+                header2.dateHour,
+                "14/08/2025 09:20"
+            )
+            assertEquals(
+                header2.number,
+                1
+            )
+            val respListHeader2 = header2.respList
+            assertEquals(
+                respListHeader2.size,
+                2
+            )
+            val resp1Header2 = respListHeader2[0]
+            assertEquals(
+                resp1Header2.id,
+                2
+            )
+            assertEquals(
+                resp1Header2.idHeader,
+                2
+            )
+            assertEquals(
+                resp1Header2.idItem,
+                2
+            )
+            assertEquals(
+                resp1Header2.idPlant,
+                2
+            )
+            assertEquals(
+                resp1Header2.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                resp1Header2.obs,
+                "obs"
+            )
+            val resp2Header2 = respListHeader2[1]
+            assertEquals(
+                resp2Header2.id,
+                3
+            )
+            assertEquals(
+                resp2Header2.idHeader,
+                2
+            )
+            assertEquals(
+                resp2Header2.idItem,
+                3
+            )
+            assertEquals(
+                resp2Header2.idPlant,
+                3
+            )
+            assertEquals(
+                resp2Header2.option,
+                OptionResp.NON_CONFORMING
+            )
+            assertEquals(
+                resp2Header2.obs,
+                "obs 2"
+            )
+        }
+
+
 }

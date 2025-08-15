@@ -2,8 +2,8 @@ package br.com.usinasantafe.pci.presenter.view.header.oslist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.pci.domain.usecases.header.ListOSHeader
-import br.com.usinasantafe.pci.domain.usecases.header.SetIdOSHeader
+import br.com.usinasantafe.pci.domain.usecases.flow.ListOSHeader
+import br.com.usinasantafe.pci.domain.usecases.flow.SetIdOSHeader
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableOSByIdFactorySection
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTablePlantByIdFactorySection
 import br.com.usinasantafe.pci.presenter.model.OSScreenModel

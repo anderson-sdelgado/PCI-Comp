@@ -34,10 +34,10 @@ class IHeaderRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getByStatusOpenDefault(status: Status): Result<HeaderRoomModel> {
+    override suspend fun getIdByStatusOpen(): Result<Int> {
         try {
-            val model = headerDao.getByStatus(status)
-            return Result.success(model)
+            val model = headerDao.getByStatus(Status.OPEN)
+            return Result.success(model.id!!)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -89,7 +89,68 @@ class IHeaderRoomDatasource @Inject constructor(
     }
 
     override suspend fun listByIds(ids: List<Int>): Result<List<HeaderRoomModel>> {
-        TODO("Not yet implemented")
+        try {
+            val models = headerDao.listByIds(ids)
+            return Result.success(models)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setIdServById(
+        id: Int,
+        idServ: Int
+    ): Result<Boolean> {
+        try {
+            val model = headerDao.getById(id)
+            model.idServ = idServ
+            headerDao.update(model)
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getIdOSByStatusOpen(): Result<Int> {
+        try {
+            val model = headerDao.getByStatus(Status.OPEN)
+            return Result.success(model.idOS)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun all(): Result<List<HeaderRoomModel>> {
+        try {
+            val models = headerDao.all()
+            return Result.success(models)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun delete(id: Int): Result<Boolean> {
+        try {
+            headerDao.delete(id)
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

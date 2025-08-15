@@ -10,10 +10,10 @@ import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.pci.HiltTestActivity
 import br.com.usinasantafe.pci.di.provider.BaseUrlModuleTest
-import br.com.usinasantafe.pci.domain.usecases.note.CheckItemNote
-import br.com.usinasantafe.pci.domain.usecases.note.CheckItemsOpen
-import br.com.usinasantafe.pci.domain.usecases.note.FinishItemsNote
-import br.com.usinasantafe.pci.domain.usecases.note.ListItemNote
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckItemNote
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckItemsOpen
+import br.com.usinasantafe.pci.domain.usecases.flow.FinishItemsNote
+import br.com.usinasantafe.pci.domain.usecases.flow.ListItemNote
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.pci.external.room.dao.stable.ComponentDao
@@ -49,6 +49,7 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import java.util.Date
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.minutes
 
@@ -818,7 +819,8 @@ class QuestionListNoteScreenTest {
                 idColab = 1,
                 idFactorySection = 1,
                 idOS = 1,
-                status = Status.OPEN
+                status = Status.OPEN,
+                dateHour = Date()
             )
         )
 

@@ -32,6 +32,7 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import java.util.Date
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.minutes
 
@@ -548,7 +549,8 @@ class OSListHeaderScreenTest {
                 idColab = 1,
                 idFactorySection = 1,
                 idOS = 1,
-                status = Status.CLOSE
+                status = Status.CLOSE,
+                dateHour = Date()
             )
         )
 
@@ -559,7 +561,8 @@ class OSListHeaderScreenTest {
                 idColab = 1,
                 idFactorySection = 1,
                 idOS = 4,
-                status = Status.FINISH
+                status = Status.FINISH,
+                dateHour = Date()
             )
         )
 
@@ -570,7 +573,8 @@ class OSListHeaderScreenTest {
                 idColab = 2,
                 idFactorySection = 1,
                 idOS = 5,
-                status = Status.CLOSE
+                status = Status.CLOSE,
+                dateHour = Date()
             )
         )
 

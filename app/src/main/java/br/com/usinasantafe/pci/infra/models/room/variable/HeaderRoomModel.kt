@@ -15,7 +15,7 @@ data class HeaderRoomModel(
     val idColab: Int,
     val idFactorySection: Int,
     val idOS: Int,
-    val dateHour: Date = Date(),
+    val dateHour: Date,
     var status: Status = Status.OPEN,
     var idServ: Int? = null,
 )
@@ -27,7 +27,8 @@ fun HeaderRoomModel.roomModelToEntity(): Header {
             idColab = idColab,
             idFactorySection = idFactorySection,
             idOS = idOS,
-            status = status
+            status = status,
+            dateHour = dateHour
         )
     }
 }
@@ -39,7 +40,8 @@ fun Header.entityToRoomModel(): HeaderRoomModel {
             idColab = idColab!!,
             idFactorySection = idFactorySection!!,
             idOS = idOS!!,
-            status = status
+            status = status,
+            dateHour = dateHour
         )
     }
 }

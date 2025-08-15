@@ -2,7 +2,7 @@ package br.com.usinasantafe.pci.presenter.view.header.colab
 
 import br.com.usinasantafe.pci.MainCoroutineRule
 import br.com.usinasantafe.pci.domain.errors.resultFailure
-import br.com.usinasantafe.pci.domain.usecases.header.CheckAndSetRegColabHeader
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckAndSetRegColabHeader
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.TypeButton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
