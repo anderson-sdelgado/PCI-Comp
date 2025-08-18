@@ -1,4 +1,4 @@
-package br.com.usinasantafe.pci.domain.usecases.common
+package br.com.usinasantafe.pci.domain.usecases.flow
 
 import br.com.usinasantafe.pci.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.pci.utils.FlagUpdate

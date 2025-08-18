@@ -16,5 +16,5 @@ interface HeaderRoomDatasource {
     suspend fun getIdOSByStatusOpen(): Result<Int>
     suspend fun all(): Result<List<HeaderRoomModel>>
     suspend fun delete(id: Int): Result<Boolean>
-
+    suspend fun checkOpen(): Result<Boolean>
 }

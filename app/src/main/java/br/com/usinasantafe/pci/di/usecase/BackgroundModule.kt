@@ -1,6 +1,7 @@
 package br.com.usinasantafe.pci.di.usecase
 
-import br.com.usinasantafe.pci.domain.usecases.common.*
+import br.com.usinasantafe.pci.domain.usecases.background.IStartWorkManager
+import br.com.usinasantafe.pci.domain.usecases.background.StartWorkManager
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -9,14 +10,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface CommonModule {
+interface BackgroundModule {
 
     @Binds
     @Singleton
-    fun bindCheckAccessInitial(usecase: ICheckAccessInitial): CheckAccessInitial
-
-    @Binds
-    @Singleton
-    fun bindGetToken(usecase: IGetToken): GetToken
+    fun bindStartWorkManager(usecase: IStartWorkManager): StartWorkManager
 
 }

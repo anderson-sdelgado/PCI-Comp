@@ -325,10 +325,10 @@ class ICheckListRepositoryTest {
     fun `getIdOSHeaderOpen - Check return failure if have error in HeaderSharedPreferencesDatasource getIdOS`() =
         runTest {
             whenever(
-                headerSharedPreferencesDatasource.getIdOS()
+                headerRoomDatasource.getIdOSByStatusOpen()
             ).thenReturn(
                 resultFailure(
-                    "IHeaderSharedPreferencesDatasource.getIdOS",
+                    "IHeaderRoomDatasource.getIdOSByStatusOpen",
                     "-",
                     Exception()
                 )
@@ -340,7 +340,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.getIdOSHeaderOpen -> IHeaderSharedPreferencesDatasource.getIdOS"
+                "ICheckListRepository.getIdOSHeaderOpen -> IHeaderRoomDatasource.getIdOSByStatusOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -352,7 +352,7 @@ class ICheckListRepositoryTest {
     fun `getIdOSHeaderOpen - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerSharedPreferencesDatasource.getIdOS()
+                headerRoomDatasource.getIdOSByStatusOpen()
             ).thenReturn(
                 Result.success(1)
             )
@@ -626,8 +626,59 @@ class ICheckListRepositoryTest {
         }
 
     @Test
+    fun `finishItems - Check return failure if have error in HeaderRoomDatasource checkOpen`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.checkOpen()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.checkOpen",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.finishItems(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.finishItems -> IHeaderRoomDatasource.checkOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `finishItems - Check return true if not have header open`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.checkOpen()
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = repository.finishItems(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
     fun `finishItems - Check return failure if have error in HeaderRoomDatasource getByStatus`() =
         runTest {
+            whenever(
+                headerRoomDatasource.checkOpen()
+            ).thenReturn(
+                Result.success(true)
+            )
             whenever(
                 headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
@@ -655,6 +706,11 @@ class ICheckListRepositoryTest {
     @Test
     fun `finishItems - Check return failure if have error in RespRoomDatasource closeItems`() =
         runTest {
+            whenever(
+                headerRoomDatasource.checkOpen()
+            ).thenReturn(
+                Result.success(true)
+            )
             whenever(
                 headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
@@ -690,6 +746,11 @@ class ICheckListRepositoryTest {
     @Test
     fun `finishItems - Check return correct if function execute successfully`() =
         runTest {
+            whenever(
+                headerRoomDatasource.checkOpen()
+            ).thenReturn(
+                Result.success(true)
+            )
             whenever(
                 headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
@@ -878,7 +939,7 @@ class ICheckListRepositoryTest {
             whenever(
                 headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(1)
+                Result.success(2)
             )
             whenever(
                 respRoomDatasource.listByIdHeader(2)
@@ -910,7 +971,7 @@ class ICheckListRepositoryTest {
             whenever(
                 headerRoomDatasource.getIdByStatusOpen()
             ).thenReturn(
-                Result.success(1)
+                Result.success(2)
             )
             whenever(
                 respRoomDatasource.listByIdHeader(2)
@@ -1035,6 +1096,7 @@ class ICheckListRepositoryTest {
                             idFactorySection = 1,
                             idOS = 1,
                             status = Status.OPEN,
+                            dateHour = Date()
                         ),
                         HeaderRoomModel(
                             id = 2,
@@ -1042,6 +1104,7 @@ class ICheckListRepositoryTest {
                             idFactorySection = 1,
                             idOS = 1,
                             status = Status.OPEN,
+                            dateHour = Date()
                         ),
                         HeaderRoomModel(
                             id = 3,
@@ -1049,6 +1112,7 @@ class ICheckListRepositoryTest {
                             idFactorySection = 1,
                             idOS = 1,
                             status = Status.OPEN,
+                            dateHour = Date()
                         )
                     )
                 )
@@ -1058,32 +1122,75 @@ class ICheckListRepositoryTest {
                 result.isSuccess,
                 true
             )
+            val list = result.getOrNull()!!
             assertEquals(
-                result.getOrNull()!!,
-                listOf(
-                    Header(
-                        id = 1,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    ),
-                    Header(
-                        id = 2,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    ),
-                    Header(
-                        id = 3,
-                        idColab = 1,
-                        idFactorySection = 1,
-                        idOS = 1,
-                        status = Status.OPEN,
-                    )
-                )
+                list.size,
+                3
             )
+            val entity1 = list[0]
+            assertEquals(
+                entity1.id,
+                1
+            )
+            assertEquals(
+                entity1.idColab,
+                1
+            )
+            assertEquals(
+                entity1.idFactorySection,
+                1
+            )
+            assertEquals(
+                entity1.idOS,
+                1
+            )
+            assertEquals(
+                entity1.status,
+                Status.OPEN
+            )
+            val entity2 = list[1]
+            assertEquals(
+                entity2.id,
+                2
+            )
+            assertEquals(
+                entity2.idColab,
+                1
+            )
+            assertEquals(
+                entity2.idFactorySection,
+                1
+            )
+            assertEquals(
+                entity2.idOS,
+                1
+            )
+            assertEquals(
+                entity2.status,
+                Status.OPEN
+            )
+            val entity3 = list[2]
+            assertEquals(
+                entity3.id,
+                3
+            )
+            assertEquals(
+                entity3.idColab,
+                1
+            )
+            assertEquals(
+                entity3.idFactorySection,
+                1
+            )
+            assertEquals(
+                entity3.idOS,
+                1
+            )
+            assertEquals(
+                entity3.status,
+                Status.OPEN
+            )
+
         }
 
     @Test
@@ -2266,5 +2373,175 @@ class ICheckListRepositoryTest {
             )
         }
 
+    @Test
+    fun `allHeader - Check return failure if have error in HeaderRoomDatasource all`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.all()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.all",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.allHeader()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.allHeader -> IHeaderRoomDatasource.all"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `allHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.all()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        HeaderRoomModel(
+                            id = 1,
+                            idColab = 1,
+                            idFactorySection = 1,
+                            idOS = 1,
+                            status = Status.OPEN,
+                            dateHour = Date()
+                        )
+                    )
+                )
+            )
+            val result = repository.allHeader()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val headerList = result.getOrNull()!!
+            assertEquals(
+                headerList.size,
+                1
+            )
+            val header1 = headerList[0]
+            assertEquals(
+                header1.id,
+                1
+            )
+            assertEquals(
+                header1.idColab,
+                1
+            )
+            assertEquals(
+                header1.idFactorySection,
+                1
+            )
+            assertEquals(
+                header1.idOS,
+                1
+            )
+            assertEquals(
+                header1.status,
+                Status.OPEN
+            )
+        }
+
+    @Test
+    fun `deleteRespByIdHeader - Check return failure if have error in RespRoomDatasource deleteRespByIdHeader`() =
+        runTest {
+            whenever(
+                respRoomDatasource.deleteByIdHeader(1)
+            ).thenReturn(
+                resultFailure(
+                    "IRespRoomDatasource.deleteByIdHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.deleteRespByIdHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.deleteRespByIdHeader -> IRespRoomDatasource.deleteByIdHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `deleteRespByIdHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                respRoomDatasource.deleteByIdHeader(1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.deleteRespByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `deleteHeader - Check return failure if have error in HeaderRoomDatasource delete`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.delete(1)
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.delete",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.deleteHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.deleteHeader -> IHeaderRoomDatasource.delete"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `deleteHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.delete(1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.deleteHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
 
 }

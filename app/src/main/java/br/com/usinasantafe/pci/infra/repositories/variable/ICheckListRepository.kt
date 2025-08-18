@@ -242,6 +242,15 @@ class ICheckListRepository @Inject constructor(
 
     override suspend fun finishItems(idPlant: Int): Result<Boolean> {
         try {
+            val resultCheckOpen = headerRoomDatasource.checkOpen()
+            if (resultCheckOpen.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultCheckOpen.exceptionOrNull()!!
+                )
+            }
+            val check = resultCheckOpen.getOrNull()!!
+            if(!check) return Result.success(true)
             val resultGetId = headerRoomDatasource.getIdByStatusOpen()
             if (resultGetId.isFailure) {
                 return resultFailure(
@@ -343,7 +352,7 @@ class ICheckListRepository @Inject constructor(
     }
 
     override suspend fun deleteRespByIdHeader(idHeader: Int): Result<Boolean> {
-        val result = respRoomDatasource.deleteRespByIdHeader(idHeader)
+        val result = respRoomDatasource.deleteByIdHeader(idHeader)
         if (result.isFailure)
             return resultFailure(
                 context = getClassAndMethod(),

@@ -56,7 +56,7 @@ class IFinishItemsNoteTest {
         }
 
     @Test
-    fun check_alter_data_if_process_execute_successfully() =
+    fun check_alter_data_if_process_execute_successfully_and_idPlant_larger_0() =
         runTest {
             headerDao.insert(
                 HeaderRoomModel(
@@ -94,6 +94,15 @@ class IFinishItemsNoteTest {
             )
             respDao.insert(
                 RespRoomModel(
+                    idHeader = 1,
+                    idItem = 4,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
                     idHeader = 2,
                     idItem = 2,
                     idPlant = 1,
@@ -103,7 +112,7 @@ class IFinishItemsNoteTest {
             val listBefore = respDao.all()
             assertEquals(
                 listBefore.size,
-                3
+                4
             )
             val model1Before = listBefore[0]
             assertEquals(
@@ -138,6 +147,20 @@ class IFinishItemsNoteTest {
                 model3Before,
                 RespRoomModel(
                     id = 3,
+                    idHeader = 1,
+                    idItem = 4,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val model4Before = listBefore[3]
+            assertEquals(
+                model4Before,
+                RespRoomModel(
+                    id = 4,
                     idHeader = 2,
                     idItem = 2,
                     idPlant = 1,
@@ -159,7 +182,7 @@ class IFinishItemsNoteTest {
             val listAfter = respDao.all()
             assertEquals(
                 listAfter.size,
-                3
+                4
             )
             val model1After = listAfter[0]
             assertEquals(
@@ -194,6 +217,208 @@ class IFinishItemsNoteTest {
                 model3After,
                 RespRoomModel(
                     id = 3,
+                    idHeader = 1,
+                    idItem = 4,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val model4After = listAfter[3]
+            assertEquals(
+                model4After,
+                RespRoomModel(
+                    id = 4,
+                    idHeader = 2,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                    obs = null,
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+        }
+
+
+    @Test
+    fun check_alter_data_if_process_execute_successfully_and_idPlant_equal_0() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    dateHour = Date()
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 2,
+                    status = Status.CLOSE,
+                    dateHour = Date()
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 1,
+                    idItem = 4,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs"
+                )
+            )
+            respDao.insert(
+                RespRoomModel(
+                    idHeader = 2,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING
+                )
+            )
+            val listBefore = respDao.all()
+            assertEquals(
+                listBefore.size,
+                4
+            )
+            val model1Before = listBefore[0]
+            assertEquals(
+                model1Before,
+                RespRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                    obs = null,
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val model2Before = listBefore[1]
+            assertEquals(
+                model2Before,
+                RespRoomModel(
+                    id = 2,
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val model3Before = listBefore[2]
+            assertEquals(
+                model3Before,
+                RespRoomModel(
+                    id = 3,
+                    idHeader = 1,
+                    idItem = 4,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val model4Before = listBefore[3]
+            assertEquals(
+                model4Before,
+                RespRoomModel(
+                    id = 4,
+                    idHeader = 2,
+                    idItem = 2,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                    obs = null,
+                    statusSend = StatusSend.SEND,
+                    status = Status.OPEN
+                )
+            )
+            val result = usecase(0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val listAfter = respDao.all()
+            assertEquals(
+                listAfter.size,
+                4
+            )
+            val model1After = listAfter[0]
+            assertEquals(
+                model1After,
+                RespRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    idPlant = 1,
+                    option = OptionResp.ACCORDING,
+                    obs = null,
+                    statusSend = StatusSend.SEND,
+                    status = Status.FINISH
+                )
+            )
+            val model2After = listAfter[1]
+            assertEquals(
+                model2After,
+                RespRoomModel(
+                    id = 2,
+                    idHeader = 1,
+                    idItem = 3,
+                    idPlant = 1,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SEND,
+                    status = Status.FINISH
+                )
+            )
+            val model3After = listAfter[2]
+            assertEquals(
+                model3After,
+                RespRoomModel(
+                    id = 3,
+                    idHeader = 1,
+                    idItem = 4,
+                    idPlant = 2,
+                    option = OptionResp.NON_CONFORMING,
+                    obs = "obs",
+                    statusSend = StatusSend.SEND,
+                    status = Status.FINISH
+                )
+            )
+            val model4After = listAfter[3]
+            assertEquals(
+                model4After,
+                RespRoomModel(
+                    id = 4,
                     idHeader = 2,
                     idItem = 2,
                     idPlant = 1,

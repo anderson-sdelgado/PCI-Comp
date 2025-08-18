@@ -3,6 +3,7 @@ package br.com.usinasantafe.pci.domain.usecases.flow
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
+import br.com.usinasantafe.pci.domain.usecases.background.StartWorkManager
 import br.com.usinasantafe.pci.utils.OptionResp
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -14,8 +15,10 @@ import kotlin.test.Test
 class ISetRespItemTest {
 
     private val checkListRepository = mock<CheckListRepository>()
+    private val startWorkManager = mock<StartWorkManager>()
     private val usecase = ISetRespItem(
-        checkListRepository = checkListRepository
+        checkListRepository = checkListRepository,
+        startWorkManager = startWorkManager
     )
 
     @Test

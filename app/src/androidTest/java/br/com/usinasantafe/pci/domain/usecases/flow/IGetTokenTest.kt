@@ -1,8 +1,8 @@
-package br.com.usinasantafe.pci.domain.usecases.common
+package br.com.usinasantafe.pci.domain.usecases.flow
 
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.pci.utils.FlagUpdate
+import br.com.usinasantafe.pci.utils.token
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -13,13 +13,13 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class ICheckAccessInitialTest {
+class IGetTokenTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: CheckAccessInitial
+    lateinit var usecase: GetToken
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
@@ -30,42 +30,55 @@ class ICheckAccessInitialTest {
     }
 
     @Test
-    fun check_return_false_if_not_have_data() =
+    fun check_return_failure_if_not_have_data() =
         runTest {
             val result = usecase()
             assertEquals(
-                result.isSuccess,
+                result.isFailure,
                 true
             )
             assertEquals(
-                result.getOrNull()!!,
-                false
+                result.exceptionOrNull()!!.message,
+                "IGetToken"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
             )
         }
 
     @Test
-    fun check_return_false_if_flag_update_is_outdated() =
-        runTest {
-            configSharedPreferencesDatasource.save(
-                ConfigSharedPreferencesModel()
-            )
-            val result = usecase()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                false
-            )
-        }
-
-    @Test
-    fun check_return_true_if_flag_update_is_updated() =
+    fun check_return_failure_if_config_data_internal_have_field_empty() =
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    flagUpdate = FlagUpdate.UPDATED
+                    idBD = 1,
+                    number = 1
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IGetToken"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun check_return_true_and_data_returned() =
+        runTest {
+            configSharedPreferencesDatasource.save(
+                ConfigSharedPreferencesModel(
+                    idBD = 1,
+                    number = 1,
+                    version = "1.00"
                 )
             )
             val result = usecase()
@@ -73,9 +86,14 @@ class ICheckAccessInitialTest {
                 result.isSuccess,
                 true
             )
+            val token = token(
+                idBD = 1,
+                number = 1,
+                version = "1.00"
+            )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                token
             )
         }
 

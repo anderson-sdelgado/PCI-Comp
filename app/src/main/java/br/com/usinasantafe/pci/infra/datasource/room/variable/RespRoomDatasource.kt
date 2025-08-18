@@ -23,5 +23,5 @@ interface RespRoomDatasource {
         id: Int,
         idServ: Int
     ): Result<Boolean>
-    suspend fun deleteRespByIdHeader(idHeader: Int): Result<Boolean>
+    suspend fun deleteByIdHeader(idHeader: Int): Result<Boolean>
 }

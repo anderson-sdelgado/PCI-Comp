@@ -2,6 +2,7 @@ package br.com.usinasantafe.pci.domain.usecases.flow
 
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
+import br.com.usinasantafe.pci.domain.usecases.background.StartWorkManager
 import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.dateToDeleteMonth
 import br.com.usinasantafe.pci.utils.dateToDeleteYear
@@ -13,7 +14,8 @@ interface DeleteNote {
 }
 
 class IDeleteNote @Inject constructor(
-    private val checkListRepository: CheckListRepository
+    private val checkListRepository: CheckListRepository,
+    private val startWorkManager: StartWorkManager
 ): DeleteNote {
 
     override suspend fun invoke(): Result<Boolean> {
@@ -44,7 +46,7 @@ class IDeleteNote @Inject constructor(
                     }
                     continue
                 }
-                if((header.dateHour < dateToDeleteMonth()) && header.status == Status.FINISH) {
+                if((header.dateHour < dateToDeleteMonth()) && (header.status == Status.FINISH)) {
                     val resultDeleteResp = checkListRepository.deleteRespByIdHeader(header.id!!)
                     if (resultDeleteResp.isFailure) {
                         return resultFailure(
@@ -62,6 +64,7 @@ class IDeleteNote @Inject constructor(
                     continue
                 }
             }
+            startWorkManager()
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(

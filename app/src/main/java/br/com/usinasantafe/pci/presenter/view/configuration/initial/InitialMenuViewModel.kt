@@ -2,7 +2,7 @@ package br.com.usinasantafe.pci.presenter.view.configuration.initial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.pci.domain.usecases.common.CheckAccessInitial
+import br.com.usinasantafe.pci.domain.usecases.flow.CheckAccessInitial
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

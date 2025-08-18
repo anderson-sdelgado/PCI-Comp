@@ -3,7 +3,6 @@ package br.com.usinasantafe.pci.domain.usecases.flow
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
-import br.com.usinasantafe.pci.domain.usecases.common.GetToken
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
 

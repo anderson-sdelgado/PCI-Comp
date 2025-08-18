@@ -68,6 +68,6 @@ interface RespDao {
 
 
     @Query("DELETE FROM TB_RESP WHERE idHeader = :id")
-    suspend fun delete(id: Int): Int
+    suspend fun deleteByIdHeader(id: Int): Int
 
 }

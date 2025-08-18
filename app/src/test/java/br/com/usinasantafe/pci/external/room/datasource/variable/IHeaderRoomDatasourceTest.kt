@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.util.Date
 import kotlin.intArrayOf
 
 @RunWith(RobolectricTestRunner::class)
@@ -44,7 +45,8 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     idColab = 1,
                     idFactorySection = 1,
-                    idOS = 1
+                    idOS = 1,
+                    dateHour = Date()
                 )
             )
             assertEquals(
@@ -91,7 +93,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 2,
                     idFactorySection = 1,
                     idOS = 100,
-                    status = Status.CLOSE
+                    status = Status.CLOSE,
+                    dateHour = Date()
                 )
             )
             val qtdBefore = headerDao.all().size
@@ -103,7 +106,8 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     idColab = 1,
                     idFactorySection = 1,
-                    idOS = 1
+                    idOS = 1,
+                    dateHour = Date()
                 )
             )
             assertEquals(
@@ -172,7 +176,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 2,
                     idFactorySection = 1,
                     idOS = 100,
-                    status = Status.CLOSE
+                    status = Status.CLOSE,
+                    dateHour = Date()
                 )
             )
             val qtdBefore = headerDao.all().size
@@ -184,7 +189,8 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     idColab = 2,
                     idFactorySection = 1,
-                    idOS = 100
+                    idOS = 100,
+                    dateHour = Date()
                 )
             )
             assertEquals(
@@ -232,7 +238,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 1,
                     idFactorySection = 1,
                     idOS = 1,
-                    status = Status.CLOSE
+                    status = Status.CLOSE,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -240,7 +247,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 2,
                     idFactorySection = 2,
                     idOS = 2,
-                    status = Status.OPEN
+                    status = Status.OPEN,
+                    dateHour = Date()
                 )
             )
             val result = datasource.getIdByStatusOpen()
@@ -281,7 +289,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 1,
                     idFactorySection = 1,
                     idOS = 1,
-                    status = Status.CLOSE
+                    status = Status.CLOSE,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -289,7 +298,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 2,
                     idFactorySection = 2,
                     idOS = 2,
-                    status = Status.OPEN
+                    status = Status.OPEN,
+                    dateHour = Date()
                 )
             )
             val result = datasource.finish()
@@ -354,7 +364,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 1,
                     idFactorySection = 1,
                     idOS = 1,
-                    status = Status.CLOSE
+                    status = Status.CLOSE,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -362,7 +373,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 2,
                     idFactorySection = 2,
                     idOS = 2,
-                    status = Status.OPEN
+                    status = Status.OPEN,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -370,7 +382,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 3,
                     idFactorySection = 3,
                     idOS = 3,
-                    status = Status.OPEN
+                    status = Status.OPEN,
+                    dateHour = Date()
                 )
             )
             val ids = listOf(1, 3)
@@ -386,13 +399,15 @@ class IHeaderRoomDatasourceTest {
                         idColab = 1,
                         idFactorySection = 1,
                         idOS = 1,
-                        status = Status.CLOSE
+                        status = Status.CLOSE,
+                        dateHour = Date()
                     ),
                     HeaderRoomModel(
                         idColab = 3,
                         idFactorySection = 3,
                         idOS = 3,
-                        status = Status.OPEN
+                        status = Status.OPEN,
+                        dateHour = Date()
                     )
                 )
             )
@@ -406,7 +421,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 1,
                     idFactorySection = 1,
                     idOS = 1,
-                    status = Status.CLOSE
+                    status = Status.CLOSE,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -414,7 +430,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 2,
                     idFactorySection = 2,
                     idOS = 2,
-                    status = Status.OPEN
+                    status = Status.OPEN,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -422,7 +439,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 3,
                     idFactorySection = 1,
                     idOS = 3,
-                    status = Status.FINISH
+                    status = Status.FINISH,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -430,7 +448,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 4,
                     idFactorySection = 1,
                     idOS = 10,
-                    status = Status.OPEN
+                    status = Status.OPEN,
+                    dateHour = Date()
                 )
             )
             val result = datasource.close()
@@ -537,7 +556,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 1,
                     idFactorySection = 1,
                     idOS = 1,
-                    status = Status.CLOSE
+                    status = Status.CLOSE,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -545,7 +565,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 2,
                     idFactorySection = 2,
                     idOS = 2,
-                    status = Status.OPEN
+                    status = Status.OPEN,
+                    dateHour = Date()
                 )
             )
             headerDao.insert(
@@ -553,7 +574,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 3,
                     idFactorySection = 3,
                     idOS = 3,
-                    status = Status.OPEN
+                    status = Status.OPEN,
+                    dateHour = Date()
                 )
             )
             val ids = listOf(1, 3)
@@ -640,7 +662,8 @@ class IHeaderRoomDatasourceTest {
                     idColab = 1,
                     idFactorySection = 1,
                     idOS = 1,
-                    status = Status.CLOSE
+                    status = Status.CLOSE,
+                    dateHour = Date()
                 )
             )
             val result = datasource.setIdServById(
@@ -682,4 +705,208 @@ class IHeaderRoomDatasourceTest {
                 Status.CLOSE
             )
         }
+
+    @Test
+    fun `all - Check list empty`() =
+        runTest {
+            val result = datasource.all()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf<HeaderRoomModel>()
+            )
+        }
+
+    @Test
+    fun `all - Check list correct`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE,
+                    dateHour = Date()
+                )
+            )
+            val result = datasource.all()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model.id,
+                1
+            )
+            assertEquals(
+                model.idColab,
+                1
+            )
+            assertEquals(
+                model.idFactorySection,
+                1
+            )
+            assertEquals(
+                model.idOS,
+                1
+            )
+            assertEquals(
+                model.status,
+                Status.CLOSE
+            )
+        }
+
+    @Test
+    fun `delete - Check not delete if idHeader is different`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE,
+                    dateHour = Date()
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 2,
+                    idOS = 2,
+                    status = Status.OPEN,
+                    dateHour = Date()
+                )
+            )
+            val result = datasource.delete(
+                3
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val list = headerDao.all()
+            assertEquals(
+                list.size,
+                2
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1.id,
+                1
+            )
+            assertEquals(
+                model1.idColab,
+                1
+            )
+            assertEquals(
+                model1.idFactorySection,
+                1
+            )
+            assertEquals(
+                model1.idOS,
+                1
+            )
+            assertEquals(
+                model1.status,
+                Status.CLOSE
+            )
+            val model2 = list[1]
+            assertEquals(
+                model2.id,
+                2
+            )
+            assertEquals(
+                model2.idColab,
+                2
+            )
+            assertEquals(
+                model2.idFactorySection,
+                2
+            )
+            assertEquals(
+                model2.idOS,
+                2
+            )
+            assertEquals(
+                model2.status,
+                Status.OPEN
+            )
+
+        }
+
+    @Test
+    fun `delete - Check delete if idHeader is equal`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE,
+                    dateHour = Date()
+                )
+            )
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 2,
+                    idOS = 2,
+                    status = Status.OPEN,
+                    dateHour = Date()
+                )
+            )
+            val result = datasource.delete(
+                2
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val list = headerDao.all()
+            assertEquals(
+                list.size,
+                1
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1.id,
+                1
+            )
+            assertEquals(
+                model1.idColab,
+                1
+            )
+            assertEquals(
+                model1.idFactorySection,
+                1
+            )
+            assertEquals(
+                model1.idOS,
+                1
+            )
+            assertEquals(
+                model1.status,
+                Status.CLOSE
+            )
+        }
+
+
+
 }

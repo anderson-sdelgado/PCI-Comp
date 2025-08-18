@@ -3,6 +3,7 @@ package br.com.usinasantafe.pci.domain.usecases.flow
 import br.com.usinasantafe.pci.domain.entities.variable.Resp
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
+import br.com.usinasantafe.pci.domain.usecases.background.StartWorkManager
 import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import javax.inject.Inject
@@ -17,7 +18,8 @@ interface SetRespItem {
 }
 
 class ISetRespItem @Inject constructor(
-    private val checkListRepository: CheckListRepository
+    private val checkListRepository: CheckListRepository,
+    private val startWorkManager: StartWorkManager
 ): SetRespItem {
 
     override suspend fun invoke(
@@ -40,6 +42,7 @@ class ISetRespItem @Inject constructor(
                 cause = result.exceptionOrNull()!!
             )
         }
+        startWorkManager()
         return result
     }
 

@@ -13,6 +13,14 @@ interface FlowModule {
 
     @Binds
     @Singleton
+    fun bindCheckAccessInitial(usecase: ICheckAccessInitial): CheckAccessInitial
+
+    @Binds
+    @Singleton
+    fun bindGetToken(usecase: IGetToken): GetToken
+
+    @Binds
+    @Singleton
     fun bindCheckAndSetRegColab(usecase: ICheckAndSetRegColabHeader): CheckAndSetRegColabHeader
 
     @Binds
@@ -70,6 +78,5 @@ interface FlowModule {
     @Binds
     @Singleton
     fun bindDeleteNote(usecase: IDeleteNote): DeleteNote
-
 
 }

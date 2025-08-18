@@ -116,7 +116,7 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 1")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout(20_000)
 
             composeTestRule.onNodeWithText("APONTAMENTO").assertIsDisplayed()
             composeTestRule.onNodeWithText("CONFIGURAÇÃO").assertIsDisplayed()

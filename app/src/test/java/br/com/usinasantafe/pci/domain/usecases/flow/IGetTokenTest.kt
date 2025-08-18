@@ -1,4 +1,4 @@
-package br.com.usinasantafe.pci.domain.usecases.common
+package br.com.usinasantafe.pci.domain.usecases.flow
 
 import br.com.usinasantafe.pci.domain.entities.variable.Config
 import br.com.usinasantafe.pci.domain.errors.resultFailure
@@ -9,7 +9,6 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
-import kotlin.text.get
 
 class IGetTokenTest {
 

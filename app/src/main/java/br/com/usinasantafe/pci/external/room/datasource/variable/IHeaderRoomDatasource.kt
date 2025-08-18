@@ -153,4 +153,8 @@ class IHeaderRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun checkOpen(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
 }

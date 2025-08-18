@@ -156,9 +156,9 @@ class IRespRoomDatasource  @Inject constructor(
         }
     }
 
-    override suspend fun deleteRespByIdHeader(idHeader: Int): Result<Boolean> {
+    override suspend fun deleteByIdHeader(idHeader: Int): Result<Boolean> {
         try {
-            respDao.delete(idHeader)
+            respDao.deleteByIdHeader(idHeader)
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(

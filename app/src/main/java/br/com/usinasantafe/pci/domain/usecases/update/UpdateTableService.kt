@@ -1,7 +1,7 @@
 package br.com.usinasantafe.pci.domain.usecases.update
 
 import br.com.usinasantafe.pci.domain.repositories.stable.ServiceRepository
-import br.com.usinasantafe.pci.domain.usecases.common.GetToken
+import br.com.usinasantafe.pci.domain.usecases.flow.GetToken
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate

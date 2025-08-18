@@ -4,7 +4,7 @@ import br.com.usinasantafe.pci.domain.entities.stable.Item
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ItemRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
-import br.com.usinasantafe.pci.domain.usecases.common.GetToken
+import br.com.usinasantafe.pci.domain.usecases.flow.GetToken
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
