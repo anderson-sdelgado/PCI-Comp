@@ -116,7 +116,7 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 1")
 
-            composeTestRule.waitUntilTimeout(20_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("APONTAMENTO").assertIsDisplayed()
             composeTestRule.onNodeWithText("CONFIGURAÇÃO").assertIsDisplayed()
@@ -124,48 +124,48 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 2")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("APONTAMENTO")
                 .performClick()
 
             Log.d("TestDebug", "Position 3")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 4")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CONFIGURAÇÃO")
                 .performClick()
 
             Log.d("TestDebug", "Position 5")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("SENHA").assertIsDisplayed()
 
             Log.d("TestDebug", "Position 6")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CANCELAR")
                 .performClick()
 
             Log.d("TestDebug", "Position 7")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CONFIGURAÇÃO")
                 .performClick()
 
             Log.d("TestDebug", "Position 8")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("SENHA").assertIsDisplayed()
             composeTestRule.onNodeWithText("OK")
@@ -173,26 +173,28 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 9")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CANCELAR")
                 .performClick()
 
             Log.d("TestDebug", "Position 10")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CONFIGURAÇÃO")
                 .performClick()
 
             Log.d("TestDebug", "Position 11")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 12")
+
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
                 .performTextInput("16997417840")
@@ -203,14 +205,14 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 13")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("CONFIGURAÇÃO REALIZADA COM SUCESSO!")
 
             Log.d("TestDebug", "Position 14")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             val resultGet = configSharedPreferencesDatasource.get()
             assertEquals(
@@ -242,7 +244,7 @@ class ConfigFlowTest {
             )
             assertEquals(
                 entityComponent.codComponent,
-                1
+                "1"
             )
             assertEquals(
                 entityComponent.descComponent,
@@ -270,21 +272,21 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 15")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 16")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("APONTAMENTO")
                 .performClick()
 
             Log.d("TestDebug", "Position 17")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             Log.d("TestDebug", "Position Finish")
 

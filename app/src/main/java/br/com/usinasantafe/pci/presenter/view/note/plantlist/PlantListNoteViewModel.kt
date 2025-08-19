@@ -24,6 +24,7 @@ data class PlantListNoteState(
     val plantList: List<PlantScreenModel> = listOf(),
     val flagProgress: Boolean = true,
     val flagMsgUpdate: Boolean = false,
+    val flagMsgClose: Boolean = false,
     val flagDialog: Boolean = false,
     val failure: String = "",
     val currentProgress: Float = 0.0f,
@@ -68,9 +69,15 @@ class PlantListNoteViewModel @Inject constructor(
         }
     }
 
-    fun setFlagMsgUpdate() {
+    fun setFlagMsgUpdate(status: Boolean) {
         _uiState.update {
-            it.copy(flagMsgUpdate = true)
+            it.copy(flagMsgUpdate = status)
+        }
+    }
+
+    fun setFlagMsgClose(status: Boolean) {
+        _uiState.update {
+            it.copy(flagMsgClose = status)
         }
     }
 

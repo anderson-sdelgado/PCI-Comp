@@ -60,7 +60,7 @@ object PersistenceModule {
     @Provides
     @DefaultRetrofit
     fun provideRetrofit(
-        @ShortTimeoutHttpClient client: OkHttpClient,
+        @DefaultHttpClient client: OkHttpClient,
         url: String
     ): Retrofit = Retrofit.Builder()
         .baseUrl(url)

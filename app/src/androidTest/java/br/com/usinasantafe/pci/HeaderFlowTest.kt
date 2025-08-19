@@ -929,7 +929,31 @@ class HeaderFlowTest {
 
         Log.d("TestDebug", "Position 78")
 
-        composeTestRule.waitUntilTimeout(10_000)
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("APONTAMENTO")
+            .performClick()
+
+        Log.d("TestDebug", "Position 79")
+
+        composeTestRule.waitUntilTimeout()
+
+        composeTestRule.onNodeWithText("1")
+            .performClick()
+        composeTestRule.onNodeWithText("9")
+            .performClick()
+        composeTestRule.onNodeWithText("7")
+            .performClick()
+        composeTestRule.onNodeWithText("5")
+            .performClick()
+        composeTestRule.onNodeWithText("9")
+            .performClick()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 80")
+
+        composeTestRule.waitUntilTimeout()
 
     }
 

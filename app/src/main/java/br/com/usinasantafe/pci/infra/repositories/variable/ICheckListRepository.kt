@@ -101,6 +101,16 @@ class ICheckListRepository @Inject constructor(
         return result
     }
 
+    override suspend fun checkHeaderOpen(): Result<Boolean> {
+        val result = headerRoomDatasource.checkOpen()
+        if (result.isFailure)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        return result
+    }
+
     override suspend fun finishHeader(): Result<Boolean> {
         val result = headerRoomDatasource.finish()
         if (result.isFailure)

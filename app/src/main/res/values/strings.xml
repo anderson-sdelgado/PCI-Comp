@@ -60,4 +60,5 @@
     <string name="text_button_close">FECHAR ITEN(S) APONTADO(S)</string>
     <string name="text_question_close_item">DESEJA REALMENTE FECHAR TODO(S) O(S) ITEM(S) APONTADO(S)?</string>
     <string name="text_item_os">OS %1$s</string>
+    <string name="text_return_plant">DESEJA REALMENTE SAIR DA TELA DE PLANTA(S)? ISSO FECHARÁ TODOS OS APONTAMENTOS.</string>
 </resources>

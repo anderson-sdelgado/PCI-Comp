@@ -907,6 +907,50 @@ class IHeaderRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `checkOpen - Check not have header open`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 1,
+                    idFactorySection = 1,
+                    idOS = 1,
+                    status = Status.CLOSE,
+                    dateHour = Date()
+                )
+            )
+            val result = datasource.checkOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
 
+    @Test
+    fun `checkOpen - Check have header open`() =
+        runTest {
+            headerDao.insert(
+                HeaderRoomModel(
+                    idColab = 2,
+                    idFactorySection = 2,
+                    idOS = 2,
+                    status = Status.OPEN,
+                    dateHour = Date()
+                )
+            )
+            val result = datasource.checkOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
 
 }

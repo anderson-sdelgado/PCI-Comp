@@ -7,6 +7,7 @@ import br.com.usinasantafe.pci.utils.OptionResp
 import br.com.usinasantafe.pci.utils.Status
 import br.com.usinasantafe.pci.utils.StatusSend
 import br.com.usinasantafe.pci.utils.TB_RESP
+import java.util.Date
 
 @Entity(tableName = TB_RESP)
 data class RespRoomModel(
@@ -17,6 +18,7 @@ data class RespRoomModel(
     val idPlant: Int,
     var option: OptionResp,
     var obs: String? = null,
+    val dateHour: Date = Date(),
     val status: Status = Status.OPEN,
     var statusSend: StatusSend = StatusSend.SEND,
     var idServ: Int? = null,

@@ -29,7 +29,7 @@ interface HeaderDao {
     suspend fun listByStatus(status: Status): List<HeaderRoomModel>
 
     @Query("SELECT count(*) FROM TB_HEADER WHERE status = :status")
-    suspend fun checkByStatus(status: Status): Int
+    suspend fun countByStatus(status: Status): Int
 
     @Query("SELECT * FROM TB_HEADER WHERE idColab = :idColab AND idOS = :idOS")
     suspend fun listByIdColabAndIdOS(idColab: Int, idOS: Int): List<HeaderRoomModel>

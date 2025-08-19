@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "97e445125f97de221685b91fd85e7f7d",
+    "identityHash": "6e57adfbfd4ff999fb8de0dacec3b3c5",
     "entities": [
       {
         "tableName": "tb_colab",
@@ -302,7 +302,7 @@
       },
       {
         "tableName": "tb_resp",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `idPlant` INTEGER NOT NULL, `option` TEXT NOT NULL, `obs` TEXT, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, `idServ` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `idPlant` INTEGER NOT NULL, `option` TEXT NOT NULL, `obs` TEXT, `dateHour` INTEGER NOT NULL, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, `idServ` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -341,6 +341,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "dateHour",
+            "columnName": "dateHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "status",
             "columnName": "status",
             "affinity": "TEXT",
@@ -372,7 +378,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '97e445125f97de221685b91fd85e7f7d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6e57adfbfd4ff999fb8de0dacec3b3c5')"
     ]
   }
 }

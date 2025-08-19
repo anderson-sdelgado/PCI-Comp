@@ -154,7 +154,15 @@ class IHeaderRoomDatasource @Inject constructor(
     }
 
     override suspend fun checkOpen(): Result<Boolean> {
-        TODO("Not yet implemented")
+        try {
+            val count = headerDao.countByStatus(Status.OPEN)
+            return if (count > 0) Result.success(true) else Result.success(false)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

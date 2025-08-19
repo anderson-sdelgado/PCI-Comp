@@ -64,13 +64,13 @@ android {
             dimension = "version"
             applicationIdSuffix = ".dev"
             manifestPlaceholders["appName"] = "PCI-DEV"
-            resValue("string", "base_url", "https://app.usinasantafe.com.br/pcicompdev/view/")
+            resValue("string", "base_url", "https://app.usinasantafe.com.br/pcidev/view/")
         }
         create("qa") {
             dimension = "version"
             applicationIdSuffix = ".qa"
             manifestPlaceholders["appName"] = "PCI-QA"
-            resValue("string", "base_url", "https://app.usinasantafe.com.br/pcicompqa/view/")
+            resValue("string", "base_url", "https://app.usinasantafe.com.br/pciqa/view/")
         }
         create("prod") {
             dimension = "version"

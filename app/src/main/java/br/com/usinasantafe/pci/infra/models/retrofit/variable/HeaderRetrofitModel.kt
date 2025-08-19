@@ -1,6 +1,7 @@
 package br.com.usinasantafe.pci.infra.models.retrofit.variable
 
 import br.com.usinasantafe.pci.infra.models.room.variable.HeaderRoomModel
+import br.com.usinasantafe.pci.utils.Status
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -12,6 +13,7 @@ data class HeaderRetrofitModelOutput(
     val dateHour: String,
     val respList: List<RespRetrofitModelOutput>,
     val number: Long,
+    val status: Int,
     val idServ: Int?
 )
 
@@ -37,6 +39,7 @@ fun HeaderRoomModel.headerRoomModelToHeaderRetrofitModel(
             ).format(this.dateHour),
             respList = respList,
             number = number,
+            status = if(status != Status.FINISH) 1 else 2,
             idServ = idServ
         )
     }

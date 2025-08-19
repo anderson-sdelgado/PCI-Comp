@@ -22,6 +22,15 @@ class ICheckItemsOpen @Inject constructor(
         idPlant: Int,
     ): Result<StatusPlant> {
         try {
+            val resultCheckOpen = checkListRepository.checkHeaderOpen()
+            if (resultCheckOpen.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultCheckOpen.exceptionOrNull()!!
+                )
+            }
+            val checkInitial = resultCheckOpen.getOrNull()!!
+            if (!checkInitial) return Result.success(StatusPlant.CLOSE_ALL)
             val resultGetIdOS = checkListRepository.getIdOSHeaderOpen()
             if (resultGetIdOS.isFailure) {
                 return resultFailure(

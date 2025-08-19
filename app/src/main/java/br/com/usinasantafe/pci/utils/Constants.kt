@@ -2,7 +2,7 @@ package br.com.usinasantafe.pci.utils
 
 const val BASE_SHARE_PREFERENCES = "pci"
 const val BASE_DB = "pci.db"
-const val VERSION_DB = 1
+const val VERSION_DB = 2
 
 const val BASE_SHARE_PREFERENCES_TABLE_CONFIG = "config"
 const val BASE_SHARE_PREFERENCES_TABLE_HEADER = "header"

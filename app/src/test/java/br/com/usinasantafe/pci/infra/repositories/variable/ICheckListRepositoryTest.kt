@@ -2544,4 +2544,50 @@ class ICheckListRepositoryTest {
             )
         }
 
+    @Test
+    fun `checkHeaderOpen - Check return failure if have error in HeaderRoomDatasource checkOpen`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.checkOpen()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderRoomDatasource.checkOpen",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.checkHeaderOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.checkHeaderOpen -> IHeaderRoomDatasource.checkOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkHeaderOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerRoomDatasource.checkOpen()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.checkHeaderOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

@@ -28,11 +28,14 @@ class ICheckListRetrofitDatasourceTest {
                     idPlant = 1,
                     option = OptionResp.NON_CONFORMING,
                     obs = "OK",
-                    idServ = null
+                    idServ = null,
+                    dateHour = "10/10/2023 10:10",
+                    status = 1
                 )
             ),
             number = 1,
-            idServ = null
+            idServ = null,
+            status = 1
         )
     )
 

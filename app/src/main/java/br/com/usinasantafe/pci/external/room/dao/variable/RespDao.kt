@@ -29,17 +29,19 @@ interface RespDao {
     @Query("SELECT count(*) FROM TB_RESP WHERE idItem = :idItem")
     suspend fun countByIdItem(idItem: Int): Int
 
-    @Query("UPDATE TB_RESP SET status = :status WHERE idHeader = :idHeader AND idPlant = :idPlant")
+    @Query("UPDATE TB_RESP SET status = :status, statusSend = :statusSend WHERE idHeader = :idHeader AND idPlant = :idPlant")
     suspend fun finishItemsByIdPlant(
         idHeader: Int,
         idPlant: Int,
-        status: Status = Status.FINISH
+        status: Status = Status.FINISH,
+        statusSend: StatusSend = StatusSend.SEND
     ): Int
 
-    @Query("UPDATE TB_RESP SET status = :status WHERE idHeader = :idHeader")
+    @Query("UPDATE TB_RESP SET status = :status, statusSend = :statusSend WHERE idHeader = :idHeader")
     suspend fun finishItems(
         idHeader: Int,
-        status: Status = Status.FINISH
+        status: Status = Status.FINISH,
+        statusSend: StatusSend = StatusSend.SEND
     ): Int
 
     @Query("SELECT * FROM TB_RESP WHERE idHeader = :idHeader AND idPlant = :idPlant")

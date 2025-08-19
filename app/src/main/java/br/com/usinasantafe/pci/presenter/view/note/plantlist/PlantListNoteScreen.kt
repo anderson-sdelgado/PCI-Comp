@@ -56,6 +56,8 @@ fun PlantListNoteScreen(
                 flagMsgUpdate = uiState.flagMsgUpdate,
                 recoverAndUpdateData = viewModel::recoverAndUpdateData,
                 setFlagMsgUpdate = viewModel::setFlagMsgUpdate,
+                flagMsgClose = uiState.flagMsgClose,
+                setFlagMsgClose = viewModel::setFlagMsgClose,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagProgress = uiState.flagProgress,
                 flagDialog = uiState.flagDialog,
@@ -78,7 +80,9 @@ fun PlantListContent(
     recoverList: () -> Unit,
     flagMsgUpdate: Boolean,
     recoverAndUpdateData: () -> Unit,
-    setFlagMsgUpdate: () -> Unit,
+    setFlagMsgUpdate: (Boolean) -> Unit,
+    flagMsgClose: Boolean,
+    setFlagMsgClose: (Boolean) -> Unit,
     setCloseDialog: () -> Unit,
     flagProgress: Boolean,
     flagDialog: Boolean,
@@ -164,7 +168,7 @@ fun PlantListContent(
         }
         Spacer(modifier = Modifier.height(4.dp))
         Button(
-            onClick = setFlagMsgUpdate,
+            onClick = { setFlagMsgUpdate(true) },
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButtonDesign(
@@ -173,7 +177,7 @@ fun PlantListContent(
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            onClick = onNavSplash,
+            onClick = { setFlagMsgClose(true) },
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButtonDesign(
@@ -204,10 +208,16 @@ fun PlantListContent(
     if(flagMsgUpdate) {
         AlertDialogCheckDesign(
             text = stringResource(id = R.string.text_question_update),
-            setCloseDialog = setCloseDialog,
-            setActionButtonYes = {
-                recoverAndUpdateData()
-            }
+            setCloseDialog = { setFlagMsgUpdate(false) },
+            setActionButtonYes = recoverAndUpdateData
+        )
+    }
+
+    if(flagMsgClose) {
+        AlertDialogCheckDesign(
+            text = stringResource(id = R.string.text_question_update),
+            setCloseDialog = { setFlagMsgClose(false) },
+            setActionButtonYes = onNavSplash
         )
     }
 
@@ -231,6 +241,8 @@ fun PlantListPagePreviewUpdate() {
                 recoverAndUpdateData = {},
                 setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
+                setFlagMsgClose = {},
+                flagMsgClose = false,
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
@@ -258,6 +270,8 @@ fun PlantListPagePreviewDataUpdate() {
                 recoverAndUpdateData = {},
                 setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
+                setFlagMsgClose = {},
+                flagMsgClose = false,
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
@@ -285,6 +299,8 @@ fun PlantListPagePreviewFinishUpdate() {
                 recoverAndUpdateData = {},
                 setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
+                setFlagMsgClose = {},
+                flagMsgClose = false,
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
@@ -312,6 +328,8 @@ fun PlantListPagePreviewFailureUpdate() {
                 recoverAndUpdateData = {},
                 setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
+                setFlagMsgClose = {},
+                flagMsgClose = false,
                 setCloseDialog = {},
                 flagDialog = true,
                 failure = "Failure",
@@ -339,6 +357,8 @@ fun PlantListPagePreviewFailure() {
                 recoverAndUpdateData = {},
                 setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
+                setFlagMsgClose = {},
+                flagMsgClose = false,
                 setCloseDialog = {},
                 flagDialog = true,
                 failure = "Failure",
@@ -379,6 +399,8 @@ fun PlantListPagePreviewList() {
                 recoverAndUpdateData = {},
                 setFlagMsgUpdate = {},
                 flagMsgUpdate = false,
+                setFlagMsgClose = {},
+                flagMsgClose = false,
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "Failure",
