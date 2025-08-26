@@ -17,10 +17,6 @@ interface FlowModule {
 
     @Binds
     @Singleton
-    fun bindGetToken(usecase: IGetToken): GetToken
-
-    @Binds
-    @Singleton
     fun bindCheckAndSetRegColab(usecase: ICheckAndSetRegColabHeader): CheckAndSetRegColabHeader
 
     @Binds

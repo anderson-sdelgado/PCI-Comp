@@ -61,4 +61,8 @@
     <string name="text_question_close_item">DESEJA REALMENTE FECHAR TODO(S) O(S) ITEM(S) APONTADO(S)?</string>
     <string name="text_item_os">OS %1$s</string>
     <string name="text_return_plant">DESEJA REALMENTE SAIR DA TELA DE PLANTA(S)? ISSO FECHARÁ TODOS OS APONTAMENTOS.</string>
+    <string name="text_status_started">Aparelho sem configurações iniciais.</string>
+    <string name="text_status_send">Existe dados para serem enviado</string>
+    <string name="text_status_sending">Dados estão sendo enviados</string>
+    <string name="text_status_sent">Não existe dados para serens enviados</string>
 </resources>

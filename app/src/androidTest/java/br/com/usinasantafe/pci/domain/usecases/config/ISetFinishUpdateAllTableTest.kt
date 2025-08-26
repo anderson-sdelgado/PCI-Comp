@@ -20,7 +20,7 @@ class ISetFinishUpdateAllTableTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: ISetFinishUpdateAllTable
+    lateinit var usecase: SetFinishUpdateAllTable
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource

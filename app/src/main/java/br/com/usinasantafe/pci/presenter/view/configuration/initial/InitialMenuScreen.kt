@@ -9,14 +9,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.pci.BuildConfig
@@ -25,6 +29,7 @@ import br.com.usinasantafe.pci.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.pci.presenter.theme.ItemListDesign
 import br.com.usinasantafe.pci.presenter.theme.TitleDesign
 import br.com.usinasantafe.pci.presenter.theme.PCITheme
+import br.com.usinasantafe.pci.utils.StatusSend
 
 @Composable
 fun InitialMenuScreen(
@@ -36,6 +41,7 @@ fun InitialMenuScreen(
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             InitialMenuContent(
+                statusSend = uiState.statusSend,
                 onCheckAccess = viewModel::onCheckAccess,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
@@ -53,6 +59,7 @@ fun InitialMenuScreen(
 @SuppressLint("ContextCastToActivity")
 @Composable
 fun InitialMenuContent(
+    statusSend: StatusSend,
     onCheckAccess: () -> Unit,
     setCloseDialog: () -> Unit,
     flagAccess: Boolean,
@@ -109,25 +116,53 @@ fun InitialMenuContent(
                 )
             }
         }
+        Text(
+            textAlign = TextAlign.Left,
+            text =
+                if(failure.isEmpty()) {
+                    when (statusSend) {
+                        StatusSend.STARTED -> stringResource(id = R.string.text_status_started)
+                        StatusSend.SEND -> stringResource(id = R.string.text_status_send)
+                        StatusSend.SENT -> stringResource(id = R.string.text_status_sent)
+                    }
+                } else {
+                    "Failure: $failure"
+                }
+            ,
+            fontSize = 22.sp,
+            color =
+                if(failure.isEmpty()) {
+                    when (statusSend) {
+                        StatusSend.STARTED -> Color.Red
+                        StatusSend.SEND -> Color.Red
+                        StatusSend.SENT -> Color.Green
+                    }
+                } else {
+                    Color.Red
+                }
+            , modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+        )
         BackHandler {}
 
-        if (flagDialog) {
-            val text =
-                if (!flagFailure) {
-                    stringResource(id = R.string.text_blocked_access_app)
-                } else {
-                    stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
-        }
     }
 
+    if (flagDialog) {
+        val text =
+            if (!flagFailure) {
+                stringResource(id = R.string.text_blocked_access_app)
+            } else {
+                stringResource(
+                    id = R.string.text_failure,
+                    failure
+                )
+            }
+        AlertDialogSimpleDesign(
+            text = text,
+            setCloseDialog = setCloseDialog,
+        )
+    }
     LaunchedEffect(flagAccess) {
         if(flagAccess) {
             onNavColab()
@@ -141,6 +176,7 @@ fun InitialMenuPagePreview() {
     PCITheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             InitialMenuContent(
+                statusSend = StatusSend.STARTED,
                 onCheckAccess = {},
                 setCloseDialog = {},
                 flagAccess = false,

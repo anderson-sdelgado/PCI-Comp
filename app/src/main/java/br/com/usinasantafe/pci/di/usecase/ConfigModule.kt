@@ -31,4 +31,12 @@ interface ConfigModule {
     @Singleton
     fun bindSetCheckUpdateAllTable(usecase: ISetFinishUpdateAllTable): SetFinishUpdateAllTable
 
+    @Binds
+    @Singleton
+    fun bindGetStatusSend(usecase: IGetStatusSend): GetStatusSend
+
+    @Binds
+    @Singleton
+    fun bindGetToken(usecase: IGetToken): GetToken
+
 }

@@ -9,7 +9,7 @@ import br.com.usinasantafe.pci.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.pci.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.pci.domain.usecases.update.UpdateTableService
-import br.com.usinasantafe.pci.presenter.model.ConfigModel
+import br.com.usinasantafe.pci.presenter.model.ConfigScreenModel
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate
@@ -122,7 +122,7 @@ class ConfigViewModelTest {
                 getConfigInternal()
             ).thenReturn(
                 Result.success(
-                    ConfigModel(
+                    ConfigScreenModel(
                         number = "16997417840",
                         password = "12345"
                     )

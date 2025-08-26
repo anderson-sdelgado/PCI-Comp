@@ -4,6 +4,7 @@ import br.com.usinasantafe.pci.domain.entities.stable.Colab
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.pci.domain.repositories.variable.CheckListRepository
+import br.com.usinasantafe.pci.domain.usecases.config.GetToken
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.mockito.Mockito.mock

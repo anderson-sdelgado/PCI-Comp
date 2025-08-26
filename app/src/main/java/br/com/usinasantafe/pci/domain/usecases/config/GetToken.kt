@@ -1,4 +1,4 @@
-package br.com.usinasantafe.pci.domain.usecases.flow
+package br.com.usinasantafe.pci.domain.usecases.config
 
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.ConfigRepository

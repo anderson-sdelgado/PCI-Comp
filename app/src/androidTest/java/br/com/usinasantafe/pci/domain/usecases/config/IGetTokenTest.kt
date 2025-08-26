@@ -1,4 +1,4 @@
-package br.com.usinasantafe.pci.domain.usecases.flow
+package br.com.usinasantafe.pci.domain.usecases.config
 
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -6,7 +6,7 @@ import br.com.usinasantafe.pci.utils.token
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,15 +33,15 @@ class IGetTokenTest {
     fun check_return_failure_if_not_have_data() =
         runTest {
             val result = usecase()
-            assertEquals(
+            Assert.assertEquals(
                 result.isFailure,
                 true
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.exceptionOrNull()!!.message,
                 "IGetToken"
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NullPointerException"
             )
@@ -57,15 +57,15 @@ class IGetTokenTest {
                 )
             )
             val result = usecase()
-            assertEquals(
+            Assert.assertEquals(
                 result.isFailure,
                 true
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.exceptionOrNull()!!.message,
                 "IGetToken"
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NullPointerException"
             )
@@ -82,7 +82,7 @@ class IGetTokenTest {
                 )
             )
             val result = usecase()
-            assertEquals(
+            Assert.assertEquals(
                 result.isSuccess,
                 true
             )
@@ -91,7 +91,7 @@ class IGetTokenTest {
                 number = 1,
                 version = "1.00"
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.getOrNull()!!,
                 token
             )

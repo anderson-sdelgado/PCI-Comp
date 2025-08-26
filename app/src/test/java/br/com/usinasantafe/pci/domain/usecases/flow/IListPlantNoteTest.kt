@@ -632,4 +632,84 @@ class IListPlantNoteTest {
                 )
             )
         }
+
+    @Test
+    fun `Check return order list if process execute successfully and resp with data`() =
+        runTest {
+            whenever(
+                itemRepository.listAll()
+            ).thenReturn(
+                Result.success(itemList)
+            )
+            whenever(
+                checkListRepository.listRespByIdItems(
+                    listOf(1, 2, 3, 4, 5)
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        Resp(
+                            idHeader = 1,
+                            idItem = 1,
+                            idPlant = 1,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                        ),
+                        Resp(
+                            idHeader = 4,
+                            idItem = 4,
+                            idPlant = 3,
+                            option = OptionResp.NON_CONFORMING,
+                            obs = "obs",
+                        ),
+                    )
+                )
+            )
+            val ids = listOf(1, 2, 3)
+            whenever(
+                plantRepository.listByIds(ids)
+            ).thenReturn(
+                Result.success(plantList)
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    PlantScreenModel(
+                        id = 1,
+                        cod = "01",
+                        desc = "Plant 1",
+                        status = true
+                    ),
+                    PlantScreenModel(
+                        id = 3,
+                        cod = "03",
+                        desc = "Plant 3",
+                        status = true
+                    ),
+                    PlantScreenModel(
+                        id = 2,
+                        cod = "02",
+                        desc = "Plant 2",
+                        status = false
+                    )
+                )
+            )
+//            assertEquals(
+//                result.isFailure,
+//                true
+//            )
+//            assertEquals(
+//                result.exceptionOrNull()!!.message,
+//                "IListPlantNote"
+//            )
+//            assertEquals(
+//                result.exceptionOrNull()!!.cause.toString(),
+//                "java.lang.NullPointerException"
+//            )
+        }
 }

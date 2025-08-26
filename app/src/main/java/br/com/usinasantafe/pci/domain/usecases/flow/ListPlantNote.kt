@@ -70,7 +70,7 @@ class IListPlantNote @Inject constructor(
                 )
             }
             val listOrder = list.sortedWith(
-                compareBy( { it.status }, { it.id } )
+                compareBy( { !it.status }, { it.id } )
             )
             return Result.success(listOrder)
         } catch (e: Exception){

@@ -2,7 +2,7 @@ package br.com.usinasantafe.pci.utils
 
 fun getClassAndMethod(): String {
     val stackTrace = Thread.currentThread().stackTrace
-    val utilClassName = "br.com.usinasantafe.pci.utils.ClassAndMethodKt"
+    val utilClassName = "br.com.usinasantafe.$BASE_SHARE_PREFERENCES.utils.ClassAndMethodKt"
 
     for (i in stackTrace.indices) {
         val element = stackTrace[i]

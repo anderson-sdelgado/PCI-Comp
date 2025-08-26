@@ -849,6 +849,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-618895182">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-A556E" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-616321707">
           <value>
             <AndroidTestResultsTableState>
@@ -1345,6 +1358,19 @@
           </value>
         </entry>
         <entry key="476749359">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-A556E" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="495913792">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
@@ -2009,6 +2035,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="1590102161">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-A556E" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="1594957264">
           <value>
             <AndroidTestResultsTableState>
@@ -2270,6 +2309,19 @@
           </value>
         </entry>
         <entry key="1915864359">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung SM-A556E" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1934402116">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">

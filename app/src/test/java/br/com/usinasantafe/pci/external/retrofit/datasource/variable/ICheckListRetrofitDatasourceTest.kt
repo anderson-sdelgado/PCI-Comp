@@ -4,7 +4,6 @@ import br.com.usinasantafe.pci.di.provider.PersistenceModuleTest.provideRetrofit
 import br.com.usinasantafe.pci.external.retrofit.api.variable.CheckListApi
 import br.com.usinasantafe.pci.infra.models.retrofit.variable.HeaderRetrofitModelOutput
 import br.com.usinasantafe.pci.infra.models.retrofit.variable.RespRetrofitModelOutput
-import br.com.usinasantafe.pci.utils.OptionResp
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -26,7 +25,7 @@ class ICheckListRetrofitDatasourceTest {
                     idHeader = 1,
                     idItem = 1,
                     idPlant = 1,
-                    option = OptionResp.NON_CONFORMING,
+                    option = 1,
                     obs = "OK",
                     idServ = null,
                     dateHour = "10/10/2023 10:10",

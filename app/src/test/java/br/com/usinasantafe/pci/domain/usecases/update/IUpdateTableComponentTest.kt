@@ -3,7 +3,7 @@ package br.com.usinasantafe.pci.domain.usecases.update
 import br.com.usinasantafe.pci.domain.entities.stable.Component
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.stable.ComponentRepository
-import br.com.usinasantafe.pci.domain.usecases.flow.GetToken
+import br.com.usinasantafe.pci.domain.usecases.config.GetToken
 import br.com.usinasantafe.pci.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.pci.utils.Errors
 import br.com.usinasantafe.pci.utils.LevelUpdate

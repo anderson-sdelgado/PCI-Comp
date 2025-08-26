@@ -2,7 +2,7 @@ package br.com.usinasantafe.pci.domain.usecases.config
 
 import br.com.usinasantafe.pci.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.pci.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.pci.presenter.model.ConfigModel
+import br.com.usinasantafe.pci.presenter.model.ConfigScreenModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -83,7 +83,7 @@ class IGetConfigInternalTest {
             val configModel = result.getOrNull()
             assertEquals(
                 configModel,
-                ConfigModel(
+                ConfigScreenModel(
                     number = "16997417840",
                     password = "12345",
                 )

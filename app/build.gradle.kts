@@ -17,7 +17,7 @@ android {
         minSdk = 24
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "3.00"
 
         testInstrumentationRunner = "br.com.usinasantafe.pci.CustomTestRunner"
 //        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -76,7 +76,7 @@ android {
             dimension = "version"
             applicationIdSuffix = ".prod"
             manifestPlaceholders["appName"] = "PCI"
-            resValue("string", "base_url", "https://app.usinasantafe.com.br/pcicompprod/versao_3_00/view/")
+            resValue("string", "base_url", "https://app.usinasantafe.com.br/pciprod/versao_3_00/view/")
         }
     }
 

@@ -2,7 +2,9 @@ package br.com.usinasantafe.pci.presenter.view.configuration.initial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.pci.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.pci.domain.usecases.flow.CheckAccessInitial
+import br.com.usinasantafe.pci.utils.StatusSend
 import br.com.usinasantafe.pci.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,11 +19,13 @@ data class InitialMenuState(
     val flagDialog: Boolean = false,
     val failure: String = "",
     val flagFailure: Boolean = false,
+    val statusSend: StatusSend = StatusSend.STARTED
 )
 
 @HiltViewModel
 class InitialMenuViewModel @Inject constructor(
-    private val checkAccessInitial: CheckAccessInitial
+    private val checkAccessInitial: CheckAccessInitial,
+    private val getStatusSend: GetStatusSend
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(InitialMenuState())
@@ -30,6 +34,21 @@ class InitialMenuViewModel @Inject constructor(
     fun setCloseDialog() {
         _uiState.update {
             it.copy(flagDialog = false)
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            getStatusSend()
+                .collect { result ->
+                    if (result.isFailure) {
+                        val error = result.exceptionOrNull()!!
+                        val failure = "${getClassAndMethod()} -> ${error.message} -> ${error.cause}"
+                        _uiState.update { it.copy(failure = failure) }
+                    } else {
+                        _uiState.update { it.copy(statusSend = result.getOrNull()!!) }
+                    }
+                }
         }
     }
 
@@ -52,10 +71,9 @@ class InitialMenuViewModel @Inject constructor(
                 return@launch
             }
             val statusAccess = resultCheck.getOrNull()!!
-            val statusDialog = !statusAccess
             _uiState.update {
                 it.copy(
-                    flagDialog = statusDialog,
+                    flagDialog = !statusAccess,
                     flagAccess = statusAccess,
                     flagFailure = false,
                 )

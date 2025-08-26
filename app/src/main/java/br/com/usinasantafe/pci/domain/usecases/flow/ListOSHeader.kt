@@ -80,7 +80,7 @@ class IListOSHeader @Inject constructor(
                 )
             }
             val listOrder = list.sortedWith(
-                compareBy( { it.status }, { it.idOS } )
+                compareBy( { !it.status }, { it.idOS } )
             )
             return Result.success(listOrder)
         } catch (e: Exception){

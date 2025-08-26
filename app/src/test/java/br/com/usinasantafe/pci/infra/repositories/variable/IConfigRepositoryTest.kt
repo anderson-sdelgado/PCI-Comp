@@ -170,7 +170,6 @@ class IConfigRepositoryTest {
             )
         }
 
-
     @Test
     fun `save - Check return failure if have error in ConfigSharedPreferencesDatasource save`() =
         runTest {

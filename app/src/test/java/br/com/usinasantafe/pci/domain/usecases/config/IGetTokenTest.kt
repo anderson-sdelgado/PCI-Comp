@@ -1,18 +1,18 @@
-package br.com.usinasantafe.pci.domain.usecases.flow
+package br.com.usinasantafe.pci.domain.usecases.config
 
 import br.com.usinasantafe.pci.domain.entities.variable.Config
 import br.com.usinasantafe.pci.domain.errors.resultFailure
 import br.com.usinasantafe.pci.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.pci.utils.token
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Test
-import org.mockito.Mockito.mock
+import org.mockito.Mockito
 import org.mockito.kotlin.whenever
 
 class IGetTokenTest {
 
-    private val configRepository = mock<ConfigRepository>()
+    private val configRepository = Mockito.mock<ConfigRepository>()
     private val usecase = IGetToken(
         configRepository = configRepository
     )
@@ -30,15 +30,15 @@ class IGetTokenTest {
                 )
             )
             val result = usecase()
-            assertEquals(
+            Assert.assertEquals(
                 result.isFailure,
                 true
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.exceptionOrNull()!!.message,
                 "IGetToken -> IConfigRepository.get"
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.Exception"
             )
@@ -57,15 +57,15 @@ class IGetTokenTest {
                 Result.success(config)
             )
             val result = usecase()
-            assertEquals(
+            Assert.assertEquals(
                 result.isFailure,
                 true
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.exceptionOrNull()!!.message,
                 "IGetToken"
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NullPointerException"
             )
@@ -85,7 +85,7 @@ class IGetTokenTest {
                 Result.success(config)
             )
             val result = usecase()
-            assertEquals(
+            Assert.assertEquals(
                 result.isSuccess,
                 true
             )
@@ -94,7 +94,7 @@ class IGetTokenTest {
                 number = config.number!!,
                 version = config.version!!
             )
-            assertEquals(
+            Assert.assertEquals(
                 result.getOrNull()!!,
                 token
             )
